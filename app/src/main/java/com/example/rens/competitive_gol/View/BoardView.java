@@ -1,5 +1,6 @@
 package com.example.rens.competitive_gol.View;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,9 +11,15 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.GridLayout;
+import android.widget.RelativeLayout;
 
 import com.example.rens.competitive_gol.Model.Board;
 import com.example.rens.competitive_gol.Model.TileSettings;
+
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 /**
  * Created by Tom on 12-5-2017.
@@ -34,6 +41,7 @@ public class BoardView extends View {
     private float scaling = 1; //May the gods be with us
     private float pivx=0;
     private float pivy=0;
+    private float oldScaleFactor;
 
     public BoardView(Context context) {
         super(context);
@@ -53,6 +61,13 @@ public class BoardView extends View {
     public void init(Context context){
         //super(context);
         //We create a new board IN the view. This is so we dont need unnecessary references
+        int layoutSize = min(getRootView().getWidth(), getRootView().getHeight());
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(10,10);
+        //if(layoutParams != null)
+            layoutParams.width = 100;
+        //layoutParams.height = layoutSize;
+        setLayoutParams(layoutParams);
+
         TileSettings settings = new TileSettings();
         board = new Board(20,20,settings);
         rectangle.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -63,6 +78,7 @@ public class BoardView extends View {
         recTOne.setColor(Color.GREEN);
         recBorder.setStyle(Paint.Style.STROKE);
         recBorder.setStrokeWidth(4);
+        oldScaleFactor = 1;
 
         mScaleDetector = new ScaleGestureDetector(context, new ScaleGestureDetector.OnScaleGestureListener() {
             @Override
@@ -70,17 +86,26 @@ public class BoardView extends View {
             }
             @Override
             public boolean onScaleBegin(ScaleGestureDetector detector) {
-                Log.d("sure", String.valueOf(detector.getFocusX()));
+                oldScaleFactor = detector.getScaleFactor();
                 return true;
             }
             @Override
             public boolean onScale(ScaleGestureDetector detector) {
-                scaling = detector.getScaleFactor();
-                if (scaling < 1) scaling =  1;
-                if (scaling > 2) scaling =  2;
-                pivx = detector.getFocusX()*(scaling-1);
-                pivy = detector.getFocusY()*(scaling-1);
-                Log.d("UDEBUG_scaling","scaling " + scaling );
+
+                float dScaling = detector.getScaleFactor() - oldScaleFactor;
+                scaling += dScaling;
+                scaling = max(1,min(2,scaling));
+
+                if(scaling > 0.1) {
+                    pivx += detector.getFocusX() * (dScaling);
+                    pivy += detector.getFocusY() * (dScaling);
+                    int maxpiv = (int) (getWidth() * (scaling - 1));
+                    pivx = max(0, min(maxpiv, pivx));
+                    pivy = max(0, min(maxpiv, pivy));
+                }
+
+                oldScaleFactor = detector.getScaleFactor();
+
                 return false;
             }
         });
@@ -111,16 +136,14 @@ public class BoardView extends View {
 
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+
                 pivx += distanceX;
                 pivy += distanceY;
-                if (pivx < 0) pivx =  0;
-                if (pivy < 0) pivy =  0;
+
                 int maxpiv = (int)(getWidth() * (scaling-1));
-                if (pivx > maxpiv) pivx = maxpiv;
-                if (pivy > maxpiv) pivy = maxpiv;
-                Log.d("UDEBUG_pivx", "pivx " + pivx);
-                Log.d("UDEBUG_maxpiv", "maxpiv " + maxpiv);
-                Log.d("UDEBUG_maxWidth", "maxWidth " + getWidth());
+                pivx = max(0,min(maxpiv,pivx));
+                pivy = max(0,min(maxpiv,pivy));
+
                 return false;
             }
 

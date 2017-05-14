@@ -11,7 +11,7 @@
 
     <com.example.rens.competitive_gol.View.BoardView
         android:id="@+id/board"
-        android:layout_width="413dp"
+        android:layout_width="412dp"
         android:layout_height="413dp"
         android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
