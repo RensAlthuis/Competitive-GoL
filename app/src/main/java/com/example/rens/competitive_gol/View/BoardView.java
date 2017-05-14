@@ -1,19 +1,14 @@
 package com.example.rens.competitive_gol.View;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.GridLayout;
-import android.widget.RelativeLayout;
 
 import com.example.rens.competitive_gol.Model.Board;
 import com.example.rens.competitive_gol.Model.TileSettings;
@@ -26,25 +21,32 @@ import static java.lang.Math.min;
  */
 
 public class BoardView extends View {
-    public static float mousex; //MouseX, public and static(perhaps relevant in other classes)
-    public static float mousey; //MouseY, static and public as well
+
+    /*******************VARIABLES*******************/
+    public static float hitX; //MouseX, public and static(perhaps relevant in other classes)
+    public static float hitY; //MouseY, static and public as well
 
     private ScaleGestureDetector mScaleDetector;
     private GestureDetector mGestureDetector;
+
     private Paint field = new Paint();
     private Paint recBorder = new Paint();
     private Paint rectangle = new Paint();
     private Paint recTOne = new Paint(); //Rectangle belonging to team one!
+
     private Board board;
-    private float hitbox_x;
-    private float hitbox_y;
+
+    private float tileWidth;
+    private float tileHeight;
     private float scaling = 1; //May the gods be with us
-    private float pivx=0;
-    private float pivy=0;
+    private float offsetX = 0;
+    private float offsetY =0;
     private float oldScaleFactor;
 
+    /*******************CONSTRUCTORS*******************/
     public BoardView(Context context) {
         super(context);
+
         init(context);
     }
 
@@ -58,18 +60,14 @@ public class BoardView extends View {
         init(context);
     }
 
+    /*******************FUNCTIONS*******************/
     public void init(Context context){
-        //super(context);
-        //We create a new board IN the view. This is so we dont need unnecessary references
-        int layoutSize = min(getRootView().getWidth(), getRootView().getHeight());
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(10,10);
-        //if(layoutParams != null)
-            layoutParams.width = 100;
-        //layoutParams.height = layoutSize;
-        setLayoutParams(layoutParams);
 
+        //INITIALIZING VARIABLES
+        //We create a new board IN the view. This is so we dont need unnecessary references
         TileSettings settings = new TileSettings();
         board = new Board(20,20,settings);
+
         rectangle.setStyle(Paint.Style.FILL_AND_STROKE);
         field.setStyle(Paint.Style.FILL_AND_STROKE);
         rectangle.setColor(Color.GRAY);
@@ -78,30 +76,36 @@ public class BoardView extends View {
         recTOne.setColor(Color.GREEN);
         recBorder.setStyle(Paint.Style.STROKE);
         recBorder.setStrokeWidth(4);
+
         oldScaleFactor = 1;
 
+        //INITIALIZING DETECTORS
         mScaleDetector = new ScaleGestureDetector(context, new ScaleGestureDetector.OnScaleGestureListener() {
+
             @Override
-            public void onScaleEnd(ScaleGestureDetector detector) {
-            }
+            public void onScaleEnd(ScaleGestureDetector detector) {}
+
             @Override
             public boolean onScaleBegin(ScaleGestureDetector detector) {
                 oldScaleFactor = detector.getScaleFactor();
                 return true;
             }
+
             @Override
             public boolean onScale(ScaleGestureDetector detector) {
 
                 float dScaling = detector.getScaleFactor() - oldScaleFactor;
                 scaling += dScaling;
+                //clamp to [1;2]
                 scaling = max(1,min(2,scaling));
 
                 if(scaling > 0.1) {
-                    pivx += detector.getFocusX() * (dScaling);
-                    pivy += detector.getFocusY() * (dScaling);
+                    offsetX += detector.getFocusX() * (dScaling);
+                    offsetY += detector.getFocusY() * (dScaling);
                     int maxpiv = (int) (getWidth() * (scaling - 1));
-                    pivx = max(0, min(maxpiv, pivx));
-                    pivy = max(0, min(maxpiv, pivy));
+                    //clamp to [0;offset]
+                    offsetX = max(0, min(maxpiv, offsetX));
+                    offsetY = max(0, min(maxpiv, offsetY));
                 }
 
                 oldScaleFactor = detector.getScaleFactor();
@@ -109,26 +113,25 @@ public class BoardView extends View {
                 return false;
             }
         });
-        mGestureDetector = new GestureDetector(context, new GestureDetector.OnGestureListener() {
-            @Override
-            public boolean onDown(MotionEvent e) {
-                return false;
-            }
 
-            @Override
-            public void onShowPress(MotionEvent e) {
-
-            }
+        mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
 
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
-                for(int a=0; a<board.width;a++)
-                    for(int b=0; b<board.height;b++)
-                    {
-                        if(mousex> ((a*hitbox_x)*scaling) && mousex < (((a+1)*hitbox_x)*scaling)
-                                && mousey> ((b*hitbox_y)*scaling) && mousey< (((b+1)*hitbox_y)*scaling))
+
+                float offset = tileWidth * scaling;
+
+                for (int a = 0; a < board.width; a++)
+                    for (int b = 0; b < board.height; b++) {
+
+                        //basic bounding box
+                        if (    hitX > (a * offset) &&
+                                hitX < ((a + 1) * offset) &&
+                                hitY > (b * offset) &&
+                                hitY < ((b + 1) * offset)
+                                )
                         {
-                            board.getTileAt(a,b).Set(1);
+                            board.getTileAt(a, b).Set(1);
                         }
                     }
                 return false;
@@ -137,23 +140,14 @@ public class BoardView extends View {
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 
-                pivx += distanceX;
-                pivy += distanceY;
+                offsetX += distanceX;
+                offsetY += distanceY;
 
-                int maxpiv = (int)(getWidth() * (scaling-1));
-                pivx = max(0,min(maxpiv,pivx));
-                pivy = max(0,min(maxpiv,pivy));
+                int maxpiv = (int) (getWidth() * (scaling - 1));
 
-                return false;
-            }
-
-            @Override
-            public void onLongPress(MotionEvent e) {
-
-            }
-
-            @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                //clamp to [0;offset]
+                offsetX = max(0, min(maxpiv, offsetX));
+                offsetY = max(0, min(maxpiv, offsetY));
 
                 return false;
             }
@@ -165,18 +159,23 @@ public class BoardView extends View {
     {
         //For future arguments: these need to be in onDraw because of screen flipping!
         //Cast to float simply for we aren't using arithmetic over floats
-        hitbox_x = (float) (canvas.getWidth())/board.width;
-        canvas.translate(-pivx,-pivy);
+        tileWidth = (float) (canvas.getWidth())/board.width;
+        tileHeight = (float) (canvas.getHeight())/board.height;
+
+        canvas.translate(-offsetX,-offsetY);
         canvas.scale(scaling,scaling);
-        hitbox_y = (float) (canvas.getHeight())/board.height;
         canvas.drawColor(Color.RED);
+
         for(int a=0;a < board.width; a++)
             for(int b=0;b < board.height; b++)
             {
-                if(board.getTileAt(a,b).getTeam()==0)
-                canvas.drawRect(a*hitbox_x,b*hitbox_y,(a+1)*hitbox_x,(b+1)*hitbox_y, rectangle);
-                else canvas.drawRect(a*hitbox_x,b*hitbox_y,(a+1)*hitbox_x,(b+1)*hitbox_y, recTOne);
-                canvas.drawRect(a*hitbox_x,b*hitbox_y,(a+1)*hitbox_x,(b+1)*hitbox_y, recBorder);
+                if(board.getTileAt(a,b).getTeam()==0) // Box for dead tiles
+                    canvas.drawRect(a * tileWidth, b * tileHeight,(a+1) * tileWidth, (b+1) * tileHeight, rectangle);
+                else //Box for team one
+                    canvas.drawRect(a * tileWidth,b * tileHeight,(a+1) * tileWidth, (b+1) * tileHeight, recTOne);
+
+                //Borders
+                canvas.drawRect(a * tileWidth, b * tileHeight, (a+1) * tileWidth,(b+1) * tileHeight, recBorder);
             }
 
 
@@ -184,8 +183,9 @@ public class BoardView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        mousex = event.getX()+pivx; //Floats for extra precision!
-        mousey = event.getY()+pivy;
+
+        hitX = event.getX() + offsetX; //Floats for extra precision!
+        hitY = event.getY() + offsetY;
 
         mScaleDetector.onTouchEvent(event);
         mGestureDetector.onTouchEvent(event);
