@@ -1,18 +1,19 @@
 package com.example.rens.competitive_gol.View;
 
-import android.support.v7.app.AppCompatActivity;
+import com.example.rens.competitive_gol.R;
+import android.app.Activity;
 import android.os.Bundle;
 
-import com.example.rens.competitive_gol.Model.Board;
-import com.example.rens.competitive_gol.Model.TileSettings;
-import com.example.rens.competitive_gol.R;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //BoardView board = new BoardView(this);
 
+        //setContentView(board);
     }
 }

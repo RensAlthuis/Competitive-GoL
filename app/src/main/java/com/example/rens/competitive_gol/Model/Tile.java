@@ -14,6 +14,11 @@ public class Tile {
         this(0);
     }
 
+    public void Set(int newValue) {
+        //Prevents magic numbers in BoardView. Tom would go mental without
+        this.team = newValue;
+    }
+
     public Tile(int team){
         this.team = team;
     }

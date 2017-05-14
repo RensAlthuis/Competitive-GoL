@@ -10,8 +10,8 @@ public class Board {
 
     private ArrayList<Tile> tiles;
     private ArrayList<Tile> tilesNext;
-    private final int width;
-    private final int height;
+    public final int width;
+    public final int height;
 
     private final TileSettings settings;
 
@@ -32,8 +32,8 @@ public class Board {
 
     private void createTiles(int width, int height){
         for(int i=0; i<height*width; i++) {
-            tiles.add(new Tile(1));
-            tilesNext.add(new Tile(1));
+            tiles.add(new Tile(0));
+            tilesNext.add(new Tile(0));
         }
     }
 
@@ -64,7 +64,7 @@ public class Board {
         return n;
     }
 
-    private Tile getTileAt(int x, int y){
+    public Tile getTileAt(int x, int y){
         return tiles.get(y*width + x);
     }
 
