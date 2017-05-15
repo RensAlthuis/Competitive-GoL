@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class Tile {
 
+    // 0 = dood
+    // 1,2,3,4.. = van speler 1,2,3,4..
     int team;
 
     public Tile(){
@@ -22,9 +24,8 @@ public class Tile {
     private Tile updateDie(ArrayList<Tile> neighbours, TileSettings settings){
         int nLiving = 0;
 
-        for(Tile tile : neighbours){
+        for(Tile tile : neighbours)
             if(tile.team!=0) nLiving++;
-        }
 
         if(nLiving < settings.minSurvive || nLiving > settings.maxSurvive)
             return new Tile();

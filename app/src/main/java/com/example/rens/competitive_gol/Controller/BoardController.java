@@ -2,21 +2,14 @@ package com.example.rens.competitive_gol.Controller;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 
 import com.example.rens.competitive_gol.Model.Board;
-import com.example.rens.competitive_gol.Model.TileSettings;
 import com.example.rens.competitive_gol.R;
 import com.example.rens.competitive_gol.View.BoardView;
-
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-
-/**
- * Created by Rens on 14-5-2017.
- */
 
 public class BoardController {
     private final Board board;
@@ -74,7 +67,7 @@ public class BoardController {
                                 )
                         {
                             board.setTeam(a,b,1);
-                            boardView.setTileColor(a,b,getTileCol(a,b));
+                            boardView.setTileColor(a,b,getTileColor(a,b));
                         }
                     }
                 return false;
@@ -86,7 +79,6 @@ public class BoardController {
                 return false;
             }
         });
-
     }
 
     /*******************FUNCTIONS*******************/
@@ -99,16 +91,13 @@ public class BoardController {
         mGestureDetector.onTouchEvent(event);
     }
 
-    public int[] getTileCol(int x, int y){
-        int col [] = {0,0,0};
+    public int getTileColor(int x, int y){
         switch(board.getTeam(x,y)){
+            default:
             case 0:
-                col = new int[]{127,127,127};
-                break;
+                return Color.BLACK;
             case 1:
-                col = new int[]{0,255,0};
-                break;
+                return Color.GREEN;
         }
-        return col;
     }
 }

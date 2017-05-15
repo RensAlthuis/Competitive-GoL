@@ -25,8 +25,7 @@ public class BoardView extends View {
     private Paint recBorder = new Paint();
 
     private BoardController controller;
-    private int nBlocks[];
-    private int colors[][];
+    private int colors[];
     private int nTilesX;
     private int nTilesY;
     private float tileWidth;
@@ -64,18 +63,14 @@ public class BoardView extends View {
         nTilesX = controller.getBoardWidth();
         nTilesY = controller.getBoardHeight();
 
-        colors = new int[nTilesX*nTilesY][3];
+        colors = new int[nTilesX*nTilesY];
         for(int i = 0; i < nTilesX*nTilesY; i++){
-            for (int j = 0; j < 3; j++){
-                colors[i][j] = 127;
-            }
+            colors[i] = Color.GRAY;
         }
     }
 
-    public void setTileColor(int x, int y, int[] col){
-        colors[y*nTilesX + x][0] = col[0];
-        colors[y*nTilesX + x][1] = col[1];
-        colors[y*nTilesX + x][2] = col[2];
+    public void setTileColor(int x, int y, int color){
+        colors[y*nTilesX + x] = color;
     }
 
     public void updateScaling(float dScaling, float focusX, float focusY){
@@ -91,7 +86,6 @@ public class BoardView extends View {
         //clamp to [0;offset]
         offsetX = max(0, min(maxpiv, offsetX));
         offsetY = max(0, min(maxpiv, offsetY));
-
     }
 
     public void updateOffset(float dOffX, float dOffY){
@@ -103,7 +97,6 @@ public class BoardView extends View {
         //clamp to [0;offset]
         offsetX = max(0, min(maxpiv, offsetX));
         offsetY = max(0, min(maxpiv, offsetY));
-
     }
 
     public float getScaledTileWidth(){ return tileWidth * scaling; }
@@ -135,8 +128,8 @@ public class BoardView extends View {
 
     private void drawBlock(Canvas canvas, int x, int y){
         Paint p = new Paint();
-        int col[] = colors[y*nTilesX + x];
-        p.setColor(Color.rgb(col[0], col[1], col[2]));
+        p.setColor(colors[y*nTilesX + x]);
+        //p.setColor(Color.BLUE);
         p.setStyle(Paint.Style.FILL_AND_STROKE);
         canvas.drawRect(x * tileWidth, y * tileHeight, (x + 1) * tileWidth, (y + 1) * tileHeight, p);
     }
