@@ -63,9 +63,9 @@ public class BoardController {
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
 
-                float offset = boardView.getOffset();
-                float hitX = e.getX();
-                float hitY = e.getY();
+                float offset = boardView.getScaledTileWidth();
+                float hitX = boardView.offX(e.getX());
+                float hitY = boardView.offY(e.getY());
 
                 for (int a = 0; a < board.width; a++)
                     for (int b = 0; b < board.height; b++) {

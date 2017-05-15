@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -103,6 +104,7 @@ public class BoardView extends View {
 
         offsetX += dOffX;
         offsetY += dOffY;
+        Log.d("UDEBUG_dOffX", "" + dOffX);
         int maxpiv = (int) (getWidth() * (scaling - 1));
 
         //clamp to [0;offset]
@@ -111,7 +113,9 @@ public class BoardView extends View {
 
     }
 
-    public float getOffset(){ return tileWidth * scaling; }
+    public float getScaledTileWidth(){ return tileWidth * scaling; }
+    public float offX(float n){ return n + offsetX; }
+    public float offY(float n){ return n + offsetY; }
 
     @Override
     protected void onDraw (Canvas canvas)
@@ -149,7 +153,8 @@ public class BoardView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        event.offsetLocation(offsetX, offsetY);
+        //event.offsetLocation(offsetX, offsetY);
+        //event.setLocation(event.get);
         controller.touched(event);
 
         invalidate();
