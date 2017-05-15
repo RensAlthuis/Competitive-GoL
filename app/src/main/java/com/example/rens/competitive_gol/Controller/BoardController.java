@@ -66,8 +66,7 @@ public class BoardController {
                                 hitY < ((b + 1) * offset)
                                 )
                         {
-                            board.setTeam(a,b,1);
-                            boardView.setTileColor(a,b,getTileColor(a,b));
+                            setTeam(a,b,1); // TODO: 1 moet vervangen worden door de actieve speler atm
                         }
                     }
                 return false;
@@ -91,13 +90,27 @@ public class BoardController {
         mGestureDetector.onTouchEvent(event);
     }
 
-    public int getTileColor(int x, int y){
-        switch(board.getTeam(x,y)){
-            default:
+    private void setTeam(int x, int y, int player){
+        if(board.getTeam(x,y)==0){
+            board.setTeam(x,y,player);
+            boardView.setTileColor(x,y,getTileColor(player));
+        }
+        else{
+            board.setTeam(x,y,0);
+            boardView.setTileColor(x,y,getTileColor(0));
+        }
+    }
+
+    public int getTileColor(int x, int y){return getTileColor(board.getTeam(x,y));}
+
+    public int getTileColor(int team){
+        switch(team){
             case 0:
-                return Color.BLACK;
+                return Color.GRAY;
             case 1:
                 return Color.GREEN;
+            default:
+                return Color.WHITE; // als je wit ziet, ligt het hieraan
         }
     }
 }

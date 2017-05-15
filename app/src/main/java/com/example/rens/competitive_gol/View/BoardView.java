@@ -22,8 +22,6 @@ public class BoardView extends View {
 
     /*******************VARIABLES*******************/
 
-    private Paint recBorder = new Paint();
-
     private BoardController controller;
     private int colors[];
     private int nTilesX;
@@ -52,9 +50,7 @@ public class BoardView extends View {
     }
 
     public void init(Context context) {
-        recBorder.setColor(Color.BLACK);
-        recBorder.setStyle(Paint.Style.STROKE);
-        recBorder.setStrokeWidth(4);
+
     }
 
     /*******************FUNCTIONS*******************/
@@ -63,9 +59,10 @@ public class BoardView extends View {
         nTilesX = controller.getBoardWidth();
         nTilesY = controller.getBoardHeight();
 
+
         colors = new int[nTilesX*nTilesY];
         for(int i = 0; i < nTilesX*nTilesY; i++){
-            colors[i] = Color.GRAY;
+            colors[i] = controller.getTileColor(0);
         }
     }
 
@@ -113,25 +110,21 @@ public class BoardView extends View {
 
         canvas.translate(-offsetX, -offsetY);
         canvas.scale(scaling, scaling);
-        canvas.drawColor(Color.RED);
+        canvas.drawColor(Color.DKGRAY); // the border color
 
         for (int a = 0; a < nTilesX; a++) {
             for (int b = 0; b < nTilesY; b++) {
                 //Inner blocks
                 drawBlock(canvas, a, b);
-
-                //Block borders
-                canvas.drawRect(a * tileWidth, b * tileHeight, (a + 1) * tileWidth, (b + 1) * tileHeight, recBorder);
             }
         }
     }
 
     private void drawBlock(Canvas canvas, int x, int y){
         Paint p = new Paint();
-        p.setColor(colors[y*nTilesX + x]);
-        //p.setColor(Color.BLUE);
+        p.setColor(controller.getTileColor(x,y));
         p.setStyle(Paint.Style.FILL_AND_STROKE);
-        canvas.drawRect(x * tileWidth, y * tileHeight, (x + 1) * tileWidth, (y + 1) * tileHeight, p);
+        canvas.drawRect(x * tileWidth, y * tileHeight, (x + 1) * tileWidth -2f, (y + 1) * tileHeight -2f, p);
     }
 
     @Override
