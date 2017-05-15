@@ -2,10 +2,6 @@ package com.example.rens.competitive_gol.Model;
 
 import java.util.HashMap;
 
-/**
- * Created by Tom on 12-5-2017.
- */
-
 public class TileSettings {
 
     //TODO besluit of dit beter is.

@@ -2,29 +2,16 @@ package com.example.rens.competitive_gol.Model;
 
 import java.util.ArrayList;
 
-/**
- * Created by Tom on 12-5-2017.
- */
-
 public class Tile {
 
-    private int team;
+    int team;
 
     public Tile(){
         this(0);
     }
 
-    public void Set(int newValue) {
-        //Prevents magic numbers in BoardView. Tom would go mental without
-        this.team = newValue;
-    }
-
     public Tile(int team){
         this.team = team;
-    }
-
-    public int getTeam(){
-        return team;
     }
 
     public Tile update(ArrayList<Tile> neighbours, TileSettings settings){

@@ -18,10 +18,6 @@ import com.example.rens.competitive_gol.Model.TileSettings;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
-/**
- * Created by Tom on 12-5-2017.
- */
-
 public class BoardView extends View {
 
     /*******************VARIABLES*******************/
@@ -43,7 +39,6 @@ public class BoardView extends View {
     /*******************CONSTRUCTORS*******************/
     public BoardView(Context context) {
         super(context);
-
         init(context);
     }
 
@@ -58,7 +53,6 @@ public class BoardView extends View {
     }
 
     public void init(Context context) {
-
         recBorder.setColor(Color.BLACK);
         recBorder.setStyle(Paint.Style.STROKE);
         recBorder.setStrokeWidth(4);
@@ -101,7 +95,6 @@ public class BoardView extends View {
     }
 
     public void updateOffset(float dOffX, float dOffY){
-
         offsetX += dOffX;
         offsetY += dOffY;
         Log.d("UDEBUG_dOffX", "" + dOffX);
@@ -138,8 +131,6 @@ public class BoardView extends View {
                 canvas.drawRect(a * tileWidth, b * tileHeight, (a + 1) * tileWidth, (b + 1) * tileHeight, recBorder);
             }
         }
-
-
     }
 
     private void drawBlock(Canvas canvas, int x, int y){
@@ -152,11 +143,9 @@ public class BoardView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
         //event.offsetLocation(offsetX, offsetY);
         //event.setLocation(event.get);
         controller.touched(event);
-
         invalidate();
         return true;
     }

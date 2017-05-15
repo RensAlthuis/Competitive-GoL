@@ -20,49 +20,45 @@ import static java.lang.Math.min;
 
 public class BoardController {
     private final Board board;
-    private final TileSettings settings;
-
     private final BoardView boardView;
-
     private final ScaleGestureDetector mScaleDetector;
     private final GestureDetector mGestureDetector;
 
+    /*******************CONSTRUCTORS*******************/
 
-
-    public BoardController(Activity activity, Context context){
-        settings = new TileSettings();
-        board = new Board(20,20,settings);
-        boardView = (BoardView) activity.findViewById(R.id.board);
+    public BoardController(final Activity activity, final Context context, final Board level){
+        board = level;
+        boardView = (BoardView)activity.findViewById(R.id.board);
         boardView.setBoard(this);
 
+        // SCALING
         mScaleDetector = new ScaleGestureDetector(context, new ScaleGestureDetector.OnScaleGestureListener() {
             private float oldScaleFactor;
-            @Override
-            public void onScaleEnd(ScaleGestureDetector detector) {}
 
-            @Override
+            @Override // begin scaling
             public boolean onScaleBegin(ScaleGestureDetector detector) {
                 oldScaleFactor = detector.getScaleFactor();
                 return true;
             }
 
-            @Override
+            @Override // tijdens scaling
             public boolean onScale(ScaleGestureDetector detector) {
-
                 float dScaling = detector.getScaleFactor() - oldScaleFactor;
                 boardView.updateScaling(dScaling, detector.getFocusX(), detector.getFocusY());
-
                 oldScaleFactor = detector.getScaleFactor();
-
                 return false;
             }
+
+            @Override // einde scaling
+            public void onScaleEnd(ScaleGestureDetector detector) {}
+
         });
 
+        // CLICKING/SWIPING
         mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
 
-            @Override
+            @Override // loslaten een keer klikken
             public boolean onSingleTapUp(MotionEvent e) {
-
                 float offset = boardView.getScaledTileWidth();
                 float hitX = boardView.offX(e.getX());
                 float hitY = boardView.offY(e.getY());
@@ -77,16 +73,15 @@ public class BoardController {
                                 hitY < ((b + 1) * offset)
                                 )
                         {
-                            board.getTileAt(a, b).Set(1);
+                            board.setTeam(a,b,1);
                             boardView.setTileColor(a,b,getTileCol(a,b));
                         }
                     }
                 return false;
             }
 
-            @Override
+            @Override // schuiven naar links/rechts
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-
                 boardView.updateOffset(distanceX, distanceY);
                 return false;
             }
@@ -94,28 +89,25 @@ public class BoardController {
 
     }
 
+    /*******************FUNCTIONS*******************/
+
     public int getBoardWidth(){ return board.width; }
     public int getBoardHeight(){ return board.height; }
 
     public void touched(MotionEvent event){
         mScaleDetector.onTouchEvent(event);
         mGestureDetector.onTouchEvent(event);
-
     }
 
     public int[] getTileCol(int x, int y){
-
         int col [] = {0,0,0};
-        switch(board.getTileAt(x, y).getTeam()){
-            case 0:{
+        switch(board.getTeam(x,y)){
+            case 0:
                 col = new int[]{127,127,127};
                 break;
-            }
-            case 1:{
+            case 1:
                 col = new int[]{0,255,0};
                 break;
-            }
-
         }
         return col;
     }
