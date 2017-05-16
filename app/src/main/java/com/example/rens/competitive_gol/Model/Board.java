@@ -2,10 +2,6 @@ package com.example.rens.competitive_gol.Model;
 
 import java.util.ArrayList;
 
-/**
- * Created by Tom on 12-5-2017.
- */
-
 public class Board {
 
     private ArrayList<Tile> tiles;
@@ -15,31 +11,32 @@ public class Board {
 
     private final TileSettings settings;
 
-
     public Board(int width, int height, TileSettings settings){
-
         this.width = width;
         this.height = height;
         this.settings = settings;
         tiles = new ArrayList<>();
         tilesNext = new ArrayList<>();
-        createTiles(width,height);
+        createEmptyTiles(width,height);
     }
 
-    public void setTile(int x, int y, int team){
-        //getTileAt(x,y).
+    public void setTeam(int x, int y, int team){
+        getTileAt(x,y).team = team;
     }
 
-    private void createTiles(int width, int height){
-        for(int i=0; i<height*width; i++) {
+    public int getTeam(int x, int y){
+        return getTileAt(x,y).team;
+    }
+
+    private void createEmptyTiles(int width, int height){
+        for(int i=0; i<height*width; i++){
             tiles.add(new Tile(0));
-            tilesNext.add(new Tile(0));
         }
     }
 
     public void update(){
         for(int i=0; i<height*width; i++){
-            tilesNext.set(i, tiles.get(i).update(getNeighbours(i%width, i/height),settings));
+            tilesNext.add(i, tiles.get(i).update(getNeighbours(i%width, i/height),settings));
         }
 
         tiles =  tilesNext;
@@ -50,30 +47,22 @@ public class Board {
         ArrayList<Tile> n = new ArrayList<>();
         for(int i = -1; i <= 1; i++){
             for(int j = -1; j <= 1; j++){
-                if(x+i >= 0 &&
-                   x+i < width &&
-                   y+j >= 0 &&
-                   y+j < height &&
-                   !(i==0 && j==0))
-                {
-                    n.add(getTileAt(x+i,y+j));
-                }
-
+                if(x+i >= 0 && x+i < width && y+j >= 0 && y+j < height && !(i==0 && j==0)) n.add(getTileAt(x+i,y+j));
             }
         }
         return n;
     }
 
-    public Tile getTileAt(int x, int y){
+    private Tile getTileAt(int x, int y){
         return tiles.get(y*width + x);
     }
 
+    // TODO: deze print functie is ook tijdelijk. verwijder bij het inleveren!
     public void print(){
         for(int i=0; i<height; i++){
             for(int j=0; j<width; j++)
-                System.out.print(" " + getTileAt(j,i).getTeam() + " ");
+                System.out.print(" " + getTileAt(j,i).team + " ");
             System.out.println();
         }
     }
-
 }

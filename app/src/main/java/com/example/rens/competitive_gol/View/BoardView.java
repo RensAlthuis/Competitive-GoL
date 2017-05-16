@@ -6,31 +6,19 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
 
 import com.example.rens.competitive_gol.Controller.BoardController;
-import com.example.rens.competitive_gol.Model.Board;
-import com.example.rens.competitive_gol.Model.TileSettings;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-
-/**
- * Created by Tom on 12-5-2017.
- */
 
 public class BoardView extends View {
 
     /*******************VARIABLES*******************/
 
-    private Paint recBorder = new Paint();
-
     private BoardController controller;
-    private int nBlocks[];
-    private int colors[][];
     private int nTilesX;
     private int nTilesY;
     private float tileWidth;
@@ -39,11 +27,9 @@ public class BoardView extends View {
     private float offsetX = 0;
     private float offsetY = 0;
 
-
     /*******************CONSTRUCTORS*******************/
     public BoardView(Context context) {
         super(context);
-
         init(context);
     }
 
@@ -59,9 +45,6 @@ public class BoardView extends View {
 
     public void init(Context context) {
 
-        recBorder.setColor(Color.BLACK);
-        recBorder.setStyle(Paint.Style.STROKE);
-        recBorder.setStrokeWidth(4);
     }
 
     /*******************FUNCTIONS*******************/
@@ -69,19 +52,6 @@ public class BoardView extends View {
         this.controller = controller;
         nTilesX = controller.getBoardWidth();
         nTilesY = controller.getBoardHeight();
-
-        colors = new int[nTilesX*nTilesY][3];
-        for(int i = 0; i < nTilesX*nTilesY; i++){
-            for (int j = 0; j < 3; j++){
-                colors[i][j] = 127;
-            }
-        }
-    }
-
-    public void setTileColor(int x, int y, int[] col){
-        colors[y*nTilesX + x][0] = col[0];
-        colors[y*nTilesX + x][1] = col[1];
-        colors[y*nTilesX + x][2] = col[2];
     }
 
     public void updateScaling(float dScaling, float focusX, float focusY){
@@ -97,11 +67,9 @@ public class BoardView extends View {
         //clamp to [0;offset]
         offsetX = max(0, min(maxpiv, offsetX));
         offsetY = max(0, min(maxpiv, offsetY));
-
     }
 
     public void updateOffset(float dOffX, float dOffY){
-
         offsetX += dOffX;
         offsetY += dOffY;
         Log.d("UDEBUG_dOffX", "" + dOffX);
@@ -110,7 +78,6 @@ public class BoardView extends View {
         //clamp to [0;offset]
         offsetX = max(0, min(maxpiv, offsetX));
         offsetY = max(0, min(maxpiv, offsetY));
-
     }
 
     public float getScaledTileWidth(){ return tileWidth * scaling; }
@@ -127,36 +94,28 @@ public class BoardView extends View {
 
         canvas.translate(-offsetX, -offsetY);
         canvas.scale(scaling, scaling);
-        canvas.drawColor(Color.RED);
+        canvas.drawColor(Color.DKGRAY); // the border color
 
         for (int a = 0; a < nTilesX; a++) {
             for (int b = 0; b < nTilesY; b++) {
                 //Inner blocks
                 drawBlock(canvas, a, b);
-
-                //Block borders
-                canvas.drawRect(a * tileWidth, b * tileHeight, (a + 1) * tileWidth, (b + 1) * tileHeight, recBorder);
             }
         }
-
-
     }
 
     private void drawBlock(Canvas canvas, int x, int y){
         Paint p = new Paint();
-        int col[] = colors[y*nTilesX + x];
-        p.setColor(Color.rgb(col[0], col[1], col[2]));
+        p.setColor(controller.getTileColor(x,y));
         p.setStyle(Paint.Style.FILL_AND_STROKE);
-        canvas.drawRect(x * tileWidth, y * tileHeight, (x + 1) * tileWidth, (y + 1) * tileHeight, p);
+        canvas.drawRect(x * tileWidth, y * tileHeight, (x + 1) * tileWidth -2f, (y + 1) * tileHeight -2f, p);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
         //event.offsetLocation(offsetX, offsetY);
         //event.setLocation(event.get);
         controller.touched(event);
-
         invalidate();
         return true;
     }
