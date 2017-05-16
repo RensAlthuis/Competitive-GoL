@@ -91,14 +91,10 @@ public class BoardController {
     }
 
     private void setTeam(int x, int y, int player){
-        if(board.getTeam(x,y)==0){
+        if(board.getTeam(x,y)==0)
             board.setTeam(x,y,player);
-            boardView.setTileColor(x,y,getTileColor(player));
-        }
-        else{
+        else
             board.setTeam(x,y,0);
-            boardView.setTileColor(x,y,getTileColor(0));
-        }
     }
 
     public int getTileColor(int x, int y){return getTileColor(board.getTeam(x,y));}

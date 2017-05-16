@@ -6,14 +6,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
 
 import com.example.rens.competitive_gol.Controller.BoardController;
-import com.example.rens.competitive_gol.Model.Board;
-import com.example.rens.competitive_gol.Model.TileSettings;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -23,7 +19,6 @@ public class BoardView extends View {
     /*******************VARIABLES*******************/
 
     private BoardController controller;
-    private int colors[];
     private int nTilesX;
     private int nTilesY;
     private float tileWidth;
@@ -31,7 +26,6 @@ public class BoardView extends View {
     private float scaling = 1; //May the gods be with us
     private float offsetX = 0;
     private float offsetY = 0;
-
 
     /*******************CONSTRUCTORS*******************/
     public BoardView(Context context) {
@@ -58,16 +52,6 @@ public class BoardView extends View {
         this.controller = controller;
         nTilesX = controller.getBoardWidth();
         nTilesY = controller.getBoardHeight();
-
-
-        colors = new int[nTilesX*nTilesY];
-        for(int i = 0; i < nTilesX*nTilesY; i++){
-            colors[i] = controller.getTileColor(0);
-        }
-    }
-
-    public void setTileColor(int x, int y, int color){
-        colors[y*nTilesX + x] = color;
     }
 
     public void updateScaling(float dScaling, float focusX, float focusY){
