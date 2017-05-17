@@ -1,4 +1,4 @@
-package com.example.rens.competitive_gol.View;
+package com.example.rens.competitive_gol.Controller;
 
 import com.example.rens.competitive_gol.Controller.BoardController;
 import com.example.rens.competitive_gol.Model.Board;
