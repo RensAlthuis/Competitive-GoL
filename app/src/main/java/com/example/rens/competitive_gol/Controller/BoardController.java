@@ -90,7 +90,7 @@ public class BoardController {
         mGestureDetector.onTouchEvent(event);
     }
 
-    private void setTeam(int x, int y, int player){
+    public void setTeam(int x, int y, int player){
         if(board.getTeam(x,y)==0)
             board.setTeam(x,y,player);
         else
@@ -108,5 +108,13 @@ public class BoardController {
             default:
                 return Color.WHITE; // als je wit ziet, ligt het hieraan
         }
+    }
+
+    public Board getBoard(){
+        return board;
+    }
+
+    public void iterateBoard(){
+        board.update();
     }
 }

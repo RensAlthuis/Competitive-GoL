@@ -20,6 +20,10 @@ public class Board {
         createEmptyTiles(width,height);
     }
 
+    public Board(Board aBoard){
+        this(aBoard.width, aBoard.height, aBoard.getSettings());
+    }
+
     public void setTeam(int x, int y, int team){
         getTileAt(x,y).team = team;
     }
@@ -64,5 +68,9 @@ public class Board {
                 System.out.print(" " + getTileAt(j,i).team + " ");
             System.out.println();
         }
+    }
+
+    public TileSettings getSettings(){
+        return settings;
     }
 }
