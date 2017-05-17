@@ -2,29 +2,18 @@ package com.example.rens.competitive_gol.Model;
 
 import java.util.ArrayList;
 
-/**
- * Created by Tom on 12-5-2017.
- */
-
 public class Tile {
 
-    private int team;
+    // 0 = dood
+    // 1,2,3,4.. = van speler 1,2,3,4..
+    int team;
 
     public Tile(){
         this(0);
     }
 
-    public void Set(int newValue) {
-        //Prevents magic numbers in BoardView. Tom would go mental without
-        this.team = newValue;
-    }
-
     public Tile(int team){
         this.team = team;
-    }
-
-    public int getTeam(){
-        return team;
     }
 
     public Tile update(ArrayList<Tile> neighbours, TileSettings settings){
@@ -35,9 +24,8 @@ public class Tile {
     private Tile updateDie(ArrayList<Tile> neighbours, TileSettings settings){
         int nLiving = 0;
 
-        for(Tile tile : neighbours){
+        for(Tile tile : neighbours)
             if(tile.team!=0) nLiving++;
-        }
 
         if(nLiving < settings.minSurvive || nLiving > settings.maxSurvive)
             return new Tile();
