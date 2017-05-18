@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
+import android.view.View;
 
 import com.example.rens.competitive_gol.Model.Board;
 import com.example.rens.competitive_gol.R;
@@ -22,7 +23,16 @@ public class BoardController {
     public BoardController(final Activity activity, final Context context, final Board level){
         board = level;
         boardView = (BoardView)activity.findViewById(R.id.board);
-        boardView.setBoard(this);
+        boardView.init(getBoardWidth(), getBoardHeight());
+
+        boardView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mScaleDetector.onTouchEvent(event);
+                mGestureDetector.onTouchEvent(event);
+                return true;
+            }
+        });
 
         // SCALING
         mScaleDetector = new ScaleGestureDetector(context, new ScaleGestureDetector.OnScaleGestureListener() {
@@ -66,7 +76,8 @@ public class BoardController {
                                 hitY < ((b + 1) * offset)
                                 )
                         {
-                            setTeam(a,b,1); // TODO: 1 moet vervangen worden door de actieve speler atm
+                            // TODO: Moet volgens de spelregels het gewenste team aangeven.
+                            setTeam(a,b,(board.getTeam(a,b)==0)? 1 : 0);
                         }
                     }
                 return false;
@@ -90,14 +101,12 @@ public class BoardController {
         mGestureDetector.onTouchEvent(event);
     }
 
-    private void setTeam(int x, int y, int player){
-        if(board.getTeam(x,y)==0)
-            board.setTeam(x,y,player);
-        else
-            board.setTeam(x,y,0);
+    private void setTeam(int x, int y, int team){
+        board.setTeam(x, y, team);
+        boardView.setColor(x, y, getTileColor(team));
     }
 
-    public int getTileColor(int x, int y){return getTileColor(board.getTeam(x,y));}
+    private int getTileColor(int x, int y){return getTileColor(board.getTeam(x,y));}
 
     public int getTileColor(int team){
         switch(team){

@@ -18,7 +18,6 @@ public class BoardView extends View {
 
     /*******************VARIABLES*******************/
 
-    private BoardController controller;
     private int nTilesX;
     private int nTilesY;
     private float tileWidth;
@@ -26,33 +25,36 @@ public class BoardView extends View {
     private float scaling = 1; //May the gods be with us
     private float offsetX = 0;
     private float offsetY = 0;
+    private int colors[];
 
     /*******************CONSTRUCTORS*******************/
     public BoardView(Context context) {
         super(context);
-        init(context);
     }
 
     public BoardView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
     }
 
     public BoardView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init(context);
     }
 
-    public void init(Context context) {
+    public void init(int width, int height) {
+        nTilesX = width;
+        nTilesY = height;
 
+        colors = new int[nTilesX*nTilesY];
+        for (int i = 0; i < nTilesX*nTilesY; i++){
+            colors[i] = Color.GRAY;
+        }
+    }
+
+    public void setColor(int x, int y, int col){
+        colors[y*nTilesX + x] = col;
     }
 
     /*******************FUNCTIONS*******************/
-    public void setBoard(BoardController controller){
-        this.controller = controller;
-        nTilesX = controller.getBoardWidth();
-        nTilesY = controller.getBoardHeight();
-    }
 
     public void updateScaling(float dScaling, float focusX, float focusY){
         scaling += dScaling;
@@ -102,16 +104,17 @@ public class BoardView extends View {
                 drawBlock(canvas, a, b);
             }
         }
+        invalidate();
     }
 
     private void drawBlock(Canvas canvas, int x, int y){
         Paint p = new Paint();
-        p.setColor(controller.getTileColor(x,y));
+        p.setColor(colors[y*nTilesX+x]);
         p.setStyle(Paint.Style.FILL_AND_STROKE);
         canvas.drawRect(x * tileWidth, y * tileHeight, (x + 1) * tileWidth -2f, (y + 1) * tileHeight -2f, p);
     }
 
-    @Override
+   /* @Override
     public boolean onTouchEvent(MotionEvent event) {
         //event.offsetLocation(offsetX, offsetY);
         //event.setLocation(event.get);
@@ -119,4 +122,5 @@ public class BoardView extends View {
         invalidate();
         return true;
     }
+    */
 }
