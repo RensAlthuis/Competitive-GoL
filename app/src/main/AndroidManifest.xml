@@ -18,7 +18,10 @@
         </activity>
         <activity android:name=".Controller.MenuActivity" />
         <activity android:name=".Controller.OnlineActivity" />
-        <activity android:name=".Controller.RoomActivity"></activity>
+        <activity android:name=".Controller.RoomActivity" />
+        <activity android:name=".Controller.AiActivity" />
+        <activity android:name=".Controller.SettingsActivity" />
+        <activity android:name=".Controller.TutorialActivity"></activity>
     </application>
 
 </manifest>
