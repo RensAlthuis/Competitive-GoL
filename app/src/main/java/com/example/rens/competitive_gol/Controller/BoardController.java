@@ -39,7 +39,7 @@ public class BoardController {
             }
         });
 
-        // SCALING
+        // SCALING: dit detecteerd bewegingen waarbij je twee aanraakpunten naar elkaar toe trekt/van elkaar weg haalt
         mScaleDetector = new ScaleGestureDetector(context, new ScaleGestureDetector.OnScaleGestureListener() {
             private float oldScaleFactor;
 
@@ -62,34 +62,24 @@ public class BoardController {
 
         });
 
-        // CLICKING/SWIPING
+        // CLICKING/SWIPING: dit detecteerd kleine simpele bewegingen die je met een aanraakpunt maakt
         mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
 
-            @Override // loslaten een keer klikken
+            @Override //Voor: loslaten na een keer klikken
             public boolean onSingleTapUp(MotionEvent e) {
-                float offset = boardView.getScaledTileWidth();
-                float hitX = boardView.offX(e.getX());
-                float hitY = boardView.offY(e.getY());
+               //Deze functie wordt gebruikt wanneer je klikt op een tile :)
+                final float offset = boardView.getScaledTileWidth();
+                final int a = (int)Math.floor(boardView.offX(e.getX())/offset);
+                final int b = (int)Math.floor(boardView.offY(e.getY())/offset);
 
-                for (int y = 0; y < board.height; y++) {
-                    for (int x= 0; x < board.width; x++)
+                doMove(a,b); // TODO: 1 moet vervangen worden door de actieve speler atm
 
-                        //basic bounding box
-                        if (    hitX > (x * offset) &&
-                                hitX < ((x + 1) * offset) &&
-                                hitY > (y * offset) &&
-                                hitY < ((y + 1) * offset)
-                                )
-                        {
-                            // TODO: Moet volgens de spelregels het gewenste team aangeven.
-                            doMove(x, y);
-                        }
-                    }
                 return false;
             }
 
-            @Override // schuiven naar links/rechts
+            @Override //Voor: schuiven
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                //Deze functie wordt gebruikt wanneer je via een swipe beweging je verplaatst over het bord
                 boardView.updateOffset(distanceX, distanceY);
                 return false;
             }
@@ -124,7 +114,7 @@ public class BoardController {
 
     private int getTileColor(int x, int y){return getTileColor(board.getTeam(x,y));}
 
-    public int getTileColor(int team){
+   public int getTileColor(int team){
         switch(team){
             case 0:
             case 1:

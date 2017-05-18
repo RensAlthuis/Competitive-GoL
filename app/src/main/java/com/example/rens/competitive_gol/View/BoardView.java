@@ -18,16 +18,18 @@ public class BoardView extends View {
 
     /*******************VARIABLES*******************/
 
-    private int nTilesX;
-    private int nTilesY;
-    private float tileWidth;
-    private float tileHeight;
+    private BoardController controller;
+    private int nTilesX; // aantal tiles horizontaal (wordt gelijk gezet)
+    private int nTilesY; // aantal tiles verticaal (wordt gelijk gezet)
+    private float tileWidth; // lengte van een tile
+    private float tileHeight; // breedte van een tile
     private float scaling = 1; //May the gods be with us
-    private float offsetX = 0;
-    private float offsetY = 0;
+    private float offsetX = 0; //Hoeveel er naar links/rechts is beweegt (TODO: vergroot dit als we een rand willen toevoegen)
+    private float offsetY = 0; //Hoeveel er naar boven/beneden is beweegt (TODO: vergroot dit als we een rand willen toevoegen)
     private int colors[];
 
     /*******************CONSTRUCTORS*******************/
+
     public BoardView(Context context) {
         super(context);
     }
@@ -44,23 +46,23 @@ public class BoardView extends View {
         nTilesX = width;
         nTilesY = height;
 
-        colors = new int[nTilesX*nTilesY];
-        for (int i = 0; i < nTilesX*nTilesY; i++){
+        colors = new int[nTilesX * nTilesY];
+        for (int i = 0; i < nTilesX * nTilesY; i++) {
             colors[i] = Color.GRAY;
         }
     }
 
-    public void setColor(int x, int y, int col){
-        colors[y*nTilesX + x] = col;
+    public void setColor(int x, int y, int col) {
+        colors[y * nTilesX + x] = col;
     }
 
     /*******************FUNCTIONS*******************/
 
-    public void updateScaling(float dScaling, float focusX, float focusY){
+    public void updateScaling(float dScaling, float focusX, float focusY) {
         scaling += dScaling;
 
         //clamp to [1;2]
-        scaling = max(1,min(2,scaling));
+        scaling = max(1, min(2, scaling));
 
         offsetX += focusX * (dScaling);
         offsetY += focusY * (dScaling);
@@ -71,10 +73,9 @@ public class BoardView extends View {
         offsetY = max(0, min(maxpiv, offsetY));
     }
 
-    public void updateOffset(float dOffX, float dOffY){
+    public void updateOffset(float dOffX, float dOffY) {
         offsetX += dOffX;
         offsetY += dOffY;
-        Log.d("UDEBUG_dOffX", "" + dOffX);
         int maxpiv = (int) (getWidth() * (scaling - 1));
 
         //clamp to [0;offset]
@@ -82,13 +83,20 @@ public class BoardView extends View {
         offsetY = max(0, min(maxpiv, offsetY));
     }
 
-    public float getScaledTileWidth(){ return tileWidth * scaling; }
-    public float offX(float n){ return n + offsetX; }
-    public float offY(float n){ return n + offsetY; }
+    public float getScaledTileWidth() {
+        return tileWidth * scaling;
+    }
+
+    public float offX(float n) {
+        return n + offsetX;
+    }
+
+    public float offY(float n) {
+        return n + offsetY;
+    }
 
     @Override
-    protected void onDraw (Canvas canvas)
-    {
+    protected void onDraw(Canvas canvas) {
         //For future arguments: these need to be in onDraw because of screen flipping!
         //Cast to float simply for we aren't using arithmetic over floats
         tileWidth = (float) (canvas.getWidth()) / nTilesX;
@@ -100,27 +108,17 @@ public class BoardView extends View {
 
         for (int a = 0; a < nTilesX; a++) {
             for (int b = 0; b < nTilesY; b++) {
-                //Inner blocks
                 drawBlock(canvas, a, b);
             }
         }
         invalidate();
     }
 
-    private void drawBlock(Canvas canvas, int x, int y){
+    private void drawBlock(Canvas canvas, int x, int y) {
         Paint p = new Paint();
-        p.setColor(colors[y*nTilesX+x]);
+        p.setColor(colors[y * nTilesX + x]);
         p.setStyle(Paint.Style.FILL_AND_STROKE);
-        canvas.drawRect(x * tileWidth, y * tileHeight, (x + 1) * tileWidth -2f, (y + 1) * tileHeight -2f, p);
+        canvas.drawRect(x * tileWidth, y * tileHeight, (x + 1) * tileWidth - 2f, (y + 1) * tileHeight - 2f, p);
     }
-
-   /* @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        //event.offsetLocation(offsetX, offsetY);
-        //event.setLocation(event.get);
-        controller.touched(event);
-        invalidate();
-        return true;
-    }
-    */
 }
+

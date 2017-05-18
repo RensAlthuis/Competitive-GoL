@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
 
         game = new BoardController(this,this,board1, player1);
         currentPlayer= player1;
-        findViewById(R.id.buttonNextTurn).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.buttonNext).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 nextTurn();
