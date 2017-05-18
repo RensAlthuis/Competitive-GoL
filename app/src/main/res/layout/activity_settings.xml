@@ -27,6 +27,10 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:text="Volume" />
 
         <LinearLayout
@@ -77,6 +81,10 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:text="Feedback" />
 
         <Button
@@ -86,7 +94,7 @@
             android:text="Rate Application" />
 
         <Button
-            android:id="@+id/buttonSend"
+            android:id="@+id/buttonFeedBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Send Feedback" />

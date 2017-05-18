@@ -1,13 +1,13 @@
 package com.example.rens.competitive_gol.Controller;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.rens.competitive_gol.R;
 
-public class AiActivity extends AppCompatActivity {
+public class AiActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -7,7 +7,7 @@ import android.view.WindowManager;
 
 import com.example.rens.competitive_gol.R;
 
-public class TutorialActivity extends Activity {
+public class AboutActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +15,6 @@ public class TutorialActivity extends Activity {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_tutorial);
+        setContentView(R.layout.activity_about);
     }
 }

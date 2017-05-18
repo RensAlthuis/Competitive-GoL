@@ -10,7 +10,7 @@ import android.widget.Button;
 
 import com.example.rens.competitive_gol.R;
 
-public class OnlineActivity extends Activity {
+public class FeedBackActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,18 +18,17 @@ public class OnlineActivity extends Activity {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_online);
-        eventToCreate();
+        setContentView(R.layout.activity_feedback);
+        eventToSettings();
     }
 
-    private void eventToCreate() {
-        Button btn = (Button)findViewById(R.id.buttonCreate);
+    private void eventToSettings(){
+        Button btn = (Button)findViewById(R.id.buttonSendFeedBack);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(OnlineActivity.this, RoomActivity.class));
+                startActivity(new Intent(FeedBackActivity.this, SettingsActivity.class));
             }
         });
     }
-
 }
