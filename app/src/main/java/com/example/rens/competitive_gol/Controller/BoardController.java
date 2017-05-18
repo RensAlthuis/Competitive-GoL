@@ -24,7 +24,7 @@ public class BoardController {
         boardView = (BoardView)activity.findViewById(R.id.board);
         boardView.setBoard(this);
 
-        // SCALING
+        // SCALING: dit detecteerd bewegingen waarbij je twee aanraakpunten naar elkaar toe trekt/van elkaar weg haalt
         mScaleDetector = new ScaleGestureDetector(context, new ScaleGestureDetector.OnScaleGestureListener() {
             private float oldScaleFactor;
 
@@ -47,33 +47,24 @@ public class BoardController {
 
         });
 
-        // CLICKING/SWIPING
+        // CLICKING/SWIPING: dit detecteerd kleine simpele bewegingen die je met een aanraakpunt maakt
         mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
 
-            @Override // loslaten een keer klikken
+            @Override //Voor: loslaten na een keer klikken
             public boolean onSingleTapUp(MotionEvent e) {
-                float offset = boardView.getScaledTileWidth();
-                float hitX = boardView.offX(e.getX());
-                float hitY = boardView.offY(e.getY());
+                //Deze functie wordt gebruikt wanneer je klikt op een tile :)
+                final float offset = boardView.getScaledTileWidth();
+                final int a = (int)Math.floor(boardView.offX(e.getX())/offset);
+                final int b = (int)Math.floor(boardView.offY(e.getY())/offset);
 
-                for (int a = 0; a < board.width; a++)
-                    for (int b = 0; b < board.height; b++) {
+                clickTile(a,b,1); // TODO: 1 moet vervangen worden door de actieve speler atm
 
-                        //basic bounding box
-                        if (    hitX > (a * offset) &&
-                                hitX < ((a + 1) * offset) &&
-                                hitY > (b * offset) &&
-                                hitY < ((b + 1) * offset)
-                                )
-                        {
-                            setTeam(a,b,1); // TODO: 1 moet vervangen worden door de actieve speler atm
-                        }
-                    }
                 return false;
             }
 
-            @Override // schuiven naar links/rechts
+            @Override //Voor: schuiven
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                //Deze functie wordt gebruikt wanneer je via een swipe beweging je verplaatst over het bord
                 boardView.updateOffset(distanceX, distanceY);
                 return false;
             }
@@ -90,15 +81,20 @@ public class BoardController {
         mGestureDetector.onTouchEvent(event);
     }
 
-    private void setTeam(int x, int y, int player){
+    // Deze functie bepaald wat er moet gebeuren wanneer tile (a,b) geklikt wordt door speler 'player'
+    private boolean clickTile(int x, int y, int player){
         if(board.getTeam(x,y)==0)
             board.setTeam(x,y,player);
-        else
+        else if(board.getTeam(x,y)==player)
             board.setTeam(x,y,0);
+        else
+            return false;
+        return true;
     }
 
+    // Bepaald de kleur/plaatje die een tile zou moeten hebben
+    // TODO: als we plaatjes willen gebruiken ipv gekleurde vierkanten: verrander dit!
     public int getTileColor(int x, int y){return getTileColor(board.getTeam(x,y));}
-
     public int getTileColor(int team){
         switch(team){
             case 0:

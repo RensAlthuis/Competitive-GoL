@@ -19,16 +19,17 @@ public class BoardView extends View {
     /*******************VARIABLES*******************/
 
     private BoardController controller;
-    private int nTilesX;
-    private int nTilesY;
-    private float tileWidth;
-    private float tileHeight;
+    private int nTilesX; // aantal tiles horizontaal (wordt gelijk gezet)
+    private int nTilesY; // aantal tiles verticaal (wordt gelijk gezet)
+    private float tileWidth; // lengte van een tile
+    private float tileHeight; // breedte van een tile
     private float scaling = 1; //May the gods be with us
-    private float offsetX = 0;
-    private float offsetY = 0;
+    private float offsetX = 0; //Hoeveel er naar links/rechts is beweegt (TODO: vergroot dit als we een rand willen toevoegen)
+    private float offsetY = 0; //Hoeveel er naar boven/beneden is beweegt (TODO: vergroot dit als we een rand willen toevoegen)
 
     /*******************CONSTRUCTORS*******************/
-    public BoardView(Context context) {
+
+    public BoardView(Context context){
         super(context);
         init(context);
     }
@@ -44,15 +45,17 @@ public class BoardView extends View {
     }
 
     public void init(Context context) {
-
+        // als iets moet gebeuren in het begin, stop het hier! :)
     }
 
-    /*******************FUNCTIONS*******************/
+    // de ECHTE contructor
     public void setBoard(BoardController controller){
         this.controller = controller;
         nTilesX = controller.getBoardWidth();
         nTilesY = controller.getBoardHeight();
     }
+
+    /*******************FUNCTIONS*******************/
 
     public void updateScaling(float dScaling, float focusX, float focusY){
         scaling += dScaling;
@@ -72,7 +75,6 @@ public class BoardView extends View {
     public void updateOffset(float dOffX, float dOffY){
         offsetX += dOffX;
         offsetY += dOffY;
-        Log.d("UDEBUG_dOffX", "" + dOffX);
         int maxpiv = (int) (getWidth() * (scaling - 1));
 
         //clamp to [0;offset]
@@ -85,8 +87,7 @@ public class BoardView extends View {
     public float offY(float n){ return n + offsetY; }
 
     @Override
-    protected void onDraw (Canvas canvas)
-    {
+    protected void onDraw (Canvas canvas){
         //For future arguments: these need to be in onDraw because of screen flipping!
         //Cast to float simply for we aren't using arithmetic over floats
         tileWidth = (float) (canvas.getWidth()) / nTilesX;
@@ -98,7 +99,6 @@ public class BoardView extends View {
 
         for (int a = 0; a < nTilesX; a++) {
             for (int b = 0; b < nTilesY; b++) {
-                //Inner blocks
                 drawBlock(canvas, a, b);
             }
         }
@@ -112,9 +112,7 @@ public class BoardView extends View {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        //event.offsetLocation(offsetX, offsetY);
-        //event.setLocation(event.get);
+    public boolean onTouchEvent(MotionEvent event){
         controller.touched(event);
         invalidate();
         return true;
