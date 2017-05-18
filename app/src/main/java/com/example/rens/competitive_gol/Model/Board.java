@@ -8,6 +8,7 @@ public class Board {
     private ArrayList<Tile> tilesNext;
     public final int width;
     public final int height;
+    public static final int DEAD = 0;
 
     private final TileSettings settings;
 
@@ -30,7 +31,7 @@ public class Board {
 
     private void createEmptyTiles(int width, int height){
         for(int i=0; i<height*width; i++){
-            tiles.add(new Tile(0));
+            tiles.add(new Tile(DEAD));
         }
     }
 
