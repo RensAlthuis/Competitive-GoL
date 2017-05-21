@@ -16,14 +16,17 @@ import java.util.ArrayList;
 
 public class MainActivity extends Activity {
 
+    /*******************VARIABLES*******************/
+
     static BoardController game; //Het actieve spel atm
 
     final Player player1 = new Player(1, Color.BLUE);
     final Player player2 = new Player(2, Color.RED);
-    final ArrayList<Player> currentPlayers = new ArrayList<>();
 
     Board board1 = new Board(20,20,new TileSettings()); //
     Board board2 = new Board(10,10,new TileSettings()); // voorbeeld van meerdere levels
+
+    /***********************************************/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +45,6 @@ public class MainActivity extends Activity {
         });
 
         // Het spel:
-        currentPlayers.add(player1);
-        currentPlayers.add(player2);
-        game = new BoardController(this, this, board1, currentPlayers);
+        game = new BoardController(this, this, board1, 2);
     }
 }

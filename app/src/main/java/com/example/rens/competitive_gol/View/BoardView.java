@@ -5,8 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 
 import com.example.rens.competitive_gol.Controller.BoardController;
@@ -21,11 +19,14 @@ public class BoardView extends View {
     private BoardController controller;
     private int nTilesX; // aantal tiles horizontaal (wordt gelijk gezet)
     private int nTilesY; // aantal tiles verticaal (wordt gelijk gezet)
+
     private float tileWidth; // lengte van een tile
     private float tileHeight; // breedte van een tile
-    private float scaling = 1; //May the gods be with us
+
+    private float scaling = 1;
     private float offsetX = 0; //Hoeveel er naar links/rechts is beweegt (TODO: vergroot dit als we een rand willen toevoegen)
     private float offsetY = 0; //Hoeveel er naar boven/beneden is beweegt (TODO: vergroot dit als we een rand willen toevoegen)
+
     private int colors[];
     private final static int DEAD = Color.GRAY;
 

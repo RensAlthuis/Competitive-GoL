@@ -2,6 +2,7 @@ package com.example.rens.competitive_gol.Controller;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -27,13 +28,13 @@ public class BoardController {
 
     /*******************CONSTRUCTORS*******************/
 
-    public BoardController(final Activity activity, final Context context, final Board level, ArrayList<Player> players){
+    public BoardController(final Activity activity, final Context context, final Board level, final int numberPlayers){
         board = level;
         boardView = (BoardView)activity.findViewById(R.id.board);
         boardView.init(getBoardWidth(), getBoardHeight());
         setBoardView(); //zorgt er btw ook voor dat een meer crazy bord gelijk goed getekent wordt! :)
 
-        allPlayers = players;
+        allPlayers = Players(numberPlayers);
         curPlayerIndex = 0;
 
         // TODO: Optionele verbetering:
@@ -104,11 +105,14 @@ public class BoardController {
         mGestureDetector.onTouchEvent(event);
     }
 
-    // Maakt een kopie die gesorteerd is op basis van de volgorde van de array players
-    private ArrayList<Player> sortedPlayers(ArrayList<Player>  players){
+    // maakt een gesoteerde lijst van alle spelers afhankelijk van al opgestelde kleuren
+    private ArrayList<Player> Players(int  numberPlayers){
         ArrayList<Player> sortedPlayers = new ArrayList<>();
-        for(int i=0; i<players.size() ; i++)
-            sortedPlayers.add(players.get(i).copy(i+1));
+        final int[] colours = {Color.BLUE,Color.RED,Color.GREEN,Color.MAGENTA,Color.YELLOW,Color.CYAN};
+
+        for(int i=0; i<numberPlayers; i++)
+            sortedPlayers.add(new Player(i+1,colours[i%colours.length]));
+
         return sortedPlayers;
     }
 
@@ -157,21 +161,12 @@ public class BoardController {
         setBoardView();
     }
 
-    // TODO: een oplossing om deze for functie te voorkomen is om players op tiles te zetten op het bord. idee?
-    // TODO: alterntief zou je ook ipv team -32,342834209,12,38234 en 278 gewoon standaard team 1,2,3,4,5 kunnen gebruiken. dat zorgt dat teams -> speler een STUK makkelijker gaat door gewoon te kijken naar allPlayers.get(team-1)
-    // (hiervoor sortedPlayers)
-    private Player findPlayer(int team){
-        for(Player player : allPlayers)
-            if(player.getTeam() == team) return player;
-        return null;
-    }
-
     // maakt de boardView up-to-board met de latest tiles fashion
     private void setBoardView(){
         for(int y=0; y<board.height ; y++)
             for(int x=0; x<board.width ; x++){
-                if(board.getTileTeam(x,y)!=0) boardView.setTilePlayer(x,y,findPlayer(board.getTileTeam(x,y)).getColor());
-                else boardView.setTileDead(x,y);
+                if(board.isDead(x,y)) boardView.setTileDead(x,y);
+                else boardView.setTilePlayer(x,y,allPlayers.get(board.getTileTeam(x,y)-1).getColor());
             }
     }
 }
