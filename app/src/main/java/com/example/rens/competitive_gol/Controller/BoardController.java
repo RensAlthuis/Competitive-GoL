@@ -2,18 +2,17 @@ package com.example.rens.competitive_gol.Controller;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
+import java.util.ArrayList;
+
 import com.example.rens.competitive_gol.Model.Board;
 import com.example.rens.competitive_gol.Model.Player;
 import com.example.rens.competitive_gol.R;
 import com.example.rens.competitive_gol.View.BoardView;
-
-import java.util.ArrayList;
 
 public class BoardController {
 
@@ -32,7 +31,7 @@ public class BoardController {
         board = level;
         boardView = (BoardView)activity.findViewById(R.id.board);
         boardView.init(getBoardWidth(), getBoardHeight());
-        setBoardView();
+        setBoardView(); //zorgt er btw ook voor dat een meer crazy bord gelijk goed getekent wordt! :)
 
         allPlayers = players;
         curPlayerIndex = 0;
@@ -152,18 +151,22 @@ public class BoardController {
 
     /*******************UPDATE*******************/
 
+    // stap 1) update board, stap 2) update boardView aan de hand van board
     public void update(){
         board.update();
         setBoardView();
     }
 
     // TODO: een oplossing om deze for functie te voorkomen is om players op tiles te zetten op het bord. idee?
+    // TODO: alterntief zou je ook ipv team -32,342834209,12,38234 en 278 gewoon standaard team 1,2,3,4,5 kunnen gebruiken. dat zorgt dat teams -> speler een STUK makkelijker gaat door gewoon te kijken naar allPlayers.get(team-1)
+    // (hiervoor sortedPlayers)
     private Player findPlayer(int team){
         for(Player player : allPlayers)
             if(player.getTeam() == team) return player;
         return null;
     }
 
+    // maakt de boardView up-to-board met de latest tiles fashion
     private void setBoardView(){
         for(int y=0; y<board.height ; y++)
             for(int x=0; x<board.width ; x++){

@@ -11,7 +11,6 @@ public class Tile {
     public Tile(){
         this(0);
     }
-
     public Tile(int team){
         this.team = team;
     }
@@ -33,7 +32,6 @@ public class Tile {
     }
 
     private Tile updateLive(ArrayList<Tile> neighbours, TileSettings settings){
-
         int bestTeam = 0;
         int maxCount = 0;
         for(Tile tile : neighbours){

@@ -10,9 +10,8 @@ public class Board {
     public final int width;
     public final int height;
 
-    public static final int DEAD = 0;
-
-    private final TileSettings settings;
+    private final TileSettings settings; // update settings
+    private static final int DEAD = 0;
 
     public Board(int width, int height, TileSettings settings){
         this.width = width;
