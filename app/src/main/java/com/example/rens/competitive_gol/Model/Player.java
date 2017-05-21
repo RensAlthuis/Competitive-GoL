@@ -5,6 +5,7 @@ public class Player {
     private int team;
 
     public Player(int team, int color){
+        if(team==0) throw new RuntimeException("Gereserveerd voor dood");
         this.color = color;
         this.team = team;
     }

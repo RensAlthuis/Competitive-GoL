@@ -96,6 +96,8 @@ public class BoardView extends View {
         return n + offsetY;
     }
 
+    /*******************DRAW*******************/
+
     @Override
     protected void onDraw(Canvas canvas) {
         //For future arguments: these need to be in onDraw because of screen flipping!

@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 public class Board {
 
-    private ArrayList<Tile> tiles;
-    private ArrayList<Tile> tilesNext;
+    /*******************VARIABLES*******************/
+
+    private ArrayList<Tile> tiles = new ArrayList<>();
+    private ArrayList<Tile> tilesNext = new ArrayList<>();
 
     public final int width;
     public final int height;
@@ -13,14 +15,18 @@ public class Board {
     private final TileSettings settings; // update settings
     private static final int DEAD = 0;
 
+    /*******************CONSTRUCTORS*******************/
+
+    //TODO: een mooie contructor die andere tiles accepteerd
+
     public Board(int width, int height, TileSettings settings){
         this.width = width;
         this.height = height;
         this.settings = settings;
-        tiles = new ArrayList<>();
-        tilesNext = new ArrayList<>();
         createEmptyTiles(width,height);
     }
+
+    /*******************FUNCTIONS*******************/
 
     public boolean isDead(int x, int y){
         return tiles.get(y*width + x).team == DEAD;
@@ -40,6 +46,8 @@ public class Board {
             tiles.add(new Tile(DEAD));
         }
     }
+
+    /*******************UPDATE*******************/
 
     public void update(){
         for(int i=0; i<height*width; i++){

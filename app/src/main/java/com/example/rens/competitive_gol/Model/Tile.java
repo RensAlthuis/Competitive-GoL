@@ -15,6 +15,8 @@ public class Tile {
         this.team = team;
     }
 
+    /*******************UPDATE*******************/
+
     public Tile update(ArrayList<Tile> neighbours, TileSettings settings){
         if(team!=0) return updateDie(neighbours, settings);
         else        return updateLive(neighbours, settings);

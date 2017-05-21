@@ -17,6 +17,8 @@ import com.example.rens.competitive_gol.View.BoardView;
 
 public class BoardController {
 
+    /*******************VARIABLES*******************/
+
     private final Board board;
     private final BoardView boardView;
 
@@ -134,21 +136,21 @@ public class BoardController {
     private void doMove(int x, int y){
         //TODO oke voorwaarden voor wat kan/niet kan?
         if(board.getTileTeam(x,y) == curTeam()){
-            setDead(x, y);
+            setTileDead(x, y);
         }
         else if(board.isDead(x,y)) {
-            setPlayer(x, y);
+            setTilePlayer(x, y);
         }
     }
 
     // zet (x,y) op de huidige speler
-    private void setPlayer(int x, int y){
+    private void setTilePlayer(int x, int y){
         board.setTilePlayer(x, y, curTeam());
         boardView.setTilePlayer(x, y, curColor());
     }
 
     // zet (x,y) op dood
-    private void setDead(int x, int y){
+    private void setTileDead(int x, int y){
         board.setTileDead(x, y);
         boardView.setTileDead(x, y);
     }
