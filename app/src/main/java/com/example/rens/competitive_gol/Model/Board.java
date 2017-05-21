@@ -6,8 +6,10 @@ public class Board {
 
     private ArrayList<Tile> tiles;
     private ArrayList<Tile> tilesNext;
+
     public final int width;
     public final int height;
+
     public static final int DEAD = 0;
 
     private final TileSettings settings;
@@ -21,12 +23,17 @@ public class Board {
         createEmptyTiles(width,height);
     }
 
-    public void setTeam(int x, int y, int team){
-        getTileAt(x,y).team = team;
+    public boolean isDead(int x, int y){
+        return tiles.get(y*width + x).team == DEAD;
     }
 
-    public int getTeam(int x, int y){
-        return getTileAt(x,y).team;
+    public void setTilePlayer(int x, int y, int team){
+        tiles.get(y*width + x).team = team;
+    }
+    public void setTileDead(int x, int y) { tiles.get(y*width + x).team = DEAD; }
+
+    public int getTileTeam(int x, int y){
+        return tiles.get(y*width + x).team;
     }
 
     private void createEmptyTiles(int width, int height){
@@ -48,22 +55,9 @@ public class Board {
         ArrayList<Tile> n = new ArrayList<>();
         for(int i = -1; i <= 1; i++){
             for(int j = -1; j <= 1; j++){
-                if(x+i >= 0 && x+i < width && y+j >= 0 && y+j < height && !(i==0 && j==0)) n.add(getTileAt(x+i,y+j));
+                if(x+i >= 0 && x+i < width && y+j >= 0 && y+j < height && !(i==0 && j==0)) n.add(tiles.get((y+j)*width + (x+i)));
             }
         }
         return n;
-    }
-
-    private Tile getTileAt(int x, int y){
-        return tiles.get(y*width + x);
-    }
-
-    // TODO: deze print functie is ook tijdelijk. verwijder bij het inleveren!
-    public void print(){
-        for(int i=0; i<height; i++){
-            for(int j=0; j<width; j++)
-                System.out.print(" " + getTileAt(j,i).team + " ");
-            System.out.println();
-        }
     }
 }

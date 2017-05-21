@@ -13,22 +13,34 @@ import com.example.rens.competitive_gol.Model.Player;
 import com.example.rens.competitive_gol.R;
 import com.example.rens.competitive_gol.View.BoardView;
 
-import java.util.Map;
+import java.util.ArrayList;
 
 public class BoardController {
+
     private final Board board;
-    private Player curPlayer;
     private final BoardView boardView;
+
+    private final ArrayList<Player> allPlayers;
+    private int curPlayerIndex;
+
     private final ScaleGestureDetector mScaleDetector;
     private final GestureDetector mGestureDetector;
 
     /*******************CONSTRUCTORS*******************/
 
-    public BoardController(final Activity activity, final Context context, final Board level, Player player){
+    public BoardController(final Activity activity, final Context context, final Board level, ArrayList<Player> players){
         board = level;
         boardView = (BoardView)activity.findViewById(R.id.board);
         boardView.init(getBoardWidth(), getBoardHeight());
-        curPlayer = player;
+        setBoardView();
+
+        allPlayers = players;
+        curPlayerIndex = 0;
+
+        // TODO: Optionele verbetering:
+        //allPlayers = sortedPlayers(players); //sorteerd de spelers opniew in afzonderlijke teams van 1 tm size() (aantal spelers)
+
+        /*********************************************USER CONTROLS********************************************/
 
         boardView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -72,7 +84,7 @@ public class BoardController {
                 final int a = (int)Math.floor(boardView.offX(e.getX())/offset);
                 final int b = (int)Math.floor(boardView.offY(e.getY())/offset);
 
-                doMove(a,b); // TODO: 1 moet vervangen worden door de actieve speler atm
+                doMove(a,b);
 
                 return false;
             }
@@ -84,6 +96,21 @@ public class BoardController {
                 return false;
             }
         });
+
+        /******************************************************************************************************/
+    }
+
+    public void touched(MotionEvent event){
+        mScaleDetector.onTouchEvent(event);
+        mGestureDetector.onTouchEvent(event);
+    }
+
+    // Maakt een kopie die gesorteerd is op basis van de volgorde van de array players
+    private ArrayList<Player> sortedPlayers(ArrayList<Player>  players){
+        ArrayList<Player> sortedPlayers = new ArrayList<>();
+        for(int i=0; i<players.size() ; i++)
+            sortedPlayers.add(players.get(i).copy(i+1));
+        return sortedPlayers;
     }
 
     /*******************FUNCTIONS*******************/
@@ -91,63 +118,59 @@ public class BoardController {
     public int getBoardWidth(){ return board.width; }
     public int getBoardHeight(){ return board.height; }
 
-    public void touched(MotionEvent event){
-        mScaleDetector.onTouchEvent(event);
-        mGestureDetector.onTouchEvent(event);
+    private int curTeam() { return allPlayers.get(curPlayerIndex).getTeam(); }
+    private int curColor() { return allPlayers.get(curPlayerIndex).getColor(); }
+
+    // zet de volgende speler
+    public void nextPlayer(){
+        if(curPlayerIndex < allPlayers.size()-1) curPlayerIndex++;
+        else curPlayerIndex = 0;
     }
 
-    public void setCurPlayer(Player p){
-        curPlayer = p;
-    }
-
-    private void setTeam(int x, int y, int team){
-        board.setTeam(x, y, team);
-        boardView.setColor(x, y, curPlayer.getColor());
-    }
-
+    // een 'zet'
     private void doMove(int x, int y){
-        //TODO temporary solution
-        if(board.getTeam(x,y) == board.DEAD) {
-            setTeam(x, y, curPlayer.getTeamNumber());
+        //TODO oke voorwaarden voor wat kan/niet kan?
+        if(board.getTileTeam(x,y) == curTeam()){
+            setDead(x, y);
+        }
+        else if(board.isDead(x,y)) {
+            setPlayer(x, y);
         }
     }
 
-    private int getTileColor(int x, int y){return getTileColor(board.getTeam(x,y));}
-
-   public int getTileColor(int team){
-        switch(team){
-            case 0:
-            case 1:
-
-            default:
-                return Color.WHITE; // als je wit ziet, ligt het hieraan
-        }
+    // zet (x,y) op de huidige speler
+    private void setPlayer(int x, int y){
+        board.setTilePlayer(x, y, curTeam());
+        boardView.setTilePlayer(x, y, curColor());
     }
+
+    // zet (x,y) op dood
+    private void setDead(int x, int y){
+        board.setTileDead(x, y);
+        boardView.setTileDead(x, y);
+    }
+
+    /*******************UPDATE*******************/
 
     public void update(){
         board.update();
-
-        //TODO NO, really need to fix this shit
-        for(int y = 0; y < board.width; y++) {
-            for (int x = 0; x < board.width; x++) {
-                if (board.getTeam(x, y) == board.DEAD) {
-                    boardView.setColor(x, y, Color.GRAY);
-                }
-            }
-        }
+        setBoardView();
     }
 
-    //TODO find a better solution for this this is crappy
-    public void redrawPlayer(Player p){
-        for(int y = 0; y < board.width; y++) {
-            for (int x = 0; x < board.width; x++) {
-                if (board.getTeam(x, y) == p.getTeamNumber()) {
-                    boardView.setColor(x, y, p.getColor());
-                }
-            }
-        }
+    // TODO: een oplossing om deze for functie te voorkomen is om players op tiles te zetten op het bord. idee?
+    private Player findPlayer(int team){
+        for(Player player : allPlayers)
+            if(player.getTeam() == team) return player;
+        return null;
     }
 
+    private void setBoardView(){
+        for(int y=0; y<board.height ; y++)
+            for(int x=0; x<board.width ; x++){
+                if(board.getTileTeam(x,y)!=0) boardView.setTilePlayer(x,y,findPlayer(board.getTileTeam(x,y)).getColor());
+                else boardView.setTileDead(x,y);
+            }
+    }
 }
 
 

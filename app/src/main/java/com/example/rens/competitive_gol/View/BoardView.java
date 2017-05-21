@@ -27,6 +27,7 @@ public class BoardView extends View {
     private float offsetX = 0; //Hoeveel er naar links/rechts is beweegt (TODO: vergroot dit als we een rand willen toevoegen)
     private float offsetY = 0; //Hoeveel er naar boven/beneden is beweegt (TODO: vergroot dit als we een rand willen toevoegen)
     private int colors[];
+    private final static int DEAD = Color.GRAY;
 
     /*******************CONSTRUCTORS*******************/
 
@@ -48,13 +49,12 @@ public class BoardView extends View {
 
         colors = new int[nTilesX * nTilesY];
         for (int i = 0; i < nTilesX * nTilesY; i++) {
-            colors[i] = Color.GRAY;
+            colors[i] = Color.WHITE; // Wit zien is foute boel!
         }
     }
 
-    public void setColor(int x, int y, int col) {
-        colors[y * nTilesX + x] = col;
-    }
+    public void setTilePlayer(int x, int y, int col) { colors[y * nTilesX + x] = col; }
+    public void setTileDead(int x, int y){ colors[y*nTilesX + x] = DEAD; }
 
     /*******************FUNCTIONS*******************/
 

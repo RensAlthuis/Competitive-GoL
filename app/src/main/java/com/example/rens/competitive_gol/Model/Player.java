@@ -1,22 +1,22 @@
 package com.example.rens.competitive_gol.Model;
 
-import android.graphics.Color;
-
-/**
- * Created by Rens on 18-5-2017.
- */
-
 public class Player {
     private int color;
-    private int teamNumber;
+    private int team;
 
-    public Player(int teamNumber, int color){
+    public Player(int color){
         this.color = color;
-        this.teamNumber = teamNumber;
+    }
 
+    public Player(int team, int color){
+        this.color = color;
+        this.team = team;
     }
 
     public int getColor() { return color; }
+    public int getTeam()  { return team;  }
 
-    public int getTeamNumber() { return teamNumber; }
+    public Player copy(int team){
+        return new Player(color,team);
+    }
 }
