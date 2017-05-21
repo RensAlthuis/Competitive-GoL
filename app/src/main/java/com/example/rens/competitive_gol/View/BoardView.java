@@ -26,42 +26,43 @@ public class BoardView extends View {
     private float scaling = 1; //May the gods be with us
     private float offsetX = 0; //Hoeveel er naar links/rechts is beweegt (TODO: vergroot dit als we een rand willen toevoegen)
     private float offsetY = 0; //Hoeveel er naar boven/beneden is beweegt (TODO: vergroot dit als we een rand willen toevoegen)
+    private int colors[];
 
     /*******************CONSTRUCTORS*******************/
 
-    public BoardView(Context context){
+    public BoardView(Context context) {
         super(context);
-        init(context);
     }
 
     public BoardView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
     }
 
     public BoardView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init(context);
     }
 
-    public void init(Context context) {
-        // als iets moet gebeuren in het begin, stop het hier! :)
+    public void init(int width, int height) {
+        nTilesX = width;
+        nTilesY = height;
+
+        colors = new int[nTilesX * nTilesY];
+        for (int i = 0; i < nTilesX * nTilesY; i++) {
+            colors[i] = Color.GRAY;
+        }
     }
 
-    // de ECHTE contructor
-    public void setBoard(BoardController controller){
-        this.controller = controller;
-        nTilesX = controller.getBoardWidth();
-        nTilesY = controller.getBoardHeight();
+    public void setColor(int x, int y, int col) {
+        colors[y * nTilesX + x] = col;
     }
 
     /*******************FUNCTIONS*******************/
 
-    public void updateScaling(float dScaling, float focusX, float focusY){
+    public void updateScaling(float dScaling, float focusX, float focusY) {
         scaling += dScaling;
 
         //clamp to [1;2]
-        scaling = max(1,min(2,scaling));
+        scaling = max(1, min(2, scaling));
 
         offsetX += focusX * (dScaling);
         offsetY += focusY * (dScaling);
@@ -72,7 +73,7 @@ public class BoardView extends View {
         offsetY = max(0, min(maxpiv, offsetY));
     }
 
-    public void updateOffset(float dOffX, float dOffY){
+    public void updateOffset(float dOffX, float dOffY) {
         offsetX += dOffX;
         offsetY += dOffY;
         int maxpiv = (int) (getWidth() * (scaling - 1));
@@ -82,12 +83,20 @@ public class BoardView extends View {
         offsetY = max(0, min(maxpiv, offsetY));
     }
 
-    public float getScaledTileWidth(){ return tileWidth * scaling; }
-    public float offX(float n){ return n + offsetX; }
-    public float offY(float n){ return n + offsetY; }
+    public float getScaledTileWidth() {
+        return tileWidth * scaling;
+    }
+
+    public float offX(float n) {
+        return n + offsetX;
+    }
+
+    public float offY(float n) {
+        return n + offsetY;
+    }
 
     @Override
-    protected void onDraw (Canvas canvas){
+    protected void onDraw(Canvas canvas) {
         //For future arguments: these need to be in onDraw because of screen flipping!
         //Cast to float simply for we aren't using arithmetic over floats
         tileWidth = (float) (canvas.getWidth()) / nTilesX;
@@ -102,19 +111,14 @@ public class BoardView extends View {
                 drawBlock(canvas, a, b);
             }
         }
-    }
-
-    private void drawBlock(Canvas canvas, int x, int y){
-        Paint p = new Paint();
-        p.setColor(controller.getTileColor(x,y));
-        p.setStyle(Paint.Style.FILL_AND_STROKE);
-        canvas.drawRect(x * tileWidth, y * tileHeight, (x + 1) * tileWidth -2f, (y + 1) * tileHeight -2f, p);
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event){
-        controller.touched(event);
         invalidate();
-        return true;
+    }
+
+    private void drawBlock(Canvas canvas, int x, int y) {
+        Paint p = new Paint();
+        p.setColor(colors[y * nTilesX + x]);
+        p.setStyle(Paint.Style.FILL_AND_STROKE);
+        canvas.drawRect(x * tileWidth, y * tileHeight, (x + 1) * tileWidth - 2f, (y + 1) * tileHeight - 2f, p);
     }
 }
+
