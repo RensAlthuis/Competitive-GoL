@@ -96,7 +96,7 @@ public class BoardView extends View {
         return n + offsetY;
     }
 
-    /*******************DRAW*******************/
+    /********************DRAW********************/
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -109,11 +109,10 @@ public class BoardView extends View {
         canvas.scale(scaling, scaling);
         canvas.drawColor(Color.DKGRAY); // the border color
 
-        for (int a = 0; a < nTilesX; a++) {
-            for (int b = 0; b < nTilesY; b++) {
+        for (int a = 0; a < nTilesX; a++)
+            for (int b = 0; b < nTilesY; b++)
                 drawBlock(canvas, a, b);
-            }
-        }
+
         invalidate();
     }
 
