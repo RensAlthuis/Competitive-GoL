@@ -9,14 +9,15 @@ public class Tile {
     int team;
     int health;
     public static final int DEAD = -1;
+    public static final int DEFAULTLIFE = 1;
 
     public Tile(){
-        this(DEAD);
-        health = 0;
+        this(DEAD,0);
     }
-    public Tile(int team){
+
+    public Tile(int team, int health){
         this.team = team;
-        health = 9;
+        this.health = health;
     }
 
     /*******************UPDATE*******************/
@@ -35,7 +36,7 @@ public class Tile {
 
         if(nLiving < settings.minSurvive || nLiving > settings.maxSurvive) {
             if (health > 1) {
-                health--;
+                return new Tile(team,health-1);
             } else {
                 return new Tile();
             }
@@ -68,7 +69,7 @@ public class Tile {
             }
         }
 
-        return new Tile(bestTeam);
+        return new Tile(bestTeam, Tile.DEFAULTLIFE);
 
     }
         /*

@@ -34,9 +34,10 @@ public class Board {
     public boolean isDeadNext(int x, int y) { return tilesNext.get(y*width + x).team == Tile.DEAD; }
 
     public void setTilePlayer(int x, int y, int team){
-        tiles.get(y*width + x).team = team;
+        tiles.set(y*width + x, new Tile(team,Tile.DEFAULTLIFE));
     }
-    public void setTileDead(int x, int y) { tiles.get(y*width + x).team = Tile.DEAD; }
+
+    public void setTileDead(int x, int y) { tiles.set(y*width + x, new Tile()); }
 
     public int getTileTeam(int x, int y){
         return tiles.get(y*width + x).team;
@@ -47,8 +48,8 @@ public class Board {
 
     private void createEmptyTiles(){
         for(int i=0; i<height*width; i++){
-            tiles.add(new Tile(Tile.DEAD));
-            tilesNext.add(new Tile(Tile.DEAD));
+            tiles.add(new Tile());
+            tilesNext.add(new Tile());
         }
     }
 

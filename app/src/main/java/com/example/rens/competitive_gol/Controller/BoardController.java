@@ -136,7 +136,7 @@ public class BoardController {
 
     // een 'zet'
     private void doMove(int x, int y){
-        //TODO oke voorwaarden voor wat kan/niet kan?
+        //TODO voorwaarden voor wat kan/niet kan?
         if(board.getTileTeam(x,y) == curTeam()){
             setTileDead(x, y);
         }
