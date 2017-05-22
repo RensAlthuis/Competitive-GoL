@@ -34,7 +34,7 @@ public class Board {
     public boolean isDeadNext(int x, int y) { return tilesNext.get(y*width + x).team == Tile.DEAD; }
 
     public void setTilePlayer(int x, int y, int team){
-        tiles.set(y*width + x, new Tile(team,Tile.DEFAULTLIFE));
+        tiles.set(y*width + x, new Tile(team,settings.defaultHealth));
     }
 
     public void setTileDead(int x, int y) { tiles.set(y*width + x, new Tile()); }

@@ -9,7 +9,6 @@ public class Tile {
     int team;
     int health;
     public static final int DEAD = -1;
-    public static final int DEFAULTLIFE = 1;
 
     public Tile(){
         this(DEAD,0);
@@ -69,7 +68,7 @@ public class Tile {
             }
         }
 
-        return new Tile(bestTeam, Tile.DEFAULTLIFE);
+        return new Tile(bestTeam, settings.defaultHealth);
 
     }
         /*
