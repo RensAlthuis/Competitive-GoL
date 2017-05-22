@@ -38,13 +38,14 @@ public class BoardController {
         allPlayers = Players(numberPlayers);
         curPlayerIndex = 0;
 
-        //board.createRandomBoard(20,allPlayers);
+        //board.createRandomBoard(20,allPlayers); //vult het bord met 20 willekeurige levende blokken per speler
+
         setBoardView(); //zorgt er btw ook voor dat een meer crazy bord gelijk goed getekent wordt! :)
 
         // TODO: Optionele verbetering:
         //allPlayers = sortedPlayers(players); //sorteerd de spelers opniew in afzonderlijke teams van 1 tm size() (aantal spelers)
 
-        /*********************************************USER CONTROLS********************************************/
+        /*****USER CONTROLS*****/
 
         boardView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -101,13 +102,9 @@ public class BoardController {
             }
         });
 
-        /******************************************************************************************************/
     }
 
-    public void touched(MotionEvent event){
-        mScaleDetector.onTouchEvent(event);
-        mGestureDetector.onTouchEvent(event);
-    }
+    /***********************************FUNCTIONS*************************************/
 
     // maakt een gesoteerde lijst van alle spelers afhankelijk van al opgestelde kleuren
     private ArrayList<Player> Players(int  numberPlayers){
@@ -120,7 +117,6 @@ public class BoardController {
         return sortedPlayers;
     }
 
-    /*******************FUNCTIONS*******************/
 
     public int getBoardWidth(){ return board.width; }
     public int getBoardHeight(){ return board.height; }
@@ -150,7 +146,7 @@ public class BoardController {
 
     // zet (x,y) op de huidige speler
     private void setTilePlayer(int x, int y){
-        board.setTilePlayer(x, y, curTeam());
+        board.setTileTeam(x, y, curTeam());
         boardView.setTilePlayer(x, y, curColor());
     }
 

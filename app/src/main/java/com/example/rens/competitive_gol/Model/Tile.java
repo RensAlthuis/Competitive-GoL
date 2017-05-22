@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 public class Tile {
 
+    /*******************VARIABLES*******************/
     // -1 = dood
     // 0,1,2,3,4.. = van speler 0,1,2,3,4..
     int team;
     int health;
     public static final int DEAD = -1;
 
+    /*******************CONSTRUCTORS*******************/
     public Tile(){
         this(DEAD,0);
     }
@@ -21,11 +23,13 @@ public class Tile {
 
     /*******************UPDATE*******************/
 
+    //Roept de correcte update functie aan
     public Tile update(ArrayList<Tile> neighbours, TileSettings settings){
         if(team!=DEAD) return updateDie(neighbours, settings);
         else        return updateLive(neighbours, settings);
     }
 
+    //De tile leeft.. Moet hij dood gaat?
     private Tile updateDie(ArrayList<Tile> neighbours, TileSettings settings){
         int nLiving = 0;
 
@@ -43,6 +47,7 @@ public class Tile {
         return this;
     }
 
+    //De tile is dood.. Moet hij gaan leven?
     private Tile updateLive(ArrayList<Tile> neighbours, TileSettings settings) {
 
         int bestTeam = DEAD;
@@ -71,23 +76,4 @@ public class Tile {
         return new Tile(bestTeam, settings.defaultHealth);
 
     }
-        /*
-        for(Tile tile : neighbours){
-            if(tile.team!=DEAD){
-                int count = 0;
-
-                for(Tile otherTile : neighbours)
-                    if(tile.team == otherTile.team)
-                        count++;
-
-                if(count > maxCount && count >= settings.minLife && count <= settings.maxLife){
-                    maxCount = count;
-                    bestTeam = tile.team;
-                }
-            }
-        }
-
-        return new Tile(bestTeam);
-    }
-    */
 }

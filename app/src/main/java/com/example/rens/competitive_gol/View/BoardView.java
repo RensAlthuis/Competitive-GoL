@@ -27,14 +27,15 @@ public class BoardView extends View {
     private float offsetX = 0; //Hoeveel er naar links/rechts is beweegt (TODO: vergroot dit als we een rand willen toevoegen)
     private float offsetY = 0; //Hoeveel er naar boven/beneden is beweegt (TODO: vergroot dit als we een rand willen toevoegen)
 
-    private int colors[];
-    private int colorsNext[];
-    private final static int DEAD = Color.GRAY;
-    private final static float BORDERSIZE = 2f;
-    private final static float SIZENEXT = 0.5f;
+    private int colors[]; // the color for every block.
+    private int colorsNext[]; // the color for every block next turn
+    private final static int DEAD = Color.GRAY; // color for dead tiles
+    private final static float BORDERSIZE = 2f; // size of border between blocks
+    private final static float SIZENEXT = 0.5f; // size of the smaller block that indicates what happens next turn
 
     /*******************CONSTRUCTORS*******************/
 
+    /*****  necessary for Android Views ********/
     public BoardView(Context context) {
         super(context);
     }
@@ -46,7 +47,9 @@ public class BoardView extends View {
     public BoardView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
+    /*****************************************/
 
+    //Actual constructor
     public void init(int width, int height) {
         nTilesX = width;
         nTilesY = height;
@@ -60,14 +63,15 @@ public class BoardView extends View {
         }
     }
 
+    /*******************FUNCTIONS*******************/
+
+    //functions for changing tile colors
     public void setTilePlayer(int x, int y, int col) { colors[y * nTilesX + x] = col; }
     public void setTileDead(int x, int y){ colors[y*nTilesX + x] = DEAD; }
-
     public void setTilePlayerNext(int x, int y, int col) { colorsNext[y * nTilesX + x] = col; }
     public void setTileDeadNext(int x, int y){ colorsNext[y*nTilesX + x] = DEAD; }
 
-    /*******************FUNCTIONS*******************/
-
+    //this updates the scaling when zooming in (pinching)
     public void updateScaling(float dScaling, float focusX, float focusY) {
         scaling += dScaling;
 
@@ -83,6 +87,7 @@ public class BoardView extends View {
         offsetY = max(0, min(maxpiv, offsetY));
     }
 
+    //this updates the offset used for scrolling across the screen
     public void updateOffset(float dOffX, float dOffY) {
         offsetX += dOffX;
         offsetY += dOffY;
@@ -93,14 +98,15 @@ public class BoardView extends View {
         offsetY = max(0, min(maxpiv, offsetY));
     }
 
+    //Width of a tile as it appears on the screen (the literal amount of pixels)
     public float getScaledTileWidth() {
         return tileWidth * scaling;
     }
 
+    //get the scaled location of n in screen coordinates
     public float offX(float n) {
         return n + offsetX;
     }
-
     public float offY(float n) {
         return n + offsetY;
     }
@@ -128,6 +134,7 @@ public class BoardView extends View {
         invalidate();
     }
 
+    //Draw the tile at x,y
     private void drawBlock(Canvas canvas, int x, int y) {
         Paint p = new Paint();
         p.setColor(colors[y * nTilesX + x]);
@@ -135,6 +142,7 @@ public class BoardView extends View {
         canvas.drawRect(x * tileWidth, y * tileHeight, (x + 1) * tileWidth - BORDERSIZE, (y + 1) * tileHeight - BORDERSIZE, p);
     }
 
+    //Draw the indicator for what the tile will be next turn
     private void drawBlockNext(Canvas canvas, int x, int y){
         Paint p = new Paint();
         p.setColor(colorsNext[y * nTilesX + x]);

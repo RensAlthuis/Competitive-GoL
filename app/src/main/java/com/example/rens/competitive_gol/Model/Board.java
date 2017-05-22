@@ -28,24 +28,33 @@ public class Board {
 
     /*******************FUNCTIONS*******************/
 
+    //is the tile dead right now?
     public boolean isDead(int x, int y){
         return tiles.get(y*width + x).team == Tile.DEAD;
     }
+
+    //will the tile be dead next turn?
     public boolean isDeadNext(int x, int y) { return tilesNext.get(y*width + x).team == Tile.DEAD; }
 
-    public void setTilePlayer(int x, int y, int team){
+    //set tile x,y to a certain team
+    public void setTileTeam(int x, int y, int team){
         tiles.set(y*width + x, new Tile(team,settings.defaultHealth));
     }
 
+    //set tile x,y to dead
     public void setTileDead(int x, int y) { tiles.set(y*width + x, new Tile()); }
 
+    //return the team for tile x,y
     public int getTileTeam(int x, int y){
         return tiles.get(y*width + x).team;
     }
+
+    //TODO this is never any different from getTileTeam can probably be deleted
     public int getTileTeamNext(int x, int y){
         return tilesNext.get(y*width + x).team;
     }
 
+    //create all the tiles for the board
     private void createEmptyTiles(){
         for(int i=0; i<height*width; i++){
             tiles.add(new Tile());
@@ -53,6 +62,7 @@ public class Board {
         }
     }
 
+    //fill the board in randomly
     public void createRandomBoard(int tilesPP, ArrayList<Player> allPlayers){
         Random rand = new Random();
 
@@ -67,7 +77,7 @@ public class Board {
                     x = rand.nextInt(width);
                     y = rand.nextInt(height);
                 } while (getTileTeam(x, y) != Tile.DEAD);
-                setTilePlayer(x, y, allPlayers.get(i).getTeam());
+                setTileTeam(x, y, allPlayers.get(i).getTeam());
                 tilesLeft[i]--;
             }
 
@@ -76,6 +86,7 @@ public class Board {
     }
     /*******************UPDATE*******************/
 
+    //calculate the next board and store it in tileNext
     public void setNext(){
         tilesNext = new ArrayList<>();
         for(int i=0; i<height*width; i++){
@@ -83,12 +94,14 @@ public class Board {
         }
     }
 
+    //This updates the board for the next turn
     public void update(){
         setNext();
         tiles = tilesNext;
         setNext();
     }
 
+    //return a list of neighbours, useful for Tile update
     private ArrayList<Tile> getNeighbours(int x, int y){
         ArrayList<Tile> n = new ArrayList<>();
         for(int i = -1; i <= 1; i++){
@@ -98,4 +111,5 @@ public class Board {
         }
         return n;
     }
+
 }
