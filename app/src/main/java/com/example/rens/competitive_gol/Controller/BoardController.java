@@ -34,10 +34,12 @@ public class BoardController {
         board = level;
         boardView = (BoardView)activity.findViewById(R.id.board);
         boardView.init(getBoardWidth(), getBoardHeight());
-        setBoardView(); //zorgt er btw ook voor dat een meer crazy bord gelijk goed getekent wordt! :)
 
         allPlayers = Players(numberPlayers);
         curPlayerIndex = 0;
+
+        //board.createRandomBoard(20,allPlayers);
+        setBoardView(); //zorgt er btw ook voor dat een meer crazy bord gelijk goed getekent wordt! :)
 
         // TODO: Optionele verbetering:
         //allPlayers = sortedPlayers(players); //sorteerd de spelers opniew in afzonderlijke teams van 1 tm size() (aantal spelers)
@@ -113,7 +115,7 @@ public class BoardController {
         final int[] colours = {Color.BLUE,Color.RED,Color.GREEN,Color.MAGENTA,Color.YELLOW,Color.CYAN};
 
         for(int i=0; i<numberPlayers; i++)
-            sortedPlayers.add(new Player(i+1,colours[i%colours.length]));
+            sortedPlayers.add(new Player(i,colours[i%colours.length]));
 
         return sortedPlayers;
     }
@@ -171,10 +173,10 @@ public class BoardController {
         for(int y=0; y<board.height ; y++)
             for(int x=0; x<board.width ; x++){
                 if(board.isDead(x,y))       boardView.setTileDead(x,y);
-                else                        boardView.setTilePlayer(x,y,allPlayers.get(board.getTileTeam(x,y)-1).getColor());
+                else                        boardView.setTilePlayer(x,y,allPlayers.get(board.getTileTeam(x,y)).getColor());
 
                 if(board.isDeadNext(x,y))   boardView.setTileDeadNext(x,y);
-                else                        boardView.setTilePlayerNext(x,y,allPlayers.get(board.getTileTeamNext(x,y)-1).getColor());
+                else                        boardView.setTilePlayerNext(x,y,allPlayers.get(board.getTileTeamNext(x,y)).getColor());
             }
     }
 }

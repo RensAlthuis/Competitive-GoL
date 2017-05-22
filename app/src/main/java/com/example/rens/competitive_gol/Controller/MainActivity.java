@@ -17,7 +17,7 @@ public class MainActivity extends Activity {
 
     static BoardController game; //Het actieve spel atm
 
-    Board board1 = new Board(20,20,new TileSettings()); //
+    Board board1 = new Board(10,10,new TileSettings()); //
     Board board2 = new Board(10,10,new TileSettings()); // voorbeeld van meerdere levels
 
     /***********************************************/

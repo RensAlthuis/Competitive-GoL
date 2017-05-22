@@ -1,6 +1,7 @@
 package com.example.rens.competitive_gol.Model;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Board {
 
@@ -22,7 +23,7 @@ public class Board {
         this.width = width;
         this.height = height;
         this.settings = settings;
-        createEmptyTiles(width,height);
+        createEmptyTiles();
     }
 
     /*******************FUNCTIONS*******************/
@@ -44,13 +45,34 @@ public class Board {
         return tilesNext.get(y*width + x).team;
     }
 
-    private void createEmptyTiles(int width, int height){
+    private void createEmptyTiles(){
         for(int i=0; i<height*width; i++){
             tiles.add(new Tile(Tile.DEAD));
             tilesNext.add(new Tile(Tile.DEAD));
         }
     }
 
+    public void createRandomBoard(int tilesPP, ArrayList<Player> allPlayers){
+        Random rand = new Random();
+
+        int tilesLeft[] = new int[allPlayers.size()];
+
+        for(int i = 0; i < tilesLeft.length; i++){
+            tilesLeft[i] = tilesPP;
+            while(tilesLeft[i]!= 0) {
+                int x;
+                int y;
+                do {
+                    x = rand.nextInt(width);
+                    y = rand.nextInt(height);
+                } while (getTileTeam(x, y) != Tile.DEAD);
+                setTilePlayer(x, y, allPlayers.get(i).getTeam());
+                tilesLeft[i]--;
+            }
+
+        }
+        setNext();
+    }
     /*******************UPDATE*******************/
 
     public void setNext(){
