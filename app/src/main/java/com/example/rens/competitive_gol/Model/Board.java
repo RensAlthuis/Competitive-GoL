@@ -13,7 +13,6 @@ public class Board {
     public final int height;
 
     private final TileSettings settings; // update settings
-    private static final int DEAD = 0;
 
     /*******************CONSTRUCTORS*******************/
 
@@ -29,13 +28,13 @@ public class Board {
     /*******************FUNCTIONS*******************/
 
     public boolean isDead(int x, int y){
-        return tiles.get(y*width + x).team == DEAD;
+        return tiles.get(y*width + x).team == Tile.DEAD;
     }
 
     public void setTilePlayer(int x, int y, int team){
         tiles.get(y*width + x).team = team;
     }
-    public void setTileDead(int x, int y) { tiles.get(y*width + x).team = DEAD; }
+    public void setTileDead(int x, int y) { tiles.get(y*width + x).team = Tile.DEAD; }
 
     public int getTileTeam(int x, int y){
         return tiles.get(y*width + x).team;
@@ -43,7 +42,7 @@ public class Board {
 
     private void createEmptyTiles(int width, int height){
         for(int i=0; i<height*width; i++){
-            tiles.add(new Tile(DEAD));
+            tiles.add(new Tile(Tile.DEAD));
         }
     }
 

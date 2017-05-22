@@ -4,12 +4,13 @@ import java.util.ArrayList;
 
 public class Tile {
 
-    // 0 = dood
-    // 1,2,3,4.. = van speler 1,2,3,4..
+    // -1 = dood
+    // 0,1,2,3,4.. = van speler 0,1,2,3,4..
     int team;
+    public static final int DEAD = -1;
 
     public Tile(){
-        this(0);
+        this(DEAD);
     }
     public Tile(int team){
         this.team = team;
@@ -18,7 +19,7 @@ public class Tile {
     /*******************UPDATE*******************/
 
     public Tile update(ArrayList<Tile> neighbours, TileSettings settings){
-        if(team!=0) return updateDie(neighbours, settings);
+        if(team!=DEAD) return updateDie(neighbours, settings);
         else        return updateLive(neighbours, settings);
     }
 
@@ -26,18 +27,44 @@ public class Tile {
         int nLiving = 0;
 
         for(Tile tile : neighbours)
-            if(tile.team!=0) nLiving++;
+            if(tile.team!=DEAD) nLiving++;
 
         if(nLiving < settings.minSurvive || nLiving > settings.maxSurvive)
             return new Tile();
         else return this;
     }
 
-    private Tile updateLive(ArrayList<Tile> neighbours, TileSettings settings){
-        int bestTeam = 0;
+    private Tile updateLive(ArrayList<Tile> neighbours, TileSettings settings) {
+
+        int bestTeam = DEAD;
         int maxCount = 0;
+
+        int teamCount[] = new int[20];
+        for(int i = 0; i < teamCount.length; i++) teamCount[i] = 0;
+
+        int nLiving = 0;
+
+
+        for (Tile tile : neighbours) {
+            if (tile.team != DEAD) {
+                teamCount[tile.team]++;
+                nLiving++;
+            }
+        }
+
+        for (int i = 0; i < teamCount.length; i++) {
+            if (teamCount[i] > maxCount && nLiving >= settings.minLife && nLiving <= settings.maxLife) {
+                maxCount = teamCount[i];
+                bestTeam = i;
+            }
+        }
+
+        return new Tile(bestTeam);
+
+    }
+        /*
         for(Tile tile : neighbours){
-            if(tile.team!=0){
+            if(tile.team!=DEAD){
                 int count = 0;
 
                 for(Tile otherTile : neighbours)
@@ -53,4 +80,5 @@ public class Tile {
 
         return new Tile(bestTeam);
     }
+    */
 }
