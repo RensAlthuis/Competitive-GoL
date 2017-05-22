@@ -30,6 +30,7 @@ public class Board {
     public boolean isDead(int x, int y){
         return tiles.get(y*width + x).team == Tile.DEAD;
     }
+    public boolean isDeadNext(int x, int y) { return tilesNext.get(y*width + x).team == Tile.DEAD; }
 
     public void setTilePlayer(int x, int y, int team){
         tiles.get(y*width + x).team = team;
@@ -39,22 +40,30 @@ public class Board {
     public int getTileTeam(int x, int y){
         return tiles.get(y*width + x).team;
     }
+    public int getTileTeamNext(int x, int y){
+        return tilesNext.get(y*width + x).team;
+    }
 
     private void createEmptyTiles(int width, int height){
         for(int i=0; i<height*width; i++){
             tiles.add(new Tile(Tile.DEAD));
+            tilesNext.add(new Tile(Tile.DEAD));
         }
     }
 
     /*******************UPDATE*******************/
 
-    public void update(){
+    public void setNext(){
+        tilesNext = new ArrayList<>();
         for(int i=0; i<height*width; i++){
             tilesNext.add(i, tiles.get(i).update(getNeighbours(i%width, i/height),settings));
         }
+    }
 
-        tiles =  tilesNext;
-        tilesNext = new ArrayList<>();
+    public void update(){
+        setNext();
+        tiles = tilesNext;
+        setNext();
     }
 
     private ArrayList<Tile> getNeighbours(int x, int y){
