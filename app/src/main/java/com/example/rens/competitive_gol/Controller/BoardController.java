@@ -28,6 +28,10 @@ public class BoardController {
     private final ScaleGestureDetector mScaleDetector;
     private final GestureDetector mGestureDetector;
 
+    private int lastMove[];
+
+    private boolean singleMoveModeOn = false; // probably only for debug
+
     /*******************CONSTRUCTORS*******************/
 
     public BoardController(final Activity activity, final Context context, final Board level, final int numberPlayers){
@@ -37,6 +41,7 @@ public class BoardController {
 
         allPlayers = Players(numberPlayers);
         curPlayerIndex = 0;
+        lastMove = new int[]{-1,-1};
 
         //board.createRandomBoard(20,allPlayers); //vult het bord met 20 willekeurige levende blokken per speler
 
@@ -128,20 +133,40 @@ public class BoardController {
     public void nextPlayer(){
         curPlayerIndex++;
         curPlayerIndex %= allPlayers.size();
+
+        //volgende speler, dus geen er is geen lastMove meer
+        lastMove = new int[]{-1,-1};
     }
 
     // een 'zet'
     private void doMove(int x, int y){
-        //TODO voorwaarden voor wat kan/niet kan?
-        if(board.getTileTeam(x,y) == curTeam()){
-            setTileDead(x, y);
-        }
-        else if(board.isDead(x,y)) {
-            setTilePlayer(x, y);
-        }
+        if(!singleMoveModeOn || (lastMove[0] == -1 && lastMove[1] == -1)) {
+            //TODO voorwaarden voor wat kan/niet kan?
+            if (board.getTileTeam(x, y) == curTeam()) {
+                setTileDead(x, y);
+            } else if (board.isDead(x, y)) {
+                setTilePlayer(x, y);
+            }
 
-        board.setNext();
-        setBoardView();
+            board.setNext();
+            setBoardView();
+            lastMove = new int[]{x,y};
+        }
+    }
+
+    public void undoLastMove(){
+        if(lastMove[0] != -1 && lastMove[1] != -1){
+            if (board.getTileTeam(lastMove[0], lastMove[1]) == curTeam()) {
+                setTileDead(lastMove[0], lastMove[1]);
+            } else if (board.isDead(lastMove[0], lastMove[1])) {
+                setTilePlayer(lastMove[0], lastMove[1]);
+            }
+
+            lastMove = new int[]{-1,-1};
+            board.setNext();
+            setBoardView();
+
+        }
     }
 
     // zet (x,y) op de huidige speler
