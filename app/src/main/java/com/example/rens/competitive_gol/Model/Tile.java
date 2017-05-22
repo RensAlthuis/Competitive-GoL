@@ -7,13 +7,16 @@ public class Tile {
     // -1 = dood
     // 0,1,2,3,4.. = van speler 0,1,2,3,4..
     int team;
+    int health;
     public static final int DEAD = -1;
 
     public Tile(){
         this(DEAD);
+        health = 0;
     }
     public Tile(int team){
         this.team = team;
+        health = 9;
     }
 
     /*******************UPDATE*******************/
@@ -29,9 +32,15 @@ public class Tile {
         for(Tile tile : neighbours)
             if(tile.team!=DEAD) nLiving++;
 
-        if(nLiving < settings.minSurvive || nLiving > settings.maxSurvive)
-            return new Tile();
-        else return this;
+
+        if(nLiving < settings.minSurvive || nLiving > settings.maxSurvive) {
+            if (health > 1) {
+                health--;
+            } else {
+                return new Tile();
+            }
+        }
+        return this;
     }
 
     private Tile updateLive(ArrayList<Tile> neighbours, TileSettings settings) {
