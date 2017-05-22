@@ -28,7 +28,10 @@ public class BoardView extends View {
     private float offsetY = 0; //Hoeveel er naar boven/beneden is beweegt (TODO: vergroot dit als we een rand willen toevoegen)
 
     private int colors[];
+    private int colorsNext[];
     private final static int DEAD = Color.GRAY;
+    private final static float BORDERSIZE = 2f;
+    private final static float SIZENEXT = 0.5f;
 
     /*******************CONSTRUCTORS*******************/
 
@@ -49,13 +52,19 @@ public class BoardView extends View {
         nTilesY = height;
 
         colors = new int[nTilesX * nTilesY];
+        colorsNext = new int[nTilesX * nTilesY];
+
         for (int i = 0; i < nTilesX * nTilesY; i++) {
             colors[i] = Color.WHITE; // Wit zien is foute boel!
+            colorsNext[i] = Color.WHITE;
         }
     }
 
     public void setTilePlayer(int x, int y, int col) { colors[y * nTilesX + x] = col; }
     public void setTileDead(int x, int y){ colors[y*nTilesX + x] = DEAD; }
+
+    public void setTilePlayerNext(int x, int y, int col) { colorsNext[y * nTilesX + x] = col; }
+    public void setTileDeadNext(int x, int y){ colorsNext[y*nTilesX + x] = DEAD; }
 
     /*******************FUNCTIONS*******************/
 
@@ -102,16 +111,19 @@ public class BoardView extends View {
     protected void onDraw(Canvas canvas) {
         //For future arguments: these need to be in onDraw because of screen flipping!
         //Cast to float simply for we aren't using arithmetic over floats
-        tileWidth = (float) (canvas.getWidth()) / nTilesX;
+        tileWidth  = (float) (canvas.getWidth()) / nTilesX;
         tileHeight = (float) (canvas.getHeight()) / nTilesY;
 
         canvas.translate(-offsetX, -offsetY);
         canvas.scale(scaling, scaling);
         canvas.drawColor(Color.DKGRAY); // the border color
 
-        for (int a = 0; a < nTilesX; a++)
-            for (int b = 0; b < nTilesY; b++)
+        for (int a = 0; a < nTilesX; a++){
+            for (int b = 0; b < nTilesY; b++){
                 drawBlock(canvas, a, b);
+                drawBlockNext(canvas, a, b);
+            }
+        }
 
         invalidate();
     }
@@ -120,7 +132,14 @@ public class BoardView extends View {
         Paint p = new Paint();
         p.setColor(colors[y * nTilesX + x]);
         p.setStyle(Paint.Style.FILL_AND_STROKE);
-        canvas.drawRect(x * tileWidth, y * tileHeight, (x + 1) * tileWidth - 2f, (y + 1) * tileHeight - 2f, p);
+        canvas.drawRect(x * tileWidth, y * tileHeight, (x + 1) * tileWidth - BORDERSIZE, (y + 1) * tileHeight - BORDERSIZE, p);
+    }
+
+    private void drawBlockNext(Canvas canvas, int x, int y){
+        Paint p = new Paint();
+        p.setColor(colorsNext[y * nTilesX + x]);
+        p.setStyle(Paint.Style.FILL_AND_STROKE);
+        canvas.drawRect((x + 0.5f*SIZENEXT)* tileWidth, (y + 0.5f*SIZENEXT) * tileHeight, (x + 1 - 0.5f*SIZENEXT) * tileWidth - BORDERSIZE, (y + 1 - 0.5f*SIZENEXT) * tileHeight - BORDERSIZE, p);
     }
 }
 

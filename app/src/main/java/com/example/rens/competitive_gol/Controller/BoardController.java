@@ -128,8 +128,8 @@ public class BoardController {
 
     // zet de volgende speler
     public void nextPlayer(){
-        if(curPlayerIndex < allPlayers.size()-1) curPlayerIndex++;
-        else curPlayerIndex = 0;
+        curPlayerIndex++;
+        curPlayerIndex %= allPlayers.size();
     }
 
     // een 'zet'
@@ -141,6 +141,9 @@ public class BoardController {
         else if(board.isDead(x,y)) {
             setTilePlayer(x, y);
         }
+
+        board.setNext();
+        setBoardView();
     }
 
     // zet (x,y) op de huidige speler
@@ -167,8 +170,11 @@ public class BoardController {
     private void setBoardView(){
         for(int y=0; y<board.height ; y++)
             for(int x=0; x<board.width ; x++){
-                if(board.isDead(x,y)) boardView.setTileDead(x,y);
-                else boardView.setTilePlayer(x,y,allPlayers.get(board.getTileTeam(x,y)-1).getColor());
+                if(board.isDead(x,y))       boardView.setTileDead(x,y);
+                else                        boardView.setTilePlayer(x,y,allPlayers.get(board.getTileTeam(x,y)-1).getColor());
+
+                if(board.isDeadNext(x,y))   boardView.setTileDeadNext(x,y);
+                else                        boardView.setTilePlayerNext(x,y,allPlayers.get(board.getTileTeamNext(x,y)-1).getColor());
             }
     }
 }
