@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -17,8 +18,9 @@ public class MainActivity extends Activity {
 
     static BoardController game; //Het actieve spel atm
 
-    Board board1 = new Board(10,10,new TileSettings()); //
-    Board board2 = new Board(10,10,new TileSettings()); // voorbeeld van meerdere levels
+    private Board board1 = new Board(10,10,new TileSettings()); //
+    private Board board2 = new Board(10,10,new TileSettings()); // voorbeeld van meerdere levels
+    private ImageView character;
 
     /***********************************************/
 
@@ -29,16 +31,25 @@ public class MainActivity extends Activity {
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
+        // Het spel:
+        game = new BoardController(this, this, board1, 2);
+
+        character = (ImageView)findViewById(R.id.character);
+        updateCharacterIcon();
+
         // De next turn knop:
         findViewById(R.id.buttonNext).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 game.update();
                 game.nextPlayer(); // <- 'een keer updaten = volgende speler' hierdoor
+                updateCharacterIcon();
             }
         });
 
-        // Het spel:
-        game = new BoardController(this, this, board1, 2);
+    }
+
+    private void updateCharacterIcon(){
+        character.setBackgroundColor(game.curColor());
     }
 }

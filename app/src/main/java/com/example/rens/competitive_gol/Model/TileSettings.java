@@ -1,7 +1,5 @@
 package com.example.rens.competitive_gol.Model;
 
-import java.util.HashMap;
-
 public class TileSettings {
 
     public final int minLife;

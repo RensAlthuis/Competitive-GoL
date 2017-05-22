@@ -122,7 +122,7 @@ public class BoardController {
     public int getBoardHeight(){ return board.height; }
 
     private int curTeam() { return allPlayers.get(curPlayerIndex).getTeam(); }
-    private int curColor() { return allPlayers.get(curPlayerIndex).getColor(); }
+    public int curColor() { return allPlayers.get(curPlayerIndex).getColor(); }
 
     // zet de volgende speler
     public void nextPlayer(){
