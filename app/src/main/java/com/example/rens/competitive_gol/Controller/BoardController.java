@@ -122,7 +122,6 @@ public class BoardController {
         return sortedPlayers;
     }
 
-
     public int getBoardWidth(){ return board.width; }
     public int getBoardHeight(){ return board.height; }
 

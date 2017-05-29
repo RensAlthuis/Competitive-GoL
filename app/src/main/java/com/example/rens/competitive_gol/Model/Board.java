@@ -49,7 +49,8 @@ public class Board {
         return tiles.get(y*width + x).team;
     }
 
-    //TODO this is never any different from getTileTeam can probably be deleted
+    //TODO this is never any different from getTileTeam can probably be deleted.
+    //TODO yes it is! it can both die or, under different rules, change its team
     public int getTileTeamNext(int x, int y){
         return tilesNext.get(y*width + x).team;
     }

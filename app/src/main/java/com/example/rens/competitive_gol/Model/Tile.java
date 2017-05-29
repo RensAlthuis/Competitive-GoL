@@ -25,8 +25,8 @@ public class Tile {
 
     //Roept de correcte update functie aan
     public Tile update(ArrayList<Tile> neighbours, TileSettings settings){
-        if(team!=DEAD) return updateDie(neighbours, settings);
-        else        return updateLive(neighbours, settings);
+        if(team!=DEAD)  return updateDie(neighbours, settings);
+        else            return updateLive(neighbours, settings);
     }
 
     //De tile leeft.. Moet hij dood gaat?
