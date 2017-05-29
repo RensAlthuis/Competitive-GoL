@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
         findViewById(R.id.buttonUndo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.undoLastMove();
+                game.undoMove();
             }
         });
 

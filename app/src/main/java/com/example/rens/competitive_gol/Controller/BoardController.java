@@ -11,7 +11,9 @@ import android.view.View;
 import java.util.ArrayList;
 
 import com.example.rens.competitive_gol.Model.Board;
+import com.example.rens.competitive_gol.Model.Coordinate;
 import com.example.rens.competitive_gol.Model.Player;
+import com.example.rens.competitive_gol.Model.Tile;
 import com.example.rens.competitive_gol.R;
 import com.example.rens.competitive_gol.View.BoardView;
 
@@ -28,9 +30,10 @@ public class BoardController {
     private final ScaleGestureDetector mScaleDetector;
     private final GestureDetector mGestureDetector;
 
-    private int lastMove[];
+    private Coordinate lastCor;
+    private Tile       lastTile;
 
-    private boolean singleMoveModeOn = false; // probably only for debug
+    private boolean moveDone         = false;
 
     /*******************CONSTRUCTORS*******************/
 
@@ -39,16 +42,12 @@ public class BoardController {
         boardView = (BoardView)activity.findViewById(R.id.board);
         boardView.init(getBoardWidth(), getBoardHeight());
 
-        allPlayers = Players(numberPlayers);
+        allPlayers = setPlayers(numberPlayers);
         curPlayerIndex = 0;
-        lastMove = new int[]{-1,-1};
 
         //board.createRandomBoard(20,allPlayers); //vult het bord met 20 willekeurige levende blokken per speler
 
-        setBoardView(); //zorgt er btw ook voor dat een meer crazy bord gelijk goed getekent wordt! :)
-
-        // TODO: Optionele verbetering:
-        //allPlayers = sortedPlayers(players); //sorteerd de spelers opniew in afzonderlijke teams van 1 tm size() (aantal spelers)
+        setBoardView();
 
         /*****USER CONTROLS*****/
 
@@ -109,10 +108,8 @@ public class BoardController {
 
     }
 
-    /***********************************FUNCTIONS*************************************/
-
     // maakt een gesoteerde lijst van alle spelers afhankelijk van al opgestelde kleuren
-    private ArrayList<Player> Players(int  numberPlayers){
+    private ArrayList<Player> setPlayers(int  numberPlayers){
         ArrayList<Player> sortedPlayers = new ArrayList<>();
         final int[] colours = {Color.BLUE,Color.RED,Color.GREEN,Color.MAGENTA,Color.YELLOW,Color.CYAN};
 
@@ -122,50 +119,63 @@ public class BoardController {
         return sortedPlayers;
     }
 
+    /***********************************FUNCTIONS*************************************/
+
     public int getBoardWidth(){ return board.width; }
     public int getBoardHeight(){ return board.height; }
 
-    private int curTeam() { return allPlayers.get(curPlayerIndex).getTeam(); }
+    public int curTeam() { return allPlayers.get(curPlayerIndex).getTeam(); }
     public int curColor() { return allPlayers.get(curPlayerIndex).getColor(); }
+
+    /***********************************PLAYER CONTROLLES*****************************/
+    // shit die je als spel buitenaf doet zonder de context te hoeven weten
+    // dit zijn ijzerstekere functies waarvoor alleen nog maar een knop voor hoeft worden gemaakt
 
     // zet de volgende speler
     public void nextPlayer(){
         curPlayerIndex++;
         curPlayerIndex %= allPlayers.size();
 
-        //volgende speler, dus geen er is geen lastMove meer
-        lastMove = new int[]{-1,-1};
+        moveDone = false; //volgende speler, dus geen er is geen moveDone
     }
 
-    // een 'zet'
-    private void doMove(int x, int y){
-        if(!singleMoveModeOn || (lastMove[0] == -1 && lastMove[1] == -1)) {
-            //TODO voorwaarden voor wat kan/niet kan?
-            if (board.getTileTeam(x, y) == curTeam()) {
-                setTileDead(x, y);
-            } else if (board.isDead(x, y)) {
-                setTilePlayer(x, y);
-            }
-
-            board.setNext();
-            setBoardView();
-            lastMove = new int[]{x,y};
+    // een 'zet' doen als speler
+    public void doMove(int x, int y){
+        if(!moveDone){ // TODO: hier zit nu singleMoveModeOn in verwerkt. verrander voor debugging!
+            if(move(x,y)) // als het succesvol was
+                moveDone = true; // zet deze simpelweg uit door '//' ervoor te doen, en je kan meerdere dingen aanpassen
         }
     }
 
-    public void undoLastMove(){
-        if(lastMove[0] != -1 && lastMove[1] != -1){
-            if (board.getTileTeam(lastMove[0], lastMove[1]) == curTeam()) {
-                setTileDead(lastMove[0], lastMove[1]);
-            } else if (board.isDead(lastMove[0], lastMove[1])) {
-                setTilePlayer(lastMove[0], lastMove[1]);
-            }
-
-            lastMove = new int[]{-1,-1};
-            board.setNext();
-            setBoardView();
-
+    public void undoMove(){
+        if(moveDone){
+            board.setTile(lastCor,lastTile);
+            moveDone = false;
+            next();
         }
+    }
+
+    /***********************************MOVE*****************************/
+
+    // wat gebeurt er als de huidige speler iets doet op x,y
+    // returnt true als iets is verrandert,
+    private boolean move(int x, int y){
+        lastCor  = new Coordinate(x,y);
+        lastTile = board.getTile(lastCor);
+
+        //hieronder staan de fundamentele spelregels voor wanneer je op iets mag klikken, en wat dat betekent
+        // (als dit in bold kan dan zou ik het hebben gedaan)
+        //TODO zijn de voorwaardens die hier staan goede voorwaarden voor wat kan/niet kan?
+
+        if (board.getTileTeam(x, y) == curTeam()) {
+            setTileDead(x, y);
+        } else if (board.isDead(x, y)) {
+            setTilePlayer(x, y);
+        } else return false;
+
+
+        next();
+        return true;
     }
 
     // zet (x,y) op de huidige speler
@@ -180,8 +190,17 @@ public class BoardController {
         boardView.setTileDead(x, y);
     }
 
+    /*******************NEXT*******************/
+
+    // om de volgende itteratie uit te rekenen. deze functie kan zovaak anngeroepen worden als maar wilt~!
+    public void next(){
+        board.setNext();
+        setBoardView();
+    }
+
     /*******************UPDATE*******************/
 
+    // deze functie maakt de beweging van deze beurt naar de volgende beurt
     // stap 1) update board, stap 2) update boardView aan de hand van board
     public void update(){
         board.update();
@@ -196,7 +215,7 @@ public class BoardController {
                 else                        boardView.setTilePlayer(x,y,allPlayers.get(board.getTileTeam(x,y)).getColor());
 
                 if(board.isDeadNext(x,y))   boardView.setTileDeadNext(x,y);
-                else                        boardView.setTilePlayerNext(x,y,allPlayers.get(board.getTileTeamNext(x,y)).getColor());
+                else                        boardView.setTilePlayerNext(x,y,allPlayers.get(board.getTileNextTeam(x,y)).getColor());
             }
     }
 }
