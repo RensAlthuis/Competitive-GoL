@@ -51,6 +51,18 @@ public class Board {
         tilesNext = emptyTiles();
     }
 
+    public Board(int width, int height, TileSettings settings, ArrayList<Tile> tiles){
+        this.width  = width;
+        this.height = height;
+        this.size   = width*height;
+
+        this.settings = settings;
+
+        this.tiles = tiles;
+        tilesNext  = emptyTiles();
+        setNext();
+    }
+
     //create all the tiles for the board
     private ArrayList<Tile> emptyTiles(){
         ArrayList<Tile> t = new ArrayList<>();
@@ -99,6 +111,13 @@ public class Board {
     //set tile x,y to dead
     public void setTileDead(Coordinate c){ setTileDead(c.x,c.y); }
     public void setTileDead(int x, int y) { tiles.set(y*width + x, new Tile()); }
+
+    public void setTiles(ArrayList<Tile> tiles){
+        this.tiles.clear();
+        for(Tile tile : tiles) this.tiles.add(tile);
+    }
+
+    public ArrayList<Tile> getTiles(){ return tiles; }
 
     /*******************DIFFERENT BOARDS*******************/
 

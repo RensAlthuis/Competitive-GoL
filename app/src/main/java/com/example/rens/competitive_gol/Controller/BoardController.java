@@ -30,8 +30,7 @@ public class BoardController {
     private final ScaleGestureDetector mScaleDetector;
     private final GestureDetector mGestureDetector;
 
-    private Coordinate lastCor;
-    private Tile       lastTile;
+    private final ArrayList<ArrayList<Tile>> last = new ArrayList<>();
 
     private boolean moveDone = false;
 
@@ -148,8 +147,8 @@ public class BoardController {
     }
 
     public void undoMove(){
-        if(moveDone){
-            board.setTile(lastCor,lastTile);
+        if(!last.isEmpty()){
+            board.setTiles(last.remove(last.size()-1));
             moveDone = false;
             next();
         }
@@ -160,19 +159,19 @@ public class BoardController {
     // wat gebeurt er als de huidige speler iets doet op x,y
     // returnt true als iets is verrandert,
     private boolean move(int x, int y){
-        lastCor  = new Coordinate(x,y);
-        lastTile = board.getTile(lastCor);
-
         //hieronder staan de fundamentele spelregels voor wanneer je op iets mag klikken, en wat dat betekent
         // (als dit in bold kan dan zou ik het hebben gedaan)
         //TODO zijn de voorwaardens die hier staan goede voorwaarden voor wat kan/niet kan?
 
         if (board.getTileTeam(x, y) == curTeam()) {
+            last.add(board.getTiles());
             setTileDead(x, y);
-        } else if (board.isDead(x, y)) {
-            setTilePlayer(x, y);
-        } else return false;
 
+        } else if (board.isDead(x, y)) {
+            last.add(board.getTiles());
+            setTilePlayer(x, y);
+
+        } else return false;
 
         next();
         return true;
