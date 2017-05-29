@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.example.rens.competitive_gol.Controller.BoardController;
+import com.example.rens.competitive_gol.Model.Coordinate;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -29,6 +30,8 @@ public class BoardView extends View {
 
     private int colors[]; // the color for every block.
     private int colorsNext[]; // the color for every block next turn
+    private int health[]; // the health for every block.
+
     private final static int DEAD = Color.GRAY; // color for dead tiles
     private final static float BORDERSIZE = 2f; // size of border between blocks
     private final static float SIZENEXT = 0.5f; // size of the smaller block that indicates what happens next turn
@@ -54,8 +57,9 @@ public class BoardView extends View {
         nTilesX = width;
         nTilesY = height;
 
-        colors = new int[nTilesX * nTilesY];
+        colors     = new int[nTilesX * nTilesY];
         colorsNext = new int[nTilesX * nTilesY];
+        health     = new int[nTilesX * nTilesY];
 
         for (int i = 0; i < nTilesX * nTilesY; i++) {
             colors[i] = Color.WHITE; // Wit zien is foute boel!
@@ -68,8 +72,11 @@ public class BoardView extends View {
     //functions for changing tile colors
     public void setTilePlayer(int x, int y, int col) { colors[y * nTilesX + x] = col; }
     public void setTileDead(int x, int y){ colors[y*nTilesX + x] = DEAD; }
+
     public void setTilePlayerNext(int x, int y, int col) { colorsNext[y * nTilesX + x] = col; }
     public void setTileDeadNext(int x, int y){ colorsNext[y*nTilesX + x] = DEAD; }
+
+    public void setTileHealth(int x, int y, int health) { this.health[y * nTilesX + x] = health; }
 
     //this updates the scaling when zooming in (pinching)
     public void updateScaling(float dScaling, float focusX, float focusY) {
@@ -128,11 +135,13 @@ public class BoardView extends View {
             for (int b = 0; b < nTilesY; b++){
                 drawBlock(canvas, a, b);
                 drawBlockNext(canvas, a, b);
+                drawBlockHealth(canvas, a, b);
             }
         }
 
         invalidate();
     }
+
 
     //Draw the tile at x,y
     private void drawBlock(Canvas canvas, int x, int y) {
@@ -148,6 +157,17 @@ public class BoardView extends View {
         p.setColor(colorsNext[y * nTilesX + x]);
         p.setStyle(Paint.Style.FILL_AND_STROKE);
         canvas.drawRect((x + 0.5f*SIZENEXT)* tileWidth, (y + 0.5f*SIZENEXT) * tileHeight, (x + 1 - 0.5f*SIZENEXT) * tileWidth - BORDERSIZE, (y + 1 - 0.5f*SIZENEXT) * tileHeight - BORDERSIZE, p);
+    }
+
+    //Draw the indicator for the tiles health
+    private void drawBlockHealth(Canvas canvas, int x, int y){
+        Paint p = new Paint();
+        p.setColor(Color.WHITE);
+        p.setStyle(Paint.Style.FILL_AND_STROKE);
+        p.setFakeBoldText(true);
+        p.setTextSize(40);
+        p.setTextAlign(Paint.Align.CENTER);
+        canvas.drawText(""+health[y * nTilesX + x], (x+0.5f) * tileWidth, (y+0.5f) * tileHeight, p);
     }
 }
 

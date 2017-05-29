@@ -11,7 +11,7 @@ public class Tile {
     // -1 = dood
     // 0,1,2,3,4.. = van speler 0,1,2,3,4..
     int team;
-    private int health;
+    private int health; // :( als levens 0 zijn kan het team nogsteeds iets anders zijn. i am not amused.
 
     /*******************CONSTRUCTORS*******************/
 
@@ -30,8 +30,13 @@ public class Tile {
         return team == DEAD;
     }
 
+    public int getHealth(){
+        return health;
+    }
+
     public void kill(){
         team = DEAD;
+        health = 0;
     }
 
     /*******************UPDATE*******************/
@@ -59,28 +64,38 @@ public class Tile {
 
     //De tile is dood.. Moet hij gaan leven?
     private Tile nextLive(ArrayList<Tile> neighbours, TileSettings settings) {
-        int bestTeam = DEAD;
-        int maxCount = 0;
-
-        int teamCount[] = new int[20];
-        for(int i = 0; i < teamCount.length; i++) teamCount[i] = 0;
-
         int nLiving = 0;
+        final ArrayList<Integer[]> teamCount = new ArrayList<>();
 
         for (Tile tile : neighbours) {
             if (tile.team != DEAD) {
-                teamCount[tile.team]++;
                 nLiving++;
+
+                boolean foundTeam = false;
+
+                for(Integer[] team : teamCount)
+                    if(team[0] == tile.team){
+                        foundTeam = true;
+                        team[1]++;
+                    }
+                if(!foundTeam) teamCount.add(new Integer[]{tile.team,0});
             }
         }
 
-        for (int i = 0; i < teamCount.length; i++) {
-            if (teamCount[i] > maxCount && nLiving >= settings.minLife && nLiving <= settings.maxLife) {
-                maxCount = teamCount[i];
-                bestTeam = i;
+        if(nLiving >= settings.minLife && nLiving <= settings.maxLife){ // als de tile tot leven komt
+            int bestTeam = DEAD;
+            int maxCount = 0;
+
+            for (int i = 0; i < teamCount.size(); i++) {
+                if (teamCount.get(i)[1] > maxCount) {
+                    bestTeam = teamCount.get(i)[0];
+                    maxCount = teamCount.get(i)[1];
+                }
             }
+
+            return new Tile(bestTeam, settings.defaultHealth);
         }
 
-        return new Tile(bestTeam, settings.defaultHealth);
+        return this;
     }
 }

@@ -33,7 +33,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         // Het spel:
-        game = new BoardController(this, this, board1, 2);
+        game = new BoardController(this, this, board1, 3);
 
         character = (ImageView)findViewById(R.id.character);
         updateCharacterIcon();

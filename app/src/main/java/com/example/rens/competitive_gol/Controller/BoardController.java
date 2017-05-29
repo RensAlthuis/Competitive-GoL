@@ -33,7 +33,7 @@ public class BoardController {
     private Coordinate lastCor;
     private Tile       lastTile;
 
-    private boolean moveDone         = false;
+    private boolean moveDone = false;
 
     /*******************CONSTRUCTORS*******************/
 
@@ -141,9 +141,9 @@ public class BoardController {
 
     // een 'zet' doen als speler
     public void doMove(int x, int y){
-        if(!moveDone){ // TODO: hier zit nu singleMoveModeOn in verwerkt. verrander voor debugging!
+        if(!moveDone || true){ // TODO: hier zit nu singleMoveModeOn in verwerkt. verrander voor debugging!
             if(move(x,y)) // als het succesvol was
-                moveDone = true; // zet deze simpelweg uit door '//' ervoor te doen, en je kan meerdere dingen aanpassen
+                moveDone = true; // zet deze simpelweg uit door '|| true' in de if-statement ervoor te doen, en je kan meerdere dingen aanpassen
         }
     }
 
@@ -216,6 +216,8 @@ public class BoardController {
 
                 if(board.isDeadNext(x,y))   boardView.setTileDeadNext(x,y);
                 else                        boardView.setTilePlayerNext(x,y,allPlayers.get(board.getTileNextTeam(x,y)).getColor());
+
+                boardView.setTileHealth(x,y,board.getTile(x,y).getHealth());
             }
     }
 }
