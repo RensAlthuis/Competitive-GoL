@@ -1,5 +1,6 @@
-package com.example.rens.competitive_gol.Controller;
+package com.example.rens.competitive_gol.Controller.Acivities;
 
+import com.example.rens.competitive_gol.Controller.BoardController;
 import com.example.rens.competitive_gol.Model.Board;
 import com.example.rens.competitive_gol.Model.TileSettings;
 import com.example.rens.competitive_gol.R;

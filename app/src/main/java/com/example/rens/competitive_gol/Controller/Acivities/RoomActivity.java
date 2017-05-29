@@ -1,4 +1,4 @@
-package com.example.rens.competitive_gol.Controller;
+package com.example.rens.competitive_gol.Controller.Acivities;
 
 import android.app.Activity;
 import android.os.Bundle;

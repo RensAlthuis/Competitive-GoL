@@ -1,4 +1,4 @@
-package com.example.rens.competitive_gol.Controller;
+package com.example.rens.competitive_gol.Controller.Acivities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,7 +7,7 @@ import android.view.WindowManager;
 
 import com.example.rens.competitive_gol.R;
 
-public class AiActivity extends Activity {
+public class TutorialActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +15,6 @@ public class AiActivity extends Activity {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_ai);
+        setContentView(R.layout.activity_tutorial);
     }
 }

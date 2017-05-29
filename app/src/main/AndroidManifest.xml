@@ -9,22 +9,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Controller.MenuActivity">
+        <activity android:name=".Controller.Acivities.MenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Controller.MainActivity" />
-        <activity android:name=".Controller.OnlineActivity" />
-        <activity android:name=".Controller.RoomActivity" />
-        <activity android:name=".Controller.AiActivity" />
-        <activity android:name=".Controller.SettingsActivity" />
-        <activity android:name=".Controller.TutorialActivity" />
-        <activity android:name=".Controller.RatingActivity" />
-        <activity android:name=".Controller.FeedBackActivity" />
-        <activity android:name=".Controller.AboutActivity"></activity>
+        <activity android:name=".Controller.Acivities.MainActivity" />
+        <activity android:name=".Controller.Acivities.OnlineActivity" />
+        <activity android:name=".Controller.Acivities.RoomActivity" />
+        <activity android:name=".Controller.Acivities.AiActivity" />
+        <activity android:name=".Controller.Acivities.SettingsActivity" />
+        <activity android:name=".Controller.Acivities.TutorialActivity" />
+        <activity android:name=".Controller.Acivities.RatingActivity" />
+        <activity android:name=".Controller.Acivities.FeedBackActivity" />
+        <activity android:name=".Controller.Acivities.AboutActivity"></activity>
     </application>
 
 </manifest>

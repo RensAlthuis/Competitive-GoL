@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.rens.competitive_gol.Controller.AboutActivity">
+    tools:context="com.example.rens.competitive_gol.Controller.Acivities.AboutActivity">
 
     <EditText
         android:id="@+id/aboutUs"

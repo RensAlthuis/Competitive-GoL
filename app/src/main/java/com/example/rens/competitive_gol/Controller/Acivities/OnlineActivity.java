@@ -1,4 +1,4 @@
-package com.example.rens.competitive_gol.Controller;
+package com.example.rens.competitive_gol.Controller.Acivities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,7 +10,7 @@ import android.widget.Button;
 
 import com.example.rens.competitive_gol.R;
 
-public class RatingActivity extends Activity {
+public class OnlineActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,17 +18,18 @@ public class RatingActivity extends Activity {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_rating);
-        eventToSettings();
+        setContentView(R.layout.activity_online);
+        eventToCreate();
     }
 
-    private void eventToSettings(){
-        Button btn = (Button)findViewById(R.id.buttonRateSend);
+    private void eventToCreate() {
+        Button btn = (Button)findViewById(R.id.buttonCreate);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RatingActivity.this, SettingsActivity.class));
+                startActivity(new Intent(OnlineActivity.this, RoomActivity.class));
             }
         });
     }
+
 }

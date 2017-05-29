@@ -7,7 +7,7 @@ public class Board {
 
     /*******************VARIABLES*******************/
 
-    private ArrayList<Tile> tiles = new ArrayList<>();
+    private ArrayList<Tile> tiles     = new ArrayList<>();
     private ArrayList<Tile> tilesNext = new ArrayList<>();
 
     public final int width;
@@ -28,32 +28,25 @@ public class Board {
 
     /*******************FUNCTIONS*******************/
 
-    //is the tile dead right now?
-    public boolean isDead(int x, int y){
-        return tiles.get(y*width + x).team == Tile.DEAD;
-    }
-
-    //will the tile be dead next turn?
-    public boolean isDeadNext(int x, int y) { return tilesNext.get(y*width + x).team == Tile.DEAD; }
-
-    //set tile x,y to a certain team
-    public void setTileTeam(int x, int y, int team){
-        tiles.set(y*width + x, new Tile(team,settings.defaultHealth));
-    }
-
-    //set tile x,y to dead
-    public void setTileDead(int x, int y) { tiles.set(y*width + x, new Tile()); }
-
     //return the team for tile x,y
     public int getTileTeam(int x, int y){
         return tiles.get(y*width + x).team;
     }
+    //return the team for tile x,y next turn
+    public int getTileTeamNext(int x, int y){ return tilesNext.get(y*width + x).team; }
 
-    //TODO this is never any different from getTileTeam can probably be deleted.
-    //TODO yes it is! it can both die or, under different rules, change its team
-    public int getTileTeamNext(int x, int y){
-        return tilesNext.get(y*width + x).team;
+    //is the tile dead right now?
+    public boolean isDead(int x, int y){
+        return getTileTeam(x,y) == Tile.DEAD;
     }
+    //will the tile be dead next turn?
+    public boolean isDeadNext(int x, int y) { return getTileTeamNext(x,y) == Tile.DEAD; }
+
+    //set tile x,y to a certain team
+    public void setTileTeam(int x, int y, int team){  tiles.set(y*width + x, new Tile(team,settings.defaultHealth)); }
+    //set tile x,y to dead
+    public void setTileDead(int x, int y) { tiles.set(y*width + x, new Tile()); }
+
 
     //create all the tiles for the board
     private void createEmptyTiles(){
@@ -64,13 +57,13 @@ public class Board {
     }
 
     //fill the board in randomly
-    public void createRandomBoard(int tilesPP, ArrayList<Player> allPlayers){
+    public void createRandomBoard(int tilesPerPlayer, ArrayList<Player> allPlayers){
         Random rand = new Random();
 
         int tilesLeft[] = new int[allPlayers.size()];
 
         for(int i = 0; i < tilesLeft.length; i++){
-            tilesLeft[i] = tilesPP;
+            tilesLeft[i] = tilesPerPlayer;
             while(tilesLeft[i]!= 0) {
                 int x;
                 int y;
@@ -85,6 +78,7 @@ public class Board {
         }
         setNext();
     }
+
     /*******************UPDATE*******************/
 
     //calculate the next board and store it in tileNext
@@ -102,7 +96,7 @@ public class Board {
         setNext();
     }
 
-    //return a list of neighbours, useful for Tile update
+    //return a list of neighbours, useful for setNext()
     private ArrayList<Tile> getNeighbours(int x, int y){
         ArrayList<Tile> n = new ArrayList<>();
         for(int i = -1; i <= 1; i++){
