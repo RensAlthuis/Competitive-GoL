@@ -177,7 +177,7 @@ public class Board {
     }
 
     //calculate the next board and store it in tileNext
-    //ROEP DEZE ZO VAAK AAN ALS JE DENKT VEILIG IS!
+    //ROEP DEZE ZO VAAK AAN ALS JE WILT! :)
     public void setNext(){
         for(int i=0; i<size; i++) tilesNext.set(i, tiles.get(i).next(getNeighbours(i%width, i/height),settings));
     }

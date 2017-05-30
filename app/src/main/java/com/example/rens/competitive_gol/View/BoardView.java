@@ -25,8 +25,8 @@ public class BoardView extends View {
     private float tileHeight; // breedte van een tile
 
     private float scaling = 1;
-    private float offsetX = 0; //Hoeveel er naar links/rechts is bewogen (TODO: vergroot dit als we een rand willen toevoegen)
-    private float offsetY = 0; //Hoeveel er naar boven/beneden is bewogen (TODO: vergroot dit als we een rand willen toevoegen)
+    private float offsetX = 0; //Hoeveel er naar links/rechts is bewogen
+    private float offsetY = 0; //Hoeveel er naar boven/beneden is bewogen
 
     private int colors[]; // the color for every block.
     private int colorsNext[]; // the color for every block next turn

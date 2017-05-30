@@ -156,7 +156,7 @@ public class BoardController {
         if(!last.isEmpty()){
             board.setTiles(last.remove(last.size()-1));
             moveDone = false;
-            next();
+            setNext();
         }
     }
 
@@ -179,14 +179,14 @@ public class BoardController {
 
         } else return false;
 
-        next();
+        setNext();
         return true;
     }
 
     /*******************NEXT*******************/
 
     // om de volgende itteratie uit te rekenen. deze functie kan zovaak anngeroepen worden als maar wilt~!
-    public void next(){
+    public void setNext(){
         board.setNext();
         setBoardView();
     }
