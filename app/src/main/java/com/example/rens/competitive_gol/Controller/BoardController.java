@@ -6,25 +6,62 @@ import android.graphics.Color;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
+import android.view.View;
+
+import java.util.ArrayList;
 
 import com.example.rens.competitive_gol.Model.Board;
+import com.example.rens.competitive_gol.Model.Player;
 import com.example.rens.competitive_gol.R;
 import com.example.rens.competitive_gol.View.BoardView;
 
 public class BoardController {
+
+    /*******************VARIABLES*******************/
+
     private final Board board;
     private final BoardView boardView;
+
+    private final ArrayList<Player> allPlayers;
+    private int curPlayerIndex;
+
     private final ScaleGestureDetector mScaleDetector;
     private final GestureDetector mGestureDetector;
 
+    private int lastMove[];
+
+    private boolean singleMoveModeOn = false; // probably only for debug
+
     /*******************CONSTRUCTORS*******************/
 
-    public BoardController(final Activity activity, final Context context, final Board level){
+    public BoardController(final Activity activity, final Context context, final Board level, final int numberPlayers){
         board = level;
         boardView = (BoardView)activity.findViewById(R.id.board);
-        boardView.setBoard(this);
+        boardView.init(getBoardWidth(), getBoardHeight());
 
-        // SCALING
+        allPlayers = Players(numberPlayers);
+        curPlayerIndex = 0;
+        lastMove = new int[]{-1,-1};
+
+        //board.createRandomBoard(20,allPlayers); //vult het bord met 20 willekeurige levende blokken per speler
+
+        setBoardView(); //zorgt er btw ook voor dat een meer crazy bord gelijk goed getekent wordt! :)
+
+        // TODO: Optionele verbetering:
+        //allPlayers = sortedPlayers(players); //sorteerd de spelers opniew in afzonderlijke teams van 1 tm size() (aantal spelers)
+
+        /*****USER CONTROLS*****/
+
+        boardView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mScaleDetector.onTouchEvent(event);
+                mGestureDetector.onTouchEvent(event);
+                return true;
+            }
+        });
+
+        // SCALING: dit detecteerd bewegingen waarbij je twee aanraakpunten naar elkaar toe trekt/van elkaar weg haalt
         mScaleDetector = new ScaleGestureDetector(context, new ScaleGestureDetector.OnScaleGestureListener() {
             private float oldScaleFactor;
 
@@ -47,66 +84,121 @@ public class BoardController {
 
         });
 
-        // CLICKING/SWIPING
+        // CLICKING/SWIPING: dit detecteerd kleine simpele bewegingen die je met een aanraakpunt maakt
         mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
 
-            @Override // loslaten een keer klikken
+            @Override //Voor: loslaten na een keer klikken
             public boolean onSingleTapUp(MotionEvent e) {
-                float offset = boardView.getScaledTileWidth();
-                float hitX = boardView.offX(e.getX());
-                float hitY = boardView.offY(e.getY());
+               //Deze functie wordt gebruikt wanneer je klikt op een tile :)
+                final float offset = boardView.getScaledTileWidth();
+                final int a = (int)Math.floor(boardView.offX(e.getX())/offset);
+                final int b = (int)Math.floor(boardView.offY(e.getY())/offset);
 
-                for (int a = 0; a < board.width; a++)
-                    for (int b = 0; b < board.height; b++) {
+                doMove(a,b);
 
-                        //basic bounding box
-                        if (    hitX > (a * offset) &&
-                                hitX < ((a + 1) * offset) &&
-                                hitY > (b * offset) &&
-                                hitY < ((b + 1) * offset)
-                                )
-                        {
-                            setTeam(a,b,1); // TODO: 1 moet vervangen worden door de actieve speler atm
-                        }
-                    }
                 return false;
             }
 
-            @Override // schuiven naar links/rechts
+            @Override //Voor: schuiven
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                //Deze functie wordt gebruikt wanneer je via een swipe beweging je verplaatst over het bord
                 boardView.updateOffset(distanceX, distanceY);
                 return false;
             }
         });
+
     }
 
-    /*******************FUNCTIONS*******************/
+    /***********************************FUNCTIONS*************************************/
+
+    // maakt een gesoteerde lijst van alle spelers afhankelijk van al opgestelde kleuren
+    private ArrayList<Player> Players(int  numberPlayers){
+        ArrayList<Player> sortedPlayers = new ArrayList<>();
+        final int[] colours = {Color.BLUE,Color.RED,Color.GREEN,Color.MAGENTA,Color.YELLOW,Color.CYAN};
+
+        for(int i=0; i<numberPlayers; i++)
+            sortedPlayers.add(new Player(i,colours[i%colours.length]));
+
+        return sortedPlayers;
+    }
 
     public int getBoardWidth(){ return board.width; }
     public int getBoardHeight(){ return board.height; }
 
-    public void touched(MotionEvent event){
-        mScaleDetector.onTouchEvent(event);
-        mGestureDetector.onTouchEvent(event);
+    private int curTeam() { return allPlayers.get(curPlayerIndex).getTeam(); }
+    public int curColor() { return allPlayers.get(curPlayerIndex).getColor(); }
+
+    // zet de volgende speler
+    public void nextPlayer(){
+        curPlayerIndex++;
+        curPlayerIndex %= allPlayers.size();
+
+        //volgende speler, dus geen er is geen lastMove meer
+        lastMove = new int[]{-1,-1};
     }
 
-    private void setTeam(int x, int y, int player){
-        if(board.getTeam(x,y)==0)
-            board.setTeam(x,y,player);
-        else
-            board.setTeam(x,y,0);
-    }
+    // een 'zet'
+    private void doMove(int x, int y){
+        if(!singleMoveModeOn || (lastMove[0] == -1 && lastMove[1] == -1)) {
+            //TODO voorwaarden voor wat kan/niet kan?
+            if (board.getTileTeam(x, y) == curTeam()) {
+                setTileDead(x, y);
+            } else if (board.isDead(x, y)) {
+                setTilePlayer(x, y);
+            }
 
-    public int getTileColor(int x, int y){return getTileColor(board.getTeam(x,y));}
-
-    public int getTileColor(int team){
-        switch(team){
-            case 0:
-                return Color.GRAY;
-            case 1:
-                return Color.GREEN;
-            default:
-                return Color.WHITE; // als je wit ziet, ligt het hieraan
+            board.setNext();
+            setBoardView();
+            lastMove = new int[]{x,y};
         }
     }
+
+    public void undoLastMove(){
+        if(lastMove[0] != -1 && lastMove[1] != -1){
+            if (board.getTileTeam(lastMove[0], lastMove[1]) == curTeam()) {
+                setTileDead(lastMove[0], lastMove[1]);
+            } else if (board.isDead(lastMove[0], lastMove[1])) {
+                setTilePlayer(lastMove[0], lastMove[1]);
+            }
+
+            lastMove = new int[]{-1,-1};
+            board.setNext();
+            setBoardView();
+
+        }
+    }
+
+    // zet (x,y) op de huidige speler
+    private void setTilePlayer(int x, int y){
+        board.setTileTeam(x, y, curTeam());
+        boardView.setTilePlayer(x, y, curColor());
+    }
+
+    // zet (x,y) op dood
+    private void setTileDead(int x, int y){
+        board.setTileDead(x, y);
+        boardView.setTileDead(x, y);
+    }
+
+    /*******************UPDATE*******************/
+
+    // stap 1) update board, stap 2) update boardView aan de hand van board
+    public void update(){
+        board.update();
+        setBoardView();
+    }
+
+    // maakt de boardView up-to-board met de latest tiles fashion
+    private void setBoardView(){
+        for(int y=0; y<board.height ; y++)
+            for(int x=0; x<board.width ; x++){
+                if(board.isDead(x,y))       boardView.setTileDead(x,y);
+                else                        boardView.setTilePlayer(x,y,allPlayers.get(board.getTileTeam(x,y)).getColor());
+
+                if(board.isDeadNext(x,y))   boardView.setTileDeadNext(x,y);
+                else                        boardView.setTilePlayerNext(x,y,allPlayers.get(board.getTileTeamNext(x,y)).getColor());
+            }
+    }
 }
+
+
