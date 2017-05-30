@@ -32,7 +32,7 @@ public class BoardController {
 
     private final ArrayList<ArrayList<Tile>> last = new ArrayList<>();
 
-    private boolean moveDone = false;
+    private int movesDone = 0;
 
     /*******************CONSTRUCTORS*******************/
 
@@ -139,23 +139,23 @@ public class BoardController {
         curPlayerIndex++;
         curPlayerIndex %= allPlayers.size();
 
-        moveDone = false; //volgende speler, dus geen er is geen moveDone
+        movesDone = 0; //volgende speler, dus geen er is geen moveDone
         last.clear();
     }
 
     // een 'zet' doen als speler
     public void doMove(Coordinate c){ doMove(c.x,c.y);}
     public void doMove(int x, int y){
-        if(!moveDone || true){ // TODO: hier zit nu singleMoveModeOn in verwerkt. verrander voor debugging!
+        if(movesDone<3){ // TODO: hier zit nu singleMoveModeOn in verwerkt. verrander voor debugging!
             if(move(x,y)) // als het succesvol was
-                moveDone = true; // zet deze simpelweg uit door '|| true' in de if-statement ervoor te doen, en je kan meerdere dingen aanpassen
+                movesDone++; // zet deze simpelweg uit door '|| true' in de if-statement ervoor te doen, en je kan meerdere dingen aanpassen
         }
     }
 
     public void undoMove(){
         if(!last.isEmpty()){
             board.setTiles(last.remove(last.size()-1));
-            moveDone = false;
+            movesDone--;
             setNext();
         }
     }

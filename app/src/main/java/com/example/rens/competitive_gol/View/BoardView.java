@@ -35,8 +35,8 @@ public class BoardView extends View {
     private final static int DEAD = Color.GRAY; // color for dead tiles
     private final static float MAXSCALING = 2;
 
-    private final static float SIZETILE = 0.9f; // relative size of the block
-    private final static float SIZENEXT = 0.5f; // relative size of the smaller block that indicates what happens next turn
+    private final static float SIZETILE = 0.7f; // relative size of the block
+    private final static float SIZENEXT = 0.3f; // relative size of the smaller block that indicates what happens next turn
     private final static float BORDERSIZE = 40f; // the size of the surrounding border
 
     /*******************CONSTRUCTORS*******************/
@@ -122,14 +122,6 @@ public class BoardView extends View {
         scaling = max(1, min(MAXSCALING, scaling));
 
         updateOffset(focusX * (dScaling), focusY * (dScaling));
-        /*
-        offsetX += focusX * (dScaling);
-        offsetY += focusY * (dScaling);
-        int maxpiv = (int) (getWidth() * (scaling - 1));
-
-        //clamp to [0;offset]
-        offsetX = max(0, min(maxpiv, offsetX));
-        offsetY = max(0, min(maxpiv, offsetY));*/
     }
 
     //this updates the offset used for scrolling across the screen
@@ -159,8 +151,8 @@ public class BoardView extends View {
     protected void onDraw(Canvas canvas) {
         //For future arguments: these need to be in onDraw because of screen flipping!
         //Cast to float simply for we aren't using arithmetic over floats
-        tileWidth = (float) (canvas.getWidth()-2*BORDERSIZE) / nTilesX;
-        tileHeight = (float) (canvas.getHeight()-2*BORDERSIZE) / nTilesY;
+        tileWidth = (canvas.getWidth()-2*BORDERSIZE) / nTilesX;
+        tileHeight = (canvas.getHeight()-2*BORDERSIZE) / nTilesY;
 
         canvas.translate(-offsetX, -offsetY);
         canvas.scale(scaling, scaling);
@@ -172,7 +164,7 @@ public class BoardView extends View {
                 drawEmpty(canvas, a, b);
                 drawTile(canvas, a, b);
                 drawTileNext(canvas, a, b);
-                drawTileHealth(canvas, a, b);
+                //drawTileHealth(canvas, a, b);
             }
         }
 
@@ -181,7 +173,7 @@ public class BoardView extends View {
 
     private void drawBorder(Canvas canvas){
         Paint p = new Paint();
-        p.setColor(Color.CYAN); // the border color
+        p.setColor(Color.BLACK); // the border color
         p.setStyle(Paint.Style.STROKE);
         p.setStrokeWidth(2*BORDERSIZE);
         canvas.drawRect(0,0,canvas.getWidth(),canvas.getHeight(),p);
