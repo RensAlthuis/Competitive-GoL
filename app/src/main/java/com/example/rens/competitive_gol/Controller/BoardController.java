@@ -88,11 +88,15 @@ public class BoardController {
             @Override //Voor: loslaten na een keer klikken
             public boolean onSingleTapUp(MotionEvent e) {
                //Deze functie wordt gebruikt wanneer je klikt op een tile :)
-                final float offset = boardView.getScaledTileWidth();
-                final int a = (int)Math.floor(boardView.offX(e.getX())/offset);
-                final int b = (int)Math.floor(boardView.offY(e.getY())/offset);
+                final float pixelX = boardView.offX(e.getX());
+                final float pixelY = boardView.offY(e.getY());
 
-                doMove(a,b);
+                if(boardView.isTile(pixelX,pixelY)) {
+                    final int x = (int) Math.floor(boardView.relativeX(pixelX));
+                    final int y = (int) Math.floor(boardView.relativeY(pixelY));
+
+                    doMove(x, y);
+                }
 
                 return false;
             }
@@ -140,6 +144,7 @@ public class BoardController {
     }
 
     // een 'zet' doen als speler
+    public void doMove(Coordinate c){ doMove(c.x,c.y);}
     public void doMove(int x, int y){
         if(!moveDone || true){ // TODO: hier zit nu singleMoveModeOn in verwerkt. verrander voor debugging!
             if(move(x,y)) // als het succesvol was
