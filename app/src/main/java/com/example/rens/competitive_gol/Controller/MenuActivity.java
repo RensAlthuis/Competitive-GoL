@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.example.rens.competitive_gol.R;
+import com.example.rens.competitive_gol.View.BoardView;
 
 public class MenuActivity extends Activity {
 
@@ -19,10 +20,17 @@ public class MenuActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_menu);
+        createTitle();
         eventToMain();
         eventToOnline();
         eventToSettings();
         eventToTutorial();
+    }
+
+    private void createTitle(){
+        BoardView board = (BoardView) findViewById(R.id.boardTitle);
+        //board
+
     }
 
     private void eventToMain() {

@@ -7,22 +7,67 @@
     android:layout_height="match_parent">
 
 
+    <view
+        android:id="@+id/boardTitle"
+        class="com.example.rens.competitive_gol.View.BoardView"
+        id="@+id/view3"
+        android:layout_width="397dp"
+        android:layout_height="117dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintHorizontal_bias="0.19"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        android:id="@+id/linearLayout2"
+        android:weightSum="1">
+
+        <view
+            android:id="@+id/view2"
+            class="com.example.rens.competitive_gol.View.BoardView"
+            id="@+id/view"
+            android:layout_width="394dp"
+            android:layout_height="383dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/gridLayout"
+            android:layout_weight="2.81" />
+    </LinearLayout>
+
     <GridLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp">
+        android:id="@+id/gridLayout">
 
         <Button
             android:id="@+id/buttonAi"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Player vs AI" />
@@ -33,7 +78,9 @@
             android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_row="1"
+            android:elevation="0dp"
             android:text="Player VS Player"
+            android:theme="@style/buttonPlayer"
             tools:layout_conversion_absoluteHeight="48dp"
             tools:layout_conversion_absoluteWidth="150dp"
             tools:layout_conversion_absoluteX="116dp"
@@ -48,6 +95,7 @@
             android:layout_column="0"
             android:layout_row="2"
             android:text="Tutorial"
+            android:theme="@style/buttonTut"
             tools:layout_conversion_absoluteHeight="48dp"
             tools:layout_conversion_absoluteWidth="89dp"
             tools:layout_conversion_absoluteX="116dp"
@@ -62,6 +110,7 @@
             android:layout_column="0"
             android:layout_row="3"
             android:text="Settings"
+            android:theme="@style/buttonSet"
             tools:layout_conversion_absoluteHeight="48dp"
             tools:layout_conversion_absoluteWidth="89dp"
             tools:layout_conversion_absoluteX="116dp"
@@ -70,4 +119,5 @@
             tools:layout_editor_absoluteY="223dp" />
 
     </GridLayout>
+
 </android.support.constraint.ConstraintLayout>

@@ -8,4 +8,19 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="buttonPlayer" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="colorButtonNormal">#1976d2</item>
+    </style>
+
+    <style name="buttonTut" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="colorButtonNormal">#8e24aa</item>
+    </style>
+
+    <style name="buttonSet" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="colorButtonNormal">#43a047</item>
+    </style>
+
 </resources>
