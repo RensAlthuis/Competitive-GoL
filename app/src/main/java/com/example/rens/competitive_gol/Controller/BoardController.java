@@ -32,6 +32,7 @@ public class BoardController {
 
     private final ArrayList<ArrayList<Tile>> last = new ArrayList<>();
 
+    private final static int MOVESPERPLAYER = 3;
     private int movesDone = 0;
 
     /*******************CONSTRUCTORS*******************/
@@ -39,7 +40,7 @@ public class BoardController {
     public BoardController(final Activity activity, final Context context, final Board level, final int numberPlayers){
         board = level;
         boardView = (BoardView)activity.findViewById(R.id.board);
-        boardView.init(getBoardWidth(), getBoardHeight());
+        boardView.init(width(), height());
 
         allPlayers = setPlayers(numberPlayers);
 
@@ -86,16 +87,13 @@ public class BoardController {
 
             @Override //Voor: loslaten na een keer klikken
             public boolean onSingleTapUp(MotionEvent e) {
-               //Deze functie wordt gebruikt wanneer je klikt op een tile :)
-                final float pixelX = boardView.offX(e.getX());
-                final float pixelY = boardView.offY(e.getY());
+                //Deze functie wordt gebruikt wanneer je klikt op een tile :)
+                // wat hier onder staat is mogelijk niet echt meer leesbaar.
+                // lang verhaal kort: coordinaten muis -> coordinaten gehele canvas -> coordinaten relatief tot de blokken -> naar beneden afgerond
+                final int a = (int) Math.floor(boardView.relativeX(boardView.offX(e.getX())));
+                final int b = (int) Math.floor(boardView.relativeY(boardView.offY(e.getY())));
 
-                if(boardView.isTile(pixelX,pixelY)) {
-                    final int a = (int) Math.floor(boardView.relativeX(pixelX));
-                    final int b = (int) Math.floor(boardView.relativeY(pixelY));
-
-                    doMove(a, b);
-                }
+                if(0<=a&&a<width() && 0<=b&&b<height()) doMove(a, b);
 
                 return false;
             }
@@ -123,8 +121,8 @@ public class BoardController {
 
     /***********************************FUNCTIONS*************************************/
 
-    public int getBoardWidth(){ return board.width; }
-    public int getBoardHeight(){ return board.height; }
+    public int width(){ return board.width; }
+    public int height(){ return board.height; }
 
     public int curTeam() { return allPlayers.get(curPlayerIndex).getTeam(); }
     public int curColor() { return allPlayers.get(curPlayerIndex).getColor(); }
@@ -151,7 +149,7 @@ public class BoardController {
     // TODO DE FUNDAMENTELE SPELER REGELS
     public void doMove(Coordinate c){ doMove(c.x,c.y);}
     public void doMove(int x, int y){
-        if(movesDone<3){ // TODO: hier zit nu singleMoveModeOn in verwerkt. verrander voor debugging!
+        if(movesDone<MOVESPERPLAYER){ // TODO: hier zit nu singleMoveModeOn in verwerkt. verrander voor debugging!
             last.add(board.getTiles());
 
             if(move(x,y)) { // als het succesvol was

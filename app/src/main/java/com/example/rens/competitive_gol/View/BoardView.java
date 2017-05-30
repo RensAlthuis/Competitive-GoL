@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.example.rens.competitive_gol.Controller.BoardController;
-import com.example.rens.competitive_gol.Model.Coordinate;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -95,23 +94,11 @@ public class BoardView extends View {
     }
 
     public float relativeX(float pixelX){
-        return (pixelX - BORDERSIZE)/tileWidth; // een getal proportioneel tot de tiles in de x richting (bijvoorbeeld, 0.5 betekent halverwegen tile 1)
+        return (pixelX - BORDERSIZE)/tileWidth; // een x-coordinaat proportioneel tot de tiles in de x richting (bijvoorbeeld, 0.5 betekent halverwegen tile 1)
     }
 
     public float relativeY(float pixelY){
-        return (pixelY - BORDERSIZE)/tileHeight; // een getal proportioneel tot de tiles in de y richting (of 2.5 betekent halverwegen tile 3)
-    }
-
-    public boolean isTile(float pixelX, float pixelY){
-        float relativeX = relativeX(pixelX);
-        float relativeY = relativeY(pixelY);
-
-        // deze waardes hieronder zorgen ervoor dat je _alleen_ op een tile kan klikken als je vinger de tile raakt.
-        // met de vette dikke vingers leek het me makkelijker om het hele blok te nemen als acceptabel
-        //boolean xGood = 0.5f*(1 - SIZETILE) < relativeX%1 && relativeX%1 < 0.5f*(1 + SIZETILE) && relativeX < nTilesX;
-        //boolean yGood = 0.5f*(1 - SIZETILE) < relativeY%1 && relativeY%1 < 0.5f*(1 + SIZETILE) && relativeY < nTilesY;
-
-        return (0 < relativeX && relativeX < nTilesX) &&  (0 < relativeY && relativeY < nTilesY);
+        return (pixelY - BORDERSIZE)/tileHeight; // een y-coordinaat proportioneel tot de tiles in de y richting (of 2.5 betekent halverwegen tile 3)
     }
 
     /*******************SCALING&DRAGGING*******************/
@@ -162,10 +149,10 @@ public class BoardView extends View {
 
         for (int a = 0; a < nTilesX; a++) {
             for (int b = 0; b < nTilesY; b++) {
-                drawEmpty(canvas, a, b);
-                drawTile(canvas, a, b);
-                drawTileNext(canvas, a, b);
-                //drawTileHealth(canvas, a, b);
+                drawEmpty(canvas, a, b); // tekent de lege blokken eronder. DIT IS PUUR COSMETISCH!
+                drawTile(canvas, a, b); // tekent de huidige blokken
+                drawTileNext(canvas, a, b); // tekent de volgende blokken
+                drawTileHealth(canvas, a, b); // tekent de levens van de huidige blokken. OOK DIT IS HOPELIJK TIJDELIJK!
             }
         }
 

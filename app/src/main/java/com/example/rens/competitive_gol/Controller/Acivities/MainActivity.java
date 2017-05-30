@@ -19,8 +19,9 @@ public class MainActivity extends Activity {
 
     static BoardController game; //Het actieve spel atm
 
+    private Board board0 = new Board(6,7,new TileSettings()); // TODO: om een of andere reden crasht hij als het board te klein is. raar
     private Board board1 = new Board(10,10,new TileSettings()); //
-    private Board board2 = new Board(10,10,new TileSettings()); // voorbeeld van meerdere levels
+    private Board board2 = new Board(15,15,new TileSettings()); // voorbeeld van meerdere levels
     private ImageView character;
 
     /***********************************************/
@@ -44,7 +45,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 game.update();
                 game.winCheck();
-                game.nextPlayer(); // <- 'een keer updaten = volgende speler' hierdoor
+                game.nextPlayer(); // updaten -> gewonnen? -> volgende speler
                 updateCharacterIcon();
             }
         });
