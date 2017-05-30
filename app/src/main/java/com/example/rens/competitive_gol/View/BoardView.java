@@ -104,12 +104,14 @@ public class BoardView extends View {
 
     public boolean isTile(float pixelX, float pixelY){
         float relativeX = relativeX(pixelX);
-        float relativeY = relativeX(pixelY);
+        float relativeY = relativeY(pixelY);
 
-        boolean xGood = 0.5f*(1 - SIZETILE) < relativeX%1 && relativeX%1 < 0.5f*(1 + SIZETILE) && relativeX < nTilesX;
-        boolean yGood = 0.5f*(1 - SIZETILE) < relativeY%1 && relativeY%1 < 0.5f*(1 + SIZETILE) && relativeY < nTilesY;
+        // deze waardes hieronder zorgen ervoor dat je _alleen_ op een tile kan klikken als je vinger de tile raakt.
+        // met de vette dikke vingers leek het me makkelijker om het hele blok te nemen als acceptabel
+        //boolean xGood = 0.5f*(1 - SIZETILE) < relativeX%1 && relativeX%1 < 0.5f*(1 + SIZETILE) && relativeX < nTilesX;
+        //boolean yGood = 0.5f*(1 - SIZETILE) < relativeY%1 && relativeY%1 < 0.5f*(1 + SIZETILE) && relativeY < nTilesY;
 
-        return xGood && yGood;
+        return (0 < relativeX && relativeX < nTilesX) &&  (0 < relativeY && relativeY < nTilesY);
     }
 
     /*******************SCALING&DRAGGING*******************/
@@ -128,11 +130,10 @@ public class BoardView extends View {
     public void updateOffset(float dOffX, float dOffY) {
         offsetX += dOffX;
         offsetY += dOffY;
-        int maxpiv = (int) (getWidth() * (scaling - 1));
 
         //clamp to [0;offset]
-        offsetX = max(0, min(maxpiv, offsetX));
-        offsetY = max(0, min(maxpiv, offsetY));
+        offsetX = max(0, min(getWidth()*(scaling - 1), offsetX));
+        offsetY = max(0, min(getHeight()*(scaling - 1), offsetY));
     }
 
     //get the scaled location of n in screen coordinates
@@ -191,7 +192,7 @@ public class BoardView extends View {
         Paint p = new Paint();
         p.setColor(colors[y * nTilesX + x]);
         p.setStyle(Paint.Style.FILL_AND_STROKE);
-        drawBlock(canvas, p, x, y, SIZETILE*(0.25f*health[y * nTilesX + x]+0.5f));
+        drawBlock(canvas, p, x, y, SIZETILE*(0.25f*health[y * nTilesX + x]+0.5f)); //TODO: interne pijn lijden omdat hier magic nummers staan (en nee, gewoon wat stic float maken zonder reden is niet de soort van oplosssing die dat verhelpt)
     }
 
     //Draw the indicator for what the tile will be next turn

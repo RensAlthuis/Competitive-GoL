@@ -25,7 +25,7 @@ public class BoardController {
     private final BoardView boardView;
 
     private final ArrayList<Player> allPlayers;
-    private int curPlayerIndex;
+    private int curPlayerIndex = 0;
 
     private final ScaleGestureDetector mScaleDetector;
     private final GestureDetector mGestureDetector;
@@ -42,9 +42,8 @@ public class BoardController {
         boardView.init(getBoardWidth(), getBoardHeight());
 
         allPlayers = setPlayers(numberPlayers);
-        curPlayerIndex = 0;
 
-        //board.createRandomBoard(20,allPlayers); //vult het bord met 20 willekeurige levende blokken per speler
+        board.setRandomBoard(20,allPlayers); //vult het bord met 20 willekeurige levende blokken per speler
 
         setBoardView();
 
@@ -134,6 +133,11 @@ public class BoardController {
     // shit die je als spel buitenaf doet zonder de context te hoeven weten
     // dit zijn ijzerstekere functies waarvoor alleen nog maar een knop voor hoeft worden gemaakt
 
+    // TODO DE FUNDAMENTELE WIN REGELS
+    public void winCheck(){
+        if(board.winExtinction(curTeam())) System.out.println("You won! :D");
+    }
+
     // zet de volgende speler
     public void nextPlayer(){
         curPlayerIndex++;
@@ -144,11 +148,18 @@ public class BoardController {
     }
 
     // een 'zet' doen als speler
+    // TODO DE FUNDAMENTELE SPELER REGELS
     public void doMove(Coordinate c){ doMove(c.x,c.y);}
     public void doMove(int x, int y){
         if(movesDone<3){ // TODO: hier zit nu singleMoveModeOn in verwerkt. verrander voor debugging!
-            if(move(x,y)) // als het succesvol was
+            last.add(board.getTiles());
+
+            if(move(x,y)) { // als het succesvol was
                 movesDone++; // zet deze simpelweg uit door '|| true' in de if-statement ervoor te doen, en je kan meerdere dingen aanpassen
+                setNext();
+            }
+            else
+                last.remove(last.size()-1);
         }
     }
 
@@ -161,32 +172,29 @@ public class BoardController {
     }
 
     /***********************************MOVE*****************************/
-
     // wat gebeurt er als de huidige speler iets doet op x,y
-    // returnt true als iets is verrandert,
+    // returnt true als iets is verranderd,
+
+    //hieronder staan de fundamentele spelregels voor wanneer je op iets mag klikken, en wat dat betekent
+    //(als dit in bold kan dan zou ik het hebben gedaan)
+    //TODO DE FUNDAMENTELE SPELREGELS
     private boolean move(int x, int y){
-        //hieronder staan de fundamentele spelregels voor wanneer je op iets mag klikken, en wat dat betekent
-        // (als dit in bold kan dan zou ik het hebben gedaan)
-        //TODO zijn de voorwaardens die hier staan goede voorwaarden voor wat kan/niet kan?
 
         if (board.getTileTeam(x, y) == curTeam()) {
-            last.add(board.getTiles());
             board.setTileDead(x, y);
-
         } else if (board.isDead(x, y)) {
-            last.add(board.getTiles());
             board.setTileTeam(x, y, curTeam());
+        } else {
+            return false;
+        }
 
-        } else return false;
-
-        setNext();
         return true;
     }
 
     /*******************NEXT*******************/
 
     // om de volgende itteratie uit te rekenen. deze functie kan zovaak anngeroepen worden als maar wilt~!
-    public void setNext(){
+    private void setNext(){
         board.setNext();
         setBoardView();
     }
@@ -194,7 +202,6 @@ public class BoardController {
     /*******************UPDATE*******************/
 
     // deze functie maakt de beweging van deze beurt naar de volgende beurt
-    // stap 1) update board, stap 2) update boardView aan de hand van board
     public void update(){
         board.update();
         setBoardView();

@@ -33,7 +33,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         // Het spel:
-        game = new BoardController(this, this, board1, 3);
+        game = new BoardController(this, this, board1, 2);
 
         character = (ImageView)findViewById(R.id.character);
         updateCharacterIcon();
@@ -43,6 +43,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 game.update();
+                game.winCheck();
                 game.nextPlayer(); // <- 'een keer updaten = volgende speler' hierdoor
                 updateCharacterIcon();
             }

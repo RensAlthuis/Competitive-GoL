@@ -192,4 +192,24 @@ public class Board {
         }
         return n;
     }
+
+    /*******************WIN CONDITIONS*******************/
+
+    //private final static int
+
+    public boolean winExtinction(int team){
+        for(Tile t : tiles)
+            if(!t.isDead() && t.team != team)
+                return false;
+        return true;
+    }
+
+    public boolean winDominant(int team){ // TODO
+        return false;
+    }
+
+    public boolean winSize(int team){ // TODO
+        return false;
+    }
+
 }
