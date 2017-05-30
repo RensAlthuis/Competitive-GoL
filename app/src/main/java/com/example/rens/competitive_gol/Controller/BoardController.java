@@ -141,8 +141,10 @@ public class BoardController {
     // een 'zet' doen als speler
     public void doMove(int x, int y){
         if(!moveDone || true){ // TODO: hier zit nu singleMoveModeOn in verwerkt. verrander voor debugging!
-            if(move(x,y)) // als het succesvol was
+            if(move(x,y)) { // als het succesvol was
                 moveDone = true; // zet deze simpelweg uit door '|| true' in de if-statement ervoor te doen, en je kan meerdere dingen aanpassen
+                last.clear();
+            }
         }
     }
 

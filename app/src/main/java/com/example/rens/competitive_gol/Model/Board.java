@@ -82,8 +82,8 @@ public class Board {
     private Tile getTileNext(int x, int y){ return tilesNext.get(y*width + x); }
 
     //set tile x,y to a certain tile
-    public void setTile(Coordinate c, Tile tile){ setTile(c.x,c.y, tile); }
-    public void setTile(int x, int y, Tile tile){  tiles.set(y*width + x, tile); }
+    private void setTile(Coordinate c, Tile tile){ setTile(c.x,c.y, tile); }
+    private void setTile(int x, int y, Tile tile){  tiles.set(y*width + x, tile); }
 
 
     //is the tile dead right now?
@@ -112,12 +112,17 @@ public class Board {
     public void setTileDead(Coordinate c){ setTileDead(c.x,c.y); }
     public void setTileDead(int x, int y) { tiles.set(y*width + x, new Tile()); }
 
+
     public void setTiles(ArrayList<Tile> tiles){
         this.tiles.clear();
         for(Tile tile : tiles) this.tiles.add(tile);
     }
 
-    public ArrayList<Tile> getTiles(){ return tiles; }
+    public ArrayList<Tile> getTiles(){
+        ArrayList<Tile> copy =  new ArrayList<>();
+        for(Tile tile : tiles) copy.add(new Tile(tile.team,tile.getHealth()));
+        return copy;
+    }
 
     /*******************DIFFERENT BOARDS*******************/
 
