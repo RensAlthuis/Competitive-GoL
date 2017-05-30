@@ -92,10 +92,10 @@ public class BoardController {
                 final float pixelY = boardView.offY(e.getY());
 
                 if(boardView.isTile(pixelX,pixelY)) {
-                    final int x = (int) Math.floor(boardView.relativeX(pixelX));
-                    final int y = (int) Math.floor(boardView.relativeY(pixelY));
+                    final int a = (int) Math.floor(boardView.relativeX(pixelX));
+                    final int b = (int) Math.floor(boardView.relativeY(pixelY));
 
-                    doMove(x, y);
+                    doMove(a, b);
                 }
 
                 return false;
@@ -171,28 +171,16 @@ public class BoardController {
 
         if (board.getTileTeam(x, y) == curTeam()) {
             last.add(board.getTiles());
-            setTileDead(x, y);
+            board.setTileDead(x, y);
 
         } else if (board.isDead(x, y)) {
             last.add(board.getTiles());
-            setTilePlayer(x, y);
+            board.setTileTeam(x, y, curTeam());
 
         } else return false;
 
         next();
         return true;
-    }
-
-    // zet (x,y) op de huidige speler
-    private void setTilePlayer(int x, int y){
-        board.setTileTeam(x, y, curTeam());
-        boardView.setTilePlayer(x, y, curColor());
-    }
-
-    // zet (x,y) op dood
-    private void setTileDead(int x, int y){
-        board.setTileDead(x, y);
-        boardView.setTileDead(x, y);
     }
 
     /*******************NEXT*******************/
@@ -216,13 +204,13 @@ public class BoardController {
     private void setBoardView(){
         for(int y=0; y<board.height ; y++)
             for(int x=0; x<board.width ; x++){
+                boardView.setTileHealth(x,y,board.getTile(x,y).getHealth());
+
                 if(board.isDead(x,y))       boardView.setTileDead(x,y);
                 else                        boardView.setTilePlayer(x,y,allPlayers.get(board.getTileTeam(x,y)).getColor());
 
                 if(board.isDeadNext(x,y))   boardView.setTileDeadNext(x,y);
                 else                        boardView.setTilePlayerNext(x,y,allPlayers.get(board.getTileNextTeam(x,y)).getColor());
-
-                boardView.setTileHealth(x,y,board.getTile(x,y).getHealth());
             }
     }
 }

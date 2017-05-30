@@ -169,6 +169,7 @@ public class BoardView extends View {
 
         for (int a = 0; a < nTilesX; a++) {
             for (int b = 0; b < nTilesY; b++) {
+                drawEmpty(canvas, a, b);
                 drawTile(canvas, a, b);
                 drawTileNext(canvas, a, b);
                 drawTileHealth(canvas, a, b);
@@ -186,12 +187,19 @@ public class BoardView extends View {
         canvas.drawRect(0,0,canvas.getWidth(),canvas.getHeight(),p);
     }
 
+    private void drawEmpty(Canvas canvas, int x, int y){
+        Paint p = new Paint();
+        p.setColor(DEAD);
+        p.setStyle(Paint.Style.FILL_AND_STROKE);
+        drawBlock(canvas, p, x, y, SIZETILE);
+    }
+
     //Draw the tile at x,y
     private void drawTile(Canvas canvas, int x, int y) {
         Paint p = new Paint();
         p.setColor(colors[y * nTilesX + x]);
         p.setStyle(Paint.Style.FILL_AND_STROKE);
-        drawBlock(canvas, p, x, y, SIZETILE);
+        drawBlock(canvas, p, x, y, SIZETILE*(0.25f*health[y * nTilesX + x]+0.5f));
     }
 
     //Draw the indicator for what the tile will be next turn
