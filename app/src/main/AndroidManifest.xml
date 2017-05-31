@@ -9,21 +9,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Controller.Acivities.MenuActivity">
+        <activity android:screenOrientation="portrait" android:name=".Controller.Acivities.MenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Controller.Acivities.MainActivity" />
-        <activity android:name=".Controller.Acivities.RoomActivity" />
-        <activity android:name=".Controller.Acivities.AiActivity" />
-        <activity android:name=".Controller.Acivities.SettingsActivity" />
-        <activity android:name=".Controller.Acivities.TutorialActivity" />
-        <activity android:name=".Controller.Acivities.RatingActivity" />
-        <activity android:name=".Controller.Acivities.FeedBackActivity" />
-        <activity android:name=".Controller.Acivities.AboutActivity"></activity>
+        <activity android:screenOrientation="portrait" android:name=".Controller.Acivities.MainActivity" />
+        <activity android:screenOrientation="portrait" android:name=".Controller.Acivities.RoomActivity" />
+        <activity android:screenOrientation="portrait" android:name=".Controller.Acivities.AiActivity" />
+        <activity android:screenOrientation="portrait" android:name=".Controller.Acivities.SettingsActivity" />
+        <activity android:screenOrientation="portrait" android:name=".Controller.Acivities.TutorialActivity" />
+        <activity android:screenOrientation="portrait" android:name=".Controller.Acivities.RatingActivity" />
+        <activity android:screenOrientation="portrait" android:name=".Controller.Acivities.FeedBackActivity" />
+        <activity android:screenOrientation="portrait" android:name=".Controller.Acivities.AboutActivity"></activity>
 
     </application>
 

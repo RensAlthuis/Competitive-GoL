@@ -20,17 +20,16 @@ import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 
+import static com.example.rens.competitive_gol.R.id.gameMode;
+
 public class MainActivity extends Activity {
 
     /*******************VARIABLES*******************/
 
     static BoardController game; //Het actieve spel atm
 
-    private Board board0 = new Board(6,7,new TileSettings()); // TODO: om een of andere reden crasht hij als het board te klein is. raar
-    private Board board1 = new Board(10,10,new TileSettings()); //
-    private Board board2 = new Board(15,15,new TileSettings()); // voorbeeld van meerdere levels
     private ImageView character;
-    private boolean isAIGame;
+    private int gameMode;
 
     /***********************************************/
 
@@ -41,18 +40,12 @@ public class MainActivity extends Activity {
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-        isAIGame = !getIntent().getStringExtra("gameMode").equals("Player VS. Player");
-        // Het spel:
-        game = new BoardController(this, this, board1, 2);
-        int col1 = getIntent().getIntExtra("Player1", 0);
-        game.addPlayer(new Player(0, col1));
+        gameMode = getIntent().getIntExtra("gameMode", 0);
 
-        int col2 = getIntent().getIntExtra("Player2", 0);
-        if(!isAIGame) {
-            game.addPlayer(new Player(1, col2));
-        }else{
-            game.addPlayer(new AIPlayer(1, col2, game, new EasyStrategy()));
-        }
+        // Het spel:
+        makeGame();
+        addPlayers();
+
         game.randomBoard(20);
 
         character = (ImageView)findViewById(R.id.character);
@@ -66,7 +59,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 nextTurn();
-                if(isAIGame){
+                if(gameMode != 0){
                     ((AIPlayer)game.getPlayer(1)).makeNextMove();
                     nextTurn();
                 }
@@ -93,5 +86,24 @@ public class MainActivity extends Activity {
         game.winCheck();
         game.nextPlayer(); // updaten -> gewonnen? -> volgende speler
         updateCharacterIcon();
+    }
+    private void addPlayers(){
+        int col1 = getIntent().getIntExtra("Player1", 0);
+        game.addPlayer(new Player(0, col1));
+
+        int col2 = getIntent().getIntExtra("Player2", 0);
+        if(gameMode == 0) {
+            game.addPlayer(new Player(1, col2));
+        }else{
+            game.addPlayer(new AIPlayer(1, col2, game, (gameMode == 1)? new EasyStrategy()
+                                                                        : new HardStrategy()));
+        }
+    }
+
+    private void makeGame(){
+        int steps = getIntent().getIntExtra("steps", 1);
+        int size = getIntent().getIntExtra("boardSize", 10);
+        Board b = new Board(size,size,new TileSettings());
+        game = new BoardController(this, this, b, 2, steps);
     }
 }

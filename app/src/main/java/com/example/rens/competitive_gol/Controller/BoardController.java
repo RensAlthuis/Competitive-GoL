@@ -32,18 +32,17 @@ public class BoardController {
 
     private final ArrayList<ArrayList<Tile>> last = new ArrayList<>();
 
-    private final static int MOVESPERPLAYER = 3;
+    private int movesPerPlayer;
     private int movesDone = 0;
 
     /*******************CONSTRUCTORS*******************/
 
-    public BoardController(final Activity activity, final Context context, final Board level, final int numberPlayers){
+    public BoardController(final Activity activity, final Context context, final Board level, final int numberPlayers, int movesPerPlayer){
         board = level;
         boardView = (BoardView)activity.findViewById(R.id.board);
         boardView.init(width(), height());
-
+        this.movesPerPlayer = movesPerPlayer;
         allPlayers = new ArrayList<>();
-
         curPlayerIndex = 0;
 
         /*****USER CONTROLS*****/
@@ -158,7 +157,7 @@ public class BoardController {
     // TODO DE FUNDAMENTELE SPELER REGELS
     public void doMove(Coordinate c){ doMove(c.x,c.y);}
     public void doMove(int x, int y){
-        if(movesDone<MOVESPERPLAYER){ // TODO: hier zit nu singleMoveModeOn in verwerkt. verrander voor debugging!
+        if(movesDone < movesPerPlayer){ // TODO: hier zit nu singleMoveModeOn in verwerkt. verrander voor debugging!
             last.add(board.getTiles());
 
             if(move(x,y)) { // als het succesvol was

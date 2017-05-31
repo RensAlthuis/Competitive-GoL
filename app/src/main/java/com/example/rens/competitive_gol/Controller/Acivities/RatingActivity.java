@@ -15,7 +15,6 @@ import com.example.rens.competitive_gol.R;
 public class RatingActivity extends Activity {
 
     private RatingBar ratingBar;
-    private Button btnSumbit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +29,6 @@ public class RatingActivity extends Activity {
 
     private void eventOnListeningButton(){
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
-        btnSumbit = (Button) findViewById(R.id.buttonRateSend);
-
-        //if click on me, then send the rating to ...
-        btnSumbit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -51,10 +41,11 @@ public class RatingActivity extends Activity {
         Button btn = (Button)findViewById(R.id.buttonRateSend);
         Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
         btn.setTypeface(type);
+        final Activity activity = this;
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RatingActivity.this, SettingsActivity.class));
+                activity.finish();
             }
         });
     }

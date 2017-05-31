@@ -49,26 +49,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/sfxImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.46"
-                app:srcCompat="@android:drawable/stat_sys_headset" />
-
-            <SeekBar
-                android:id="@+id/sfxBar"
-                android:layout_width="297dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.46" />
-
-        </LinearLayout>
-
         <EditText
             android:id="@+id/feedback"
             android:layout_width="match_parent"
