@@ -8,19 +8,54 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="buttonPlayer" parent="Widget.AppCompat.Button.Colored">
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="colorButtonNormal">#1976d2</item>
-    </style>
-
     <style name="buttonTut" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textColor">#FFFFFF</item>
-        <item name="colorButtonNormal">#8e24aa</item>
+        <item name="colorButtonNormal">#1976d2</item>
     </style>
 
     <style name="buttonSet" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textColor">#FFFFFF</item>
         <item name="colorButtonNormal">#43a047</item>
+    </style>
+
+    <style name="buttonRate" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="colorButtonNormal">#d81b60</item>
+    </style>
+
+    <style name="buttonFeedBack" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="colorButtonNormal">#3f51b5</item>
+    </style>
+
+    <style name="buttonAbout" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="colorButtonNormal">#00897b</item>
+    </style>
+
+    <style name="buttonModeLeft" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="colorButtonNormal">#ffb300</item>
+    </style>
+
+    <style name="buttonModeRight" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="colorButtonNormal">#ffb300</item>
+    </style>
+
+    <style name="buttonLeftChar" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="colorButtonNormal">#f4511e</item>
+    </style>
+
+    <style name="buttonRightChar" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="colorButtonNormal">#f4511e</item>
+    </style>
+
+    <style name="buttonCreateRoom" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="colorButtonNormal">#3949ab</item>
     </style>
 
 </resources>

@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Competitive-GoL</string>
+    <string name="modeLeft"><![CDATA[<--]]></string>
+    <string name="modeRight"><![CDATA[-->]]></string>
+    <string name="leftChar"><![CDATA[<--]]></string>
+    <string name="rightChar"><![CDATA[-->]]></string>
+    <string name="rightTut"><![CDATA[-->]]></string>
+    <string name="leftTut"><![CDATA[<--]]></string>
 </resources>

@@ -2,6 +2,7 @@ package com.example.rens.competitive_gol.Controller;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -24,6 +25,8 @@ public class FeedBackActivity extends Activity {
 
     private void eventToSettings(){
         Button btn = (Button)findViewById(R.id.buttonSendFeedBack);
+        Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
+        btn.setTypeface(type);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

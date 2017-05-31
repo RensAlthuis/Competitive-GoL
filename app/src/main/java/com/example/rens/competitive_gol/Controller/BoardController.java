@@ -39,7 +39,8 @@ public class BoardController {
         boardView = (BoardView)activity.findViewById(R.id.board);
         boardView.init(getBoardWidth(), getBoardHeight());
 
-        allPlayers = Players(numberPlayers);
+        allPlayers = new ArrayList<>();
+
         curPlayerIndex = 0;
         lastMove = new int[]{-1,-1};
 
@@ -110,6 +111,10 @@ public class BoardController {
     }
 
     /***********************************FUNCTIONS*************************************/
+
+    public void addPlayer(Player player){
+        allPlayers.add(player);
+    }
 
     // maakt een gesoteerde lijst van alle spelers afhankelijk van al opgestelde kleuren
     private ArrayList<Player> Players(int  numberPlayers){

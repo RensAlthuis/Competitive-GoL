@@ -17,7 +17,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".Controller.MainActivity" />
-        <activity android:name=".Controller.OnlineActivity" />
         <activity android:name=".Controller.RoomActivity" />
         <activity android:name=".Controller.AiActivity" />
         <activity android:name=".Controller.SettingsActivity" />
