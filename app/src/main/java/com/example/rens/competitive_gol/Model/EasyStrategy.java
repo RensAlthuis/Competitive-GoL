@@ -1,5 +1,7 @@
 package com.example.rens.competitive_gol.Model;
 
+import android.util.Log;
+
 import com.example.rens.competitive_gol.Controller.BoardController;
 import com.example.rens.competitive_gol.Controller.BoardSimulator;
 
@@ -20,6 +22,7 @@ public class EasyStrategy implements AIStrategy{
         ArrayList<Coordinate> moves = possibleMoves(boardSim, playerNr);
         Coordinate bestMove = findOptimalMove(boardSim, playerNr, moves);
         boardControl.doMove(bestMove);
+        Log.d("AIMOVE", bestMove.x + " - " + bestMove.y);
     }
 
     /**

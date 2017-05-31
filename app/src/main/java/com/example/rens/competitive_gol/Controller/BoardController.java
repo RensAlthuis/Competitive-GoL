@@ -46,10 +46,6 @@ public class BoardController {
 
         curPlayerIndex = 0;
 
-        board.setRandomBoard(20,allPlayers); //vult het bord met 20 willekeurige levende blokken per speler
-
-        setBoardView();
-
         /*****USER CONTROLS*****/
 
         boardView.setOnTouchListener(new View.OnTouchListener() {
@@ -135,6 +131,11 @@ public class BoardController {
     public int curTeam() { return allPlayers.get(curPlayerIndex).getTeam(); }
     public int curColor() { return allPlayers.get(curPlayerIndex).getColor(); }
 
+    public void randomBoard(int n){
+        board.setRandomBoard(n,allPlayers); //vult het bord met 20 willekeurige levende blokken per speler
+        setBoardView();
+    }
+
     /***********************************PLAYER CONTROLLES*****************************/
     // shit die je als spel buitenaf doet zonder de context te hoeven weten
     // dit zijn ijzerstekere functies waarvoor alleen nog maar een knop voor hoeft worden gemaakt
@@ -167,6 +168,10 @@ public class BoardController {
             else
                 last.remove(last.size()-1);
         }
+    }
+
+    public Player getPlayer(int index){
+        return allPlayers.get(index);
     }
 
     public void undoMove(){
