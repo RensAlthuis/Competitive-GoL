@@ -12,7 +12,6 @@ import java.util.Iterator;
  */
 
 public class EasyStrategy implements AIStrategy{
-    final private int UNCLAIMED = 0;
 
     @Override
     public void makeMove(BoardController boardControl, int playerNr){
@@ -37,7 +36,7 @@ public class EasyStrategy implements AIStrategy{
 
         for(int x = 0; x < width; x++){
             for(int y = 0; y < height; y++){
-                if(boardSim.getTeam(x, y) == playerNr || boardSim.getTeam(x, y) == UNCLAIMED){
+                if(boardSim.getTeam(x, y) == playerNr || boardSim.getTeam(x, y) == Tile.DEAD){
                     Coordinate coord = new Coordinate(x, y);
                     moves.add(coord);
                 }

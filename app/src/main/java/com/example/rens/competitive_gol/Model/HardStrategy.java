@@ -12,7 +12,6 @@ import java.util.Random;
  */
 
 public class HardStrategy implements AIStrategy{
-    final private int UNCLAIMED = 0;
     final private int TREE_DEPTH = 50;
     final private int TREE_WIDTH_PER_MOVE = 20;
     private int humanPlayerNr;
@@ -49,7 +48,7 @@ public class HardStrategy implements AIStrategy{
 
         for(int x = 0; x < width; x++){
             for(int y = 0; y < height; y++){
-                if(boardSim.getTeam(x, y) == playerNr || boardSim.getTeam(x, y) == UNCLAIMED){
+                if(boardSim.getTeam(x, y) == playerNr || boardSim.getTeam(x, y) == Tile.DEAD){
                     Coordinate coord = new Coordinate(x, y);
                     moves.add(coord);
                 }
