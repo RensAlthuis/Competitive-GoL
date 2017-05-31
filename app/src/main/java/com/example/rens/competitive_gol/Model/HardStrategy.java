@@ -70,7 +70,7 @@ public class HardStrategy implements AIStrategy{
      * @return the coordinate of the tile where the optimal move can be made.
      */
     private Coordinate findOptimalMove(BoardSimulator boardSim, int playerNr, ArrayList<Coordinate> moves){
-        Coordinate move = new Coordinate(0, 0);
+        Coordinate move = moves.get(1);
         int tilesBefore;
         int tilesAfter;
         int maxGain = 0;
@@ -116,7 +116,7 @@ public class HardStrategy implements AIStrategy{
     private int averageGainOnMove(BoardSimulator boardSim, int playerNr, Coordinate move){
         Random rand = new Random();
         ArrayList<Coordinate> tempMoves;
-        Coordinate randomMove = new Coordinate(0, 0);
+        Coordinate randomMove;
         int currentGain = 0;
         int averageGain;
         int totalGain = 0;
@@ -138,7 +138,7 @@ public class HardStrategy implements AIStrategy{
                     int randomSelector = rand.nextInt(tempMoves.size() );
                     randomMove = tempMoves.get(randomSelector);
                 }
-                else if(i%2!=0){
+                else{
                     tempMoves = possibleMoves(testBoard, playerNr);
                     int randomSelector = rand.nextInt(tempMoves.size() );
                     randomMove = tempMoves.get(randomSelector);
