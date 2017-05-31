@@ -8,28 +8,28 @@ import com.example.rens.competitive_gol.Controller.BoardController;
  * Created by Glenn on 15/05/2017.
  */
 
-public class AIPlayer {
+public class AIPlayer extends Player{
     private BoardController boardControl;
     private AIStrategy strategy;
-    private int playerNr;
 
     /**
-     * The constructor.
-     * @param boardControl the board the AI player will be playing on.
-     * @param strategy the strategy is will be using; either Easy or Hard (Hard to be implemented)
-     * @param playerNr the playerNr of the AI player.
+     * The constructor
+     * @param team the number of the AI player's team.
+     * @param color the number of the color.
+     * @param boardControl the boardcontroller that holds the playing board.
+     * @param strategy the hard or easy strategy to use.
      */
-    public AIPlayer(BoardController boardControl, AIStrategy strategy, int playerNr){
+    public AIPlayer(int team, int color, BoardController boardControl, AIStrategy strategy){
+        super(team, color);
         this.boardControl = boardControl;
         this.strategy = strategy;
-        this.playerNr = playerNr;
     }
 
     /**
      * This function makes the next move and iterates the game one step.
      */
     public void makeNextMove(){
-        strategy.makeMove(boardControl, playerNr);
+        strategy.makeMove(boardControl, team);
     }
 
 }

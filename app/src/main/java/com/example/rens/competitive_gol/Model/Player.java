@@ -4,8 +4,8 @@ public class Player {
 
     /*******************VARIABLES*******************/
 
-    private int color;
-    private int team;
+    protected int color;
+    protected int team;
 
     /*******************CONSTRUCTORS*******************/
 
