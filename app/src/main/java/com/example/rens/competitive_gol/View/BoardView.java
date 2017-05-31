@@ -34,7 +34,7 @@ public class BoardView extends View {
     private final static int DEAD = Color.GRAY; // color for dead tiles
     private final static float MAXSCALING = 2;
 
-    private final static float SIZETILE = 0.7f; // relative size of the block
+    private final static float SIZETILE = 0.95f; // relative size of the block
     private final static float SIZENEXT = 0.3f; // relative size of the smaller block that indicates what happens next turn
     private final static float BORDERSIZE = 40f; // the size of the surrounding border
 
@@ -152,7 +152,7 @@ public class BoardView extends View {
                 drawEmpty(canvas, a, b); // tekent de lege blokken eronder. DIT IS PUUR COSMETISCH!
                 drawTile(canvas, a, b); // tekent de huidige blokken
                 drawTileNext(canvas, a, b); // tekent de volgende blokken
-                drawTileHealth(canvas, a, b); // tekent de levens van de huidige blokken. OOK DIT IS HOPELIJK TIJDELIJK!
+                //drawTileHealth(canvas, a, b); // tekent de levens van de huidige blokken. OOK DIT IS HOPELIJK TIJDELIJK!
             }
         }
 
@@ -161,7 +161,7 @@ public class BoardView extends View {
 
     private void drawBorder(Canvas canvas){
         Paint p = new Paint();
-        p.setColor(Color.BLACK); // the border color
+        p.setColor(Color.DKGRAY); // the border color
         p.setStyle(Paint.Style.STROKE);
         p.setStrokeWidth(2*BORDERSIZE);
         canvas.drawRect(0,0,canvas.getWidth(),canvas.getHeight(),p);
@@ -179,7 +179,7 @@ public class BoardView extends View {
         Paint p = new Paint();
         p.setColor(colors[y * nTilesX + x]);
         p.setStyle(Paint.Style.FILL_AND_STROKE);
-        drawBlock(canvas, p, x, y, SIZETILE*(0.25f*health[y * nTilesX + x]+0.5f)); //TODO: interne pijn lijden omdat hier magic nummers staan (en nee, gewoon wat stic float maken zonder reden is niet de soort van oplosssing die dat verhelpt)
+        drawBlock(canvas, p, x, y, SIZETILE);//TODO: interne pijn lijden omdat hier magic nummers staan (en nee, gewoon wat stic float maken zonder reden is niet de soort van oplosssing die dat verhelpt)
     }
 
     //Draw the indicator for what the tile will be next turn

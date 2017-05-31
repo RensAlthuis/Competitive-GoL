@@ -13,6 +13,6 @@ public class TileSettings {
         maxLife = 3;
         minSurvive = 2;
         maxSurvive = 3;
-        defaultHealth = 2;
+        defaultHealth = 1;
     }
 }
