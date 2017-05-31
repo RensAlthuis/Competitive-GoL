@@ -58,7 +58,7 @@ public class EasyStrategy implements AIStrategy{
      * @return the coordinate of the tile where the optimal move can be made.
      */
     private Coordinate findOptimalMove(BoardSimulator boardSim, int playerNr, ArrayList<Coordinate> moves){
-        Coordinate move = new Coordinate(0, 0);
+        Coordinate move = moves.get(1);
         int tilesBefore;
         int tilesAfter;
         int maxGain = 0;
