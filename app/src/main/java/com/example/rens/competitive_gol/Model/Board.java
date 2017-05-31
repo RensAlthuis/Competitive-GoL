@@ -63,6 +63,10 @@ public class Board {
         setNext();
     }
 
+    public Board(Board aBoard){
+        this(aBoard.width, aBoard.height, aBoard.getSettings());
+    }
+
     //create all the tiles for the board
     private ArrayList<Tile> emptyTiles(){
         ArrayList<Tile> t = new ArrayList<>();
@@ -118,11 +122,12 @@ public class Board {
         for(Tile tile : tiles) this.tiles.add(tile);
     }
 
-    public ArrayList<Tile> getTiles(){
-        ArrayList<Tile> copy =  new ArrayList<>();
-        for(Tile tile : tiles) copy.add(new Tile(tile.team,tile.getHealth()));
+    public ArrayList<Tile> getTiles() {
+        ArrayList<Tile> copy = new ArrayList<>();
+        for (Tile tile : tiles) copy.add(new Tile(tile.team, tile.getHealth()));
         return copy;
     }
+
 
     /*******************DIFFERENT BOARDS*******************/
 
@@ -208,8 +213,14 @@ public class Board {
         return false;
     }
 
+
     public boolean winSize(int team){ // TODO
         return false;
+    }
+
+
+    public TileSettings getSettings(){
+        return settings;
     }
 
 }

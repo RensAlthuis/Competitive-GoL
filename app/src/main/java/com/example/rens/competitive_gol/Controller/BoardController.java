@@ -145,7 +145,7 @@ public class BoardController {
     }
 
     // zet de volgende speler
-    public void nextPlayer(){
+    public void nextPlayer() {
         curPlayerIndex++;
         curPlayerIndex %= allPlayers.size();
 
@@ -225,6 +225,11 @@ public class BoardController {
                 if(board.isDeadNext(x,y))   boardView.setTileDeadNext(x,y);
                 else                        boardView.setTilePlayerNext(x,y,allPlayers.get(board.getTileNextTeam(x,y)).getColor());
             }
+
+    }
+
+    public Board getBoard(){
+        return new Board(board);
     }
 }
 
