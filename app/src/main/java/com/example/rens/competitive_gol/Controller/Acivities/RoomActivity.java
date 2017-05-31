@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.rens.competitive_gol.R;
 
+
 public class RoomActivity extends Activity {
 
     private String[] arraySpinner;
@@ -30,7 +31,9 @@ public class RoomActivity extends Activity {
     private Typeface type;
     private ImageView colourChoice;
     private static final int[] colours = {0xffef5350, 0xffec407a, 0xffab47bc, Color.BLUE,Color.RED,Color.GREEN,Color.MAGENTA,Color.YELLOW,Color.CYAN};
+    private static final String[] gameModes = {"Player VS. Player", "Player VS. AI"};
     private int currentColour = 0;
+    private int currentGame = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,7 @@ public class RoomActivity extends Activity {
         changeFonts();
         colourChoice = (ImageView)findViewById(R.id.colourChoice);
         colourChoice.setBackgroundColor(colours[currentColour]);
+        diffGameMode = (TextView) findViewById(R.id.diffGameModes);
         eventToCreate();
         eventToLeftMode();
         eventToRightMode();
@@ -62,7 +66,7 @@ public class RoomActivity extends Activity {
 
    private void changeFonts(){
        gameMode = (TextView) findViewById(R.id.gameMode);
-       diffGameMode = (TextView) findViewById(R.id.gameModes);
+       diffGameMode = (TextView) findViewById(R.id.diffGameModes);
        boardSize = (TextView) findViewById(R.id.boardSize);
        timeLimit = (TextView) findViewById(R.id.timeLimit);
        characters = (TextView) findViewById(R.id.characters);
@@ -89,6 +93,7 @@ public class RoomActivity extends Activity {
                 Intent intent = new Intent(RoomActivity.this, MainActivity.class);
                 intent.putExtra("Player1", colours[currentColour]);
                 intent.putExtra("Player2", colours[(currentColour +1) % colours.length]);
+                intent.putExtra("gameMode", gameModes[currentGame]);
                 startActivity(intent);
             }
         });
@@ -105,14 +110,28 @@ public class RoomActivity extends Activity {
         });
     }*/
 
-    private void eventToLeftMode(){
+    private void eventToRightMode(){
         Button btn = (Button) findViewById(R.id.buttonModeLeft);
         btn.setTypeface(type);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentGame = (currentGame + 1) % gameModes.length;
+                diffGameMode.setText(gameModes[currentGame]);
+            }
+        });
     }
 
-    private void eventToRightMode(){
+    private void eventToLeftMode(){
         Button btn = (Button) findViewById(R.id.buttonModeRight);
         btn.setTypeface(type);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentGame = (currentGame - 1 < 0)? gameModes.length-1 : currentGame -1;
+                diffGameMode.setText(gameModes[currentGame]);
+            }
+        });
     }
 
     private void eventToLeftChar(){

@@ -40,8 +40,13 @@ public class MainActivity extends Activity {
         game = new BoardController(this, this, board1, 2);
         int col1 = getIntent().getIntExtra("Player1", 0);
         game.addPlayer(new Player(0, col1));
-        int col2 = getIntent().getIntExtra("Player2", 0);
-        game.addPlayer(new Player(1, col2));
+
+        if(getIntent().getStringExtra("gamemode").equals("Player VS. Player")) {
+            int col2 = getIntent().getIntExtra("Player2", 0);
+            game.addPlayer(new Player(1, col2));
+        }else{
+            //TODO: MAKE AI PLAYER
+        }
 
         character = (ImageView)findViewById(R.id.character);
         updateCharacterIcon();

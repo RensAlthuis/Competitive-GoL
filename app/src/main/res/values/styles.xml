@@ -58,4 +58,13 @@
         <item name="colorButtonNormal">#3949ab</item>
     </style>
 
+    <style name="buttonLeftTut" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="colorButtonNormal">#039be5</item>
+    </style>
+
+    <style name="buttonRightTut" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="colorButtonNormal">#039be5</item>
+    </style>
 </resources>

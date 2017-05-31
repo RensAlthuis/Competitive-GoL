@@ -122,11 +122,11 @@
                 tools:layout_constraintTop_creator="1" />
 
             <TextView
-                android:id="@+id/gameModes"
+                android:id="@+id/diffGameModes"
                 android:layout_width="153dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Classic Mode"
+                android:text="Player VS. Player"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
