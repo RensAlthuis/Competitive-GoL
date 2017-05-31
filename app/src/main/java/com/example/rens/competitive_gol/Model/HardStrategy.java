@@ -20,9 +20,9 @@ public class HardStrategy implements AIStrategy{
     @Override
     public void makeMove(BoardController boardControl, int playerNr){
         if (playerNr == 1){
-            humanPlayerNr = 2;
+            humanPlayerNr = 0;
         }
-        else if(playerNr == 2){
+        else if(playerNr == 0){
             humanPlayerNr = 1;
         }
         else{
