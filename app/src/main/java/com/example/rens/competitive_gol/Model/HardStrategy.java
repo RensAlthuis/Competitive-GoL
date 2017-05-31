@@ -136,7 +136,7 @@ public class HardStrategy implements AIStrategy{
                     int randomSelector = rand.nextInt(tempMoves.size() + 1);
                     randomMove = tempMoves.get(randomSelector);
                 }
-                else if(i%2==0){
+                else if(i%2!=0){
                     tempMoves = possibleMoves(testBoard, playerNr);
                     int randomSelector = rand.nextInt(tempMoves.size() + 1);
                     randomMove = tempMoves.get(randomSelector);
