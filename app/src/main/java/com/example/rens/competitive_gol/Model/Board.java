@@ -64,7 +64,7 @@ public class Board {
     }
 
     public Board(Board aBoard){
-        this(aBoard.width, aBoard.height, aBoard.getSettings());
+        this(aBoard.width, aBoard.height, aBoard.getSettings(), aBoard.getTiles());
     }
 
     //create all the tiles for the board

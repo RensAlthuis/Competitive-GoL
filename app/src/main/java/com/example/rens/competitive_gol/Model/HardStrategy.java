@@ -1,5 +1,7 @@
 package com.example.rens.competitive_gol.Model;
 
+import android.util.Log;
+
 import com.example.rens.competitive_gol.Controller.BoardController;
 import com.example.rens.competitive_gol.Controller.BoardSimulator;
 
@@ -12,7 +14,7 @@ import java.util.Random;
  */
 
 public class HardStrategy implements AIStrategy{
-    final private int TREE_DEPTH = 50;
+    final private int TREE_DEPTH = 3;
     final private int TREE_WIDTH_PER_MOVE = 20;
     private int humanPlayerNr;
 
@@ -31,6 +33,7 @@ public class HardStrategy implements AIStrategy{
         ArrayList<Coordinate> moves = possibleMoves(boardSim, playerNr);
         Coordinate bestMove = findOptimalMove(boardSim, playerNr, moves);
         boardControl.doMove(bestMove);
+        Log.d("AIMOVE", bestMove.x + " - " + bestMove.y);
     }
 
     /**
@@ -132,12 +135,12 @@ public class HardStrategy implements AIStrategy{
 
                 if(i%2==0){
                     tempMoves = possibleMoves(testBoard, humanPlayerNr);
-                    int randomSelector = rand.nextInt(tempMoves.size() + 1);
+                    int randomSelector = rand.nextInt(tempMoves.size() );
                     randomMove = tempMoves.get(randomSelector);
                 }
                 else if(i%2!=0){
                     tempMoves = possibleMoves(testBoard, playerNr);
-                    int randomSelector = rand.nextInt(tempMoves.size() + 1);
+                    int randomSelector = rand.nextInt(tempMoves.size() );
                     randomMove = tempMoves.get(randomSelector);
                 }
 
