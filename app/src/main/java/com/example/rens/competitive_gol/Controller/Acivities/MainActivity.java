@@ -1,7 +1,10 @@
 package com.example.rens.competitive_gol.Controller.Acivities;
 
 import com.example.rens.competitive_gol.Controller.BoardController;
+import com.example.rens.competitive_gol.Model.AIPlayer;
 import com.example.rens.competitive_gol.Model.Board;
+import com.example.rens.competitive_gol.Model.EasyStrategy;
+import com.example.rens.competitive_gol.Model.HardStrategy;
 import com.example.rens.competitive_gol.Model.Player;
 import com.example.rens.competitive_gol.Model.TileSettings;
 import com.example.rens.competitive_gol.R;
@@ -13,6 +16,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 
@@ -26,6 +30,7 @@ public class MainActivity extends Activity {
     private Board board1 = new Board(10,10,new TileSettings()); //
     private Board board2 = new Board(15,15,new TileSettings()); // voorbeeld van meerdere levels
     private ImageView character;
+    private boolean isAIGame;
 
     /***********************************************/
 
@@ -36,17 +41,19 @@ public class MainActivity extends Activity {
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
+        isAIGame = !getIntent().getStringExtra("gameMode").equals("Player VS. Player");
         // Het spel:
         game = new BoardController(this, this, board1, 2);
         int col1 = getIntent().getIntExtra("Player1", 0);
         game.addPlayer(new Player(0, col1));
 
-        if(getIntent().getStringExtra("gamemode").equals("Player VS. Player")) {
-            int col2 = getIntent().getIntExtra("Player2", 0);
+        int col2 = getIntent().getIntExtra("Player2", 0);
+        if(!isAIGame) {
             game.addPlayer(new Player(1, col2));
         }else{
-            //TODO: MAKE AI PLAYER
+            game.addPlayer(new AIPlayer(1, col2, game, new EasyStrategy()));
         }
+        game.randomBoard(20);
 
         character = (ImageView)findViewById(R.id.character);
         updateCharacterIcon();
@@ -58,10 +65,11 @@ public class MainActivity extends Activity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.update();
-                game.winCheck();
-                game.nextPlayer(); // updaten -> gewonnen? -> volgende speler
-                updateCharacterIcon();
+                nextTurn();
+                if(isAIGame){
+                    ((AIPlayer)game.getPlayer(1)).makeNextMove();
+                    nextTurn();
+                }
             }
         });
 
@@ -79,5 +87,11 @@ public class MainActivity extends Activity {
 
     private void updateCharacterIcon(){
         character.setBackgroundColor(game.curColor());
+    }
+    private void nextTurn(){
+        game.update();
+        game.winCheck();
+        game.nextPlayer(); // updaten -> gewonnen? -> volgende speler
+        updateCharacterIcon();
     }
 }
