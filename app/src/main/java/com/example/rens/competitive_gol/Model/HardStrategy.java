@@ -5,17 +5,29 @@ import com.example.rens.competitive_gol.Controller.BoardSimulator;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 /**
- * This class implements an AI strategy that is easily beaten.
- * Created by Glenn on 15/05/2017.
+ * Created by Glenn on 22/05/2017.
  */
 
-public class EasyStrategy implements AIStrategy{
+public class HardStrategy implements AIStrategy{
     final private int UNCLAIMED = 0;
+    final private int TREE_DEPTH = 50;
+    final private int TREE_WIDTH_PER_MOVE = 20;
+    private int humanPlayerNr;
 
     @Override
     public void makeMove(BoardController boardControl, int playerNr){
+        if (playerNr == 1){
+            humanPlayerNr = 2;
+        }
+        else if(playerNr == 2){
+            humanPlayerNr = 1;
+        }
+        else{
+            // This should throw an exception.
+        }
         BoardSimulator boardSim = new BoardSimulator(boardControl);
         ArrayList<Coordinate> moves = possibleMoves(boardSim, playerNr);
         Coordinate bestMove = findOptimalMove(boardSim, playerNr, moves);
@@ -60,19 +72,15 @@ public class EasyStrategy implements AIStrategy{
         int tilesBefore;
         int tilesAfter;
         int maxGain = 0;
-        BoardSimulator testBoard;
+        int currentGain;
         Coordinate temp;
 
         Iterator<Coordinate> coordIterator = moves.iterator();
         while (coordIterator.hasNext()) {
-            testBoard = new BoardSimulator(boardSim);
             temp = coordIterator.next();
-            tilesBefore = countOwnTiles(testBoard, playerNr);
-            testBoard.setTeam(temp.x, temp.y, playerNr);
-            testBoard.iterateBoard();
-            tilesAfter = countOwnTiles(testBoard, playerNr);
-            if(tilesAfter-tilesBefore > maxGain){
-                maxGain = tilesAfter-tilesBefore;
+            currentGain = averageGainOnMove(boardSim, playerNr, temp);
+            if(currentGain > maxGain){
+                maxGain = currentGain;
                 move.x = temp.x;
                 move.y = temp.y;
             }
@@ -101,5 +109,48 @@ public class EasyStrategy implements AIStrategy{
         }
 
         return ownTiles;
+    }
+
+    private int averageGainOnMove(BoardSimulator boardSim, int playerNr, Coordinate move){
+        Random rand = new Random();
+        ArrayList<Coordinate> tempMoves;
+        Coordinate randomMove = new Coordinate(0, 0);
+        int currentGain = 0;
+        int averageGain;
+        int totalGain = 0;
+        int tilesBefore;
+        int tilesAfter;
+
+
+        for(int j = 0; j < TREE_WIDTH_PER_MOVE; j++){
+
+            tilesBefore = countOwnTiles(boardSim, playerNr);
+            BoardSimulator testBoard = new BoardSimulator(boardSim);
+            boardSim.setTeam(move.x, move.y, playerNr);
+            testBoard.iterateBoard();
+
+            for(int i = 0; i < TREE_DEPTH; i++){
+
+                if(i%2==0){
+                    tempMoves = possibleMoves(testBoard, humanPlayerNr);
+                    int randomSelector = rand.nextInt(tempMoves.size() + 1);
+                    randomMove = tempMoves.get(randomSelector);
+                }
+                else if(i%2==0){
+                    tempMoves = possibleMoves(testBoard, playerNr);
+                    int randomSelector = rand.nextInt(tempMoves.size() + 1);
+                    randomMove = tempMoves.get(randomSelector);
+                }
+
+                testBoard.setTeam(randomMove.x, randomMove.y, playerNr);
+                testBoard.iterateBoard();
+            }
+
+            tilesAfter = countOwnTiles(testBoard, playerNr);
+            currentGain = tilesAfter - tilesBefore;
+            totalGain += currentGain;
+        }
+        averageGain = totalGain/TREE_WIDTH_PER_MOVE;
+        return averageGain;
     }
 }
