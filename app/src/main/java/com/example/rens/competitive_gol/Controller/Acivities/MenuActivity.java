@@ -2,6 +2,7 @@ package com.example.rens.competitive_gol.Controller.Acivities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -19,34 +20,27 @@ public class MenuActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_menu);
-        eventToMain();
-        eventToOnline();
+        eventToRoom();
         eventToSettings();
         eventToTutorial();
     }
 
-    private void eventToMain() {
+    private void eventToRoom() {
         Button btn = (Button)findViewById(R.id.buttonAi);
+        Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
+        btn.setTypeface(type);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MenuActivity.this, MainActivity.class));
-            }
-        });
-    }
-
-    private void eventToOnline() {
-        Button btn = (Button)findViewById(R.id.buttonPlayer);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MenuActivity.this, OnlineActivity.class));
+                startActivity(new Intent(MenuActivity.this, RoomActivity.class));
             }
         });
     }
 
     private void eventToTutorial() {
         Button btn = (Button)findViewById(R.id.buttonTut);
+        Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
+        btn.setTypeface(type);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,6 +51,8 @@ public class MenuActivity extends Activity {
 
     private void eventToSettings() {
         Button btn = (Button)findViewById(R.id.buttonSet);
+        Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
+        btn.setTypeface(type);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +60,4 @@ public class MenuActivity extends Activity {
             }
         });
     }
-
-
 }

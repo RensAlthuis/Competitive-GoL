@@ -17,7 +17,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".Controller.Acivities.MainActivity" />
-        <activity android:name=".Controller.Acivities.OnlineActivity" />
         <activity android:name=".Controller.Acivities.RoomActivity" />
         <activity android:name=".Controller.Acivities.AiActivity" />
         <activity android:name=".Controller.Acivities.SettingsActivity" />
@@ -25,6 +24,7 @@
         <activity android:name=".Controller.Acivities.RatingActivity" />
         <activity android:name=".Controller.Acivities.FeedBackActivity" />
         <activity android:name=".Controller.Acivities.AboutActivity"></activity>
+
     </application>
 
 </manifest>

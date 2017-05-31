@@ -42,7 +42,9 @@ public class BoardController {
         boardView = (BoardView)activity.findViewById(R.id.board);
         boardView.init(width(), height());
 
-        allPlayers = setPlayers(numberPlayers);
+        allPlayers = new ArrayList<>();
+
+        curPlayerIndex = 0;
 
         board.setRandomBoard(20,allPlayers); //vult het bord met 20 willekeurige levende blokken per speler
 
@@ -106,6 +108,12 @@ public class BoardController {
             }
         });
 
+    }
+
+    /***********************************FUNCTIONS*************************************/
+
+    public void addPlayer(Player player){
+        allPlayers.add(player);
     }
 
     // maakt een gesoteerde lijst van alle spelers afhankelijk van al opgestelde kleuren

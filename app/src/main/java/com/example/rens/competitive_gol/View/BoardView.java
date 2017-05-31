@@ -65,8 +65,8 @@ public class BoardView extends View {
         health     = new int[nTilesX * nTilesY];
 
         for (int i = 0; i < nTilesX * nTilesY; i++) {
-            colors[i] = Color.WHITE; // Wit zien is foute boel!
-            colorsNext[i] = Color.WHITE;
+            colors[i] = Color.GRAY; // Wit zien is foute boel!
+            colorsNext[i] = Color.GRAY;
         }
     }
 
