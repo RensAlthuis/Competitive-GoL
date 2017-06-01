@@ -28,7 +28,6 @@ public class MainActivity extends Activity {
     private static int FRACTIONRANDOM = 5; // is de fractie van het bord (als 1/..) dat wordt gevuld door random tiles
     private ImageView character;
     private int gameMode;
-    private Player player1;
     private CountDownTimer timer;
     private TextView[] time;
 
@@ -45,7 +44,7 @@ public class MainActivity extends Activity {
         time[1] = (TextView)findViewById(R.id.timerText2);
 
         // Het spel:
-        final int gameMode = getIntent().getIntExtra("gameMode", 0);
+        gameMode = getIntent().getIntExtra("gameMode", 0);
         makeGame(gameMode);
 
         character = (ImageView)findViewById(R.id.character);
