@@ -40,6 +40,7 @@ public class RoomActivity extends Activity {
     private int currentColour = 0;
     private int currentColour1 = 1;
     private int currentGame = 0;
+    private Spinner timeLimitSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +75,7 @@ public class RoomActivity extends Activity {
         eventToRightChar1();
         eventToLeftBoard();
         eventToRightBoard();
-        //eventToSpinner();
+        eventToSpinner();
    }
 
    private void changeFonts(){
@@ -114,21 +115,21 @@ public class RoomActivity extends Activity {
                 intent.putExtra("gameMode", currentGame);
                 intent.putExtra("steps", stepChoice);
                 intent.putExtra("boardSize", boardSizeChoice);
+                intent.putExtra("Time", (String) timeLimitSpinner.getSelectedItem());
                 startActivity(intent);
             }
         });
     }
 
-    /*private void eventToSpinner(){
-        Button btn = (Button)findViewById(R.id.buttonRateSend);
-        //btn.setTypeface(type);
-        btn.setOnClickListener(new View.OnClickListener() {
+    private void eventToSpinner(){
+        timeLimitSpinner = (Spinner)findViewById(R.id.spinner);
+        /*btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(RoomActivity.this, MainActivity.class));
             }
-        });
-    }*/
+        });*/
+    }
 
     private void eventToRightMode(){
         Button btn = (Button) findViewById(R.id.buttonModeRight);

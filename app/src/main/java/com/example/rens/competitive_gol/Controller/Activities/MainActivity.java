@@ -12,11 +12,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
@@ -27,6 +29,8 @@ public class MainActivity extends Activity {
     private ImageView character;
     private int gameMode;
     private Player player1;
+    private CountDownTimer timer;
+    private TextView time;
 
     /***********************************************/
 
@@ -36,6 +40,7 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+        time = (TextView)findViewById(R.id.timerText);
 
         // Het spel:
         final int gameMode = getIntent().getIntExtra("gameMode", 0);
@@ -85,6 +90,8 @@ public class MainActivity extends Activity {
         }
         game.nextPlayer(); // updaten -> gewonnen? -> volgende speler
         updateCharacterIcon();
+        stopTimer();
+        startTimer(game.getPlayer(game.curTeam()).currentTime);
     }
 
     /********************MAKING THE GAME********************/
@@ -101,29 +108,80 @@ public class MainActivity extends Activity {
         final int col1 = getIntent().getIntExtra("Player1", 0);
         final int col2 = getIntent().getIntExtra("Player2", 0);
 
+
         game.addPlayer(new Player(0, col1));
 
         if(gameMode == 0) game.addPlayer(new Player(1, col2));
         else              game.addPlayer(new AIPlayer(1, col2, game, (gameMode == 1)? new EasyStrategy() : new HardStrategy()));
 
+
+        /********************TIMERS********************/
+        final String maxTimeStr = getIntent().getStringExtra("Time");
+        int maxTime;
+        if(maxTimeStr.equals("2 min")) {
+            maxTime = 2*60;
+        }else if(maxTimeStr.equals("5 min")){
+            maxTime = 5*60;
+        }else if(maxTimeStr.equals("10 min")){
+            maxTime = 10*60;
+        }else if(maxTimeStr.equals("20 min")){
+            maxTime = 20*60;
+        }
+        else{
+            maxTime = -1;
+        }
+
+
+        time.setTypeface(Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf"));
+        time.setTextSize(40);
+        time.setText("" + game.getPlayer(game.curTeam()).currentTime);
+        game.getPlayer(0).currentTime = maxTime;
+        game.getPlayer(1).currentTime = maxTime;
+
         /********************BOARD********************/
         game.setRandomBoard(size*size/FRACTIONRANDOM);
     }
 
-    private void toWinLoss(int winner){
+    private void toWinLoss(int winner) {
         finish();
         Intent intent = new Intent(MainActivity.this, WinLossActivity.class);
-        if(gameMode == 0){
-            if(winner == 0)
+        if (gameMode == 0) {
+            if (winner == 0)
                 intent.putExtra("winner", 1);
-            if(winner == 1)
+            if (winner == 1)
                 intent.putExtra("winner", 2);
-        }else{
+        } else {
             if (winner == 0)
                 intent.putExtra("winner", 3);
             if (winner == 1)
                 intent.putExtra("winner", 0);
         }
         startActivity(intent);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        startTimer(game.getPlayer(0).currentTime);
+    }
+
+    public void startTimer(long n){
+
+        timer = new CountDownTimer(n*1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                game.getPlayer(game.curTeam()).currentTime = millisUntilFinished /1000;
+                time.setText("" + millisUntilFinished /1000);
+            }
+
+            @Override
+            public void onFinish() {
+            }
+        };
+        timer.start();
+    }
+
+    public void stopTimer(){
+        timer.cancel();
     }
 }
