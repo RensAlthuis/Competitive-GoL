@@ -1,5 +1,7 @@
 package com.example.rens.competitive_gol.Model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -202,11 +204,30 @@ public class Board {
 
     //private final static int
 
-    public boolean winExtinction(int team){
-        for(Tile t : tiles)
-            if(!t.isDead() && t.team != team)
-                return false;
-        return true;
+    public int winExtinction(){
+        boolean team0exists = false;
+        boolean team1exists= false;
+
+        for(Tile t : tiles){
+            if(!t.isDead() && !(team0exists && team1exists)) {
+                if (t.team == 0) {
+                    team0exists = true;
+                }
+                else if(t.team == 1) {
+                    team1exists = true;
+                }
+            }
+        }
+        if (team0exists && (!team1exists)){
+            Log.d("WINNER", "team " + 0);
+           return 0;
+        }else if (team1exists && (!team0exists)){
+            Log.d("WINNER", "team " + 1);
+            return 1;
+        }else{
+            Log.d("WINNER", "not yet");
+            return -1;
+        }
     }
 
     public boolean winDominant(int team){ // TODO

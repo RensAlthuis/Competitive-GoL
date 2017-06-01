@@ -60,13 +60,7 @@ public class MainActivity extends Activity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                MAAK DIT GOED RENS AUUUUUBBBBBB :( Q____Q
 
-
-                if(game.getBoard().winExtinction(player1.getTeam())){
-                    startActivity(new Intent(MainActivity.this, DeadActivity.class));
-                }*/
                 nextTurn();
                 if(gameMode != 0){
                     ((AIPlayer)game.getPlayer(1)).makeNextMove();
@@ -92,7 +86,10 @@ public class MainActivity extends Activity {
     }
     private void nextTurn(){
         game.update();
-        game.winCheck();
+        int win = game.winCheck();
+        if(win != -1){
+            toWinLoss(win);
+        }
         game.nextPlayer(); // updaten -> gewonnen? -> volgende speler
         updateCharacterIcon();
     }
@@ -115,5 +112,20 @@ public class MainActivity extends Activity {
         int size = getIntent().getIntExtra("boardSize", 10);
         Board b = new Board(size,size,new TileSettings());
         game = new BoardController(this, this, b, 2, steps);
+    }
+
+    private void toWinLoss(int winner){
+        //TODO: We gaan altijd naar you lose..
+        finish();
+        if(gameMode == 0){
+            startActivity(new Intent(MainActivity.this, DeadActivity.class));
+        }
+        else if(gameMode == 1){
+            if(winner == 1) {
+                startActivity(new Intent(MainActivity.this, DeadActivity.class));
+            }else{
+                startActivity(new Intent(MainActivity.this, DeadActivity.class));
+            }
+        }
     }
 }

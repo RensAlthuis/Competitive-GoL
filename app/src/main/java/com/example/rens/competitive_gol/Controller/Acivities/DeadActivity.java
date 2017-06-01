@@ -34,7 +34,8 @@ public class DeadActivity extends Activity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(DeadActivity.this, RoomActivity.class));
+                finish();
+                startActivity(new Intent(DeadActivity.this, MenuActivity.class));
             }
         });
     }

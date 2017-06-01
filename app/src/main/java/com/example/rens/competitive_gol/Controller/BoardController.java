@@ -140,8 +140,8 @@ public class BoardController {
     // dit zijn ijzerstekere functies waarvoor alleen nog maar een knop voor hoeft worden gemaakt
 
     // TODO DE FUNDAMENTELE WIN REGELS
-    public void winCheck(){
-        if(board.winExtinction(curTeam())) System.out.println("You won! :D");
+    public int winCheck(){
+        return board.winExtinction();
     }
 
     // zet de volgende speler
