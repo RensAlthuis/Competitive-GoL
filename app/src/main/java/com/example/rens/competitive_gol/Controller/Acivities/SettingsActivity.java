@@ -11,12 +11,16 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.example.rens.competitive_gol.R;
 
 public class SettingsActivity extends Activity {
 
     private AudioManager volume;
+    private TextView volumeText;
+    private TextView feedback;
+    private Typeface type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,15 +29,20 @@ public class SettingsActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_settings);
+        type =  Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
+        volumeText = (TextView) findViewById(R.id.volumeText);
+        feedback = (TextView) findViewById(R.id.feedback);
+        volumeText.setTypeface(type);
+        feedback.setTypeface(type);
         volumeSettings();
         eventToRating();
         eventToFeedBack();
         eventToAbout();
+
     }
 
     private void eventToRating(){
         Button btn = (Button)findViewById(R.id.buttonRate);
-        Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
         btn.setTypeface(type);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +74,6 @@ public class SettingsActivity extends Activity {
 
     private void eventToFeedBack(){
         Button btn = (Button)findViewById(R.id.buttonFeedBack);
-        Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
         btn.setTypeface(type);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override

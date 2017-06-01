@@ -11,14 +11,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.497">
+        app:layout_constraintVertical_bias="0.0">
 
         <EditText
-            android:id="@+id/volume"
+            android:id="@+id/volumeText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="false"
@@ -36,16 +36,16 @@
 
             <ImageView
                 android:id="@+id/volumeImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:srcCompat="@android:drawable/stat_sys_headset" />
+                android:layout_width="44dp"
+                android:layout_height="match_parent"
+                android:background="@mipmap/volumeplaatje"
+                android:layout_weight="0.14" />
 
             <SeekBar
                 android:id="@+id/volumeBar"
                 android:layout_width="297dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_height="34dp"
+                android:layout_weight="1.00" />
 
         </LinearLayout>
 
@@ -63,24 +63,24 @@
 
         <Button
             android:id="@+id/buttonRate"
-            android:theme="@style/buttonRate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Rate Application" />
+            android:text="Rate Application"
+            android:theme="@style/buttonRate" />
 
         <Button
             android:id="@+id/buttonFeedBack"
-            android:theme="@style/buttonFeedBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Send Feedback" />
+            android:text="Send Feedback"
+            android:theme="@style/buttonFeedBack" />
 
         <Button
             android:id="@+id/buttonAbout"
-            android:theme="@style/buttonAbout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="About Us" />
+            android:text="About Us"
+            android:theme="@style/buttonAbout" />
 
     </LinearLayout>
 

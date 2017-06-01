@@ -8,8 +8,8 @@
 
     <EditText
         android:id="@+id/aboutUs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="331dp"
+        android:layout_height="300dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -21,8 +21,10 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:text="Competitive Game of Life app is made by 5 students of Radboud University Nijmegen. This app was created for one of the assignment. It quickly became a passion project. We put alot of effort into this and we will keep continue to improve it. We love to get feedback and please rate our app in the rating tab. All copyright of the concept of the game are preserved to Conway and the brilliant creation of Game of Life."
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 </android.support.constraint.ConstraintLayout>
