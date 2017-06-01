@@ -27,11 +27,10 @@ public class FeedBackActivity extends Activity {
         Button btn = (Button)findViewById(R.id.buttonSendFeedBack);
         Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
         btn.setTypeface(type);
-        final Activity activity = this;
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.finish();
+                finish();
             }
         });
     }

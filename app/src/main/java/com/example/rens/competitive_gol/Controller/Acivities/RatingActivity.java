@@ -41,11 +41,10 @@ public class RatingActivity extends Activity {
         Button btn = (Button)findViewById(R.id.buttonRateSend);
         Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
         btn.setTypeface(type);
-        final Activity activity = this;
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.finish();
+                finish();
             }
         });
     }
