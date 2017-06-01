@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
     private int gameMode;
     private Player player1;
     private CountDownTimer timer;
-    private TextView time;
+    private TextView[] time;
 
     /***********************************************/
 
@@ -40,7 +40,9 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-        time = (TextView)findViewById(R.id.timerText);
+        time = new TextView[2];
+        time[0] = (TextView)findViewById(R.id.timerText);
+        time[1] = (TextView)findViewById(R.id.timerText2);
 
         // Het spel:
         final int gameMode = getIntent().getIntExtra("gameMode", 0);
@@ -91,7 +93,7 @@ public class MainActivity extends Activity {
         game.nextPlayer(); // updaten -> gewonnen? -> volgende speler
         updateCharacterIcon();
         stopTimer();
-        startTimer(game.getPlayer(game.curTeam()).currentTime);
+        startTimer(game.getPlayer(game.curTeam()).currentTime, time[game.curTeam()]);
     }
 
     /********************MAKING THE GAME********************/
@@ -132,11 +134,14 @@ public class MainActivity extends Activity {
         }
 
 
-        time.setTypeface(Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf"));
-        time.setTextSize(40);
-        time.setText("" + game.getPlayer(game.curTeam()).currentTime);
+        time[0].setTypeface(Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf"));
+        time[1].setTypeface(Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf"));
+        time[0].setTextSize(40);
+        time[1].setTextSize(40);
         game.getPlayer(0).currentTime = maxTime;
         game.getPlayer(1).currentTime = maxTime;
+        time[0].setText("" + game.getPlayer(0).currentTime);
+        time[1].setText("" + game.getPlayer(1).currentTime);
 
         /********************BOARD********************/
         game.setRandomBoard(size*size/FRACTIONRANDOM);
@@ -162,16 +167,16 @@ public class MainActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        startTimer(game.getPlayer(0).currentTime);
+        startTimer(game.getPlayer(0).currentTime, time[0]);
     }
 
-    public void startTimer(long n){
+    public void startTimer(long n, final TextView text){
 
         timer = new CountDownTimer(n*1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 game.getPlayer(game.curTeam()).currentTime = millisUntilFinished /1000;
-                time.setText("" + millisUntilFinished /1000);
+                text.setText("" + millisUntilFinished /1000);
             }
 
             @Override

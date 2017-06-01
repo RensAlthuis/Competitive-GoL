@@ -123,12 +123,6 @@ public class RoomActivity extends Activity {
 
     private void eventToSpinner(){
         timeLimitSpinner = (Spinner)findViewById(R.id.spinner);
-        /*btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(RoomActivity.this, MainActivity.class));
-            }
-        });*/
     }
 
     private void eventToRightMode(){
