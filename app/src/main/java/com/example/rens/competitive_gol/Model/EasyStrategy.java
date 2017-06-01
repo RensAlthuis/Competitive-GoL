@@ -59,8 +59,8 @@ public class EasyStrategy implements AIStrategy{
      */
     private Coordinate findOptimalMove(BoardSimulator boardSim, int playerNr, ArrayList<Coordinate> moves){
         Coordinate move = moves.get(1);
-        int tilesBefore;
-        int tilesAfter;
+        int ratioBefore;
+        int ratioAfter;
         int maxGain = 0;
         BoardSimulator testBoard;
         Coordinate temp;
@@ -69,12 +69,12 @@ public class EasyStrategy implements AIStrategy{
         while (coordIterator.hasNext()) {
             testBoard = new BoardSimulator(boardSim);
             temp = coordIterator.next();
-            tilesBefore = countOwnTiles(testBoard, playerNr);
+            ratioBefore = testBoard.computePlayerRatio(playerNr);
             testBoard.setTeam(temp.x, temp.y, playerNr);
             testBoard.iterateBoard();
-            tilesAfter = countOwnTiles(testBoard, playerNr);
-            if(tilesAfter-tilesBefore > maxGain){
-                maxGain = tilesAfter-tilesBefore;
+            ratioAfter = testBoard.computePlayerRatio(playerNr);
+            if(ratioAfter-ratioBefore > maxGain){
+                maxGain = ratioAfter-ratioBefore;
                 move.x = temp.x;
                 move.y = temp.y;
             }
@@ -83,25 +83,5 @@ public class EasyStrategy implements AIStrategy{
         return move;
     }
 
-    /**
-     * This function counts the number tiles currently claimed by the AI.
-     * @param boardSim the BoardSimulator containing the board we wish to count on.
-     * @param playerNr the AI's player number.
-     * @return the number of tiles currently claimed by the AI.
-     */
-    private int countOwnTiles(BoardSimulator boardSim, int playerNr){
-        int width = boardSim.getBoardWidth();
-        int height = boardSim.getBoardHeight();
-        int ownTiles = 0;
 
-        for(int x = 0; x < width; x++){
-            for(int y = 0; y < height; y++){
-                if(boardSim.getTeam(x, y) == playerNr){
-                    ownTiles++;
-                }
-            }
-        }
-
-        return ownTiles;
-    }
 }

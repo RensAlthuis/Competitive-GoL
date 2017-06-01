@@ -91,28 +91,6 @@ public class HardStrategy implements AIStrategy{
         return move;
     }
 
-    /**
-     * This function counts the number tiles currently claimed by the AI.
-     * @param boardSim the BoardSimulator containing the board we wish to count on.
-     * @param playerNr the AI's player number.
-     * @return the number of tiles currently claimed by the AI.
-     */
-    private int countOwnTiles(BoardSimulator boardSim, int playerNr){
-        int width = boardSim.getBoardWidth();
-        int height = boardSim.getBoardHeight();
-        int ownTiles = 0;
-
-        for(int x = 0; x < width; x++){
-            for(int y = 0; y < height; y++){
-                if(boardSim.getTeam(x, y) == playerNr){
-                    ownTiles++;
-                }
-            }
-        }
-
-        return ownTiles;
-    }
-
     private int averageGainOnMove(BoardSimulator boardSim, int playerNr, Coordinate move){
         Random rand = new Random();
         ArrayList<Coordinate> tempMoves;
@@ -120,13 +98,13 @@ public class HardStrategy implements AIStrategy{
         int currentGain = 0;
         int averageGain;
         int totalGain = 0;
-        int tilesBefore;
-        int tilesAfter;
+        int ratioBefore;
+        int ratioAfter;
 
 
         for(int j = 0; j < TREE_WIDTH_PER_MOVE; j++){
 
-            tilesBefore = countOwnTiles(boardSim, playerNr);
+            ratioBefore = boardSim.computePlayerRatio(playerNr);
             BoardSimulator testBoard = new BoardSimulator(boardSim);
             boardSim.setTeam(move.x, move.y, playerNr);
             testBoard.iterateBoard();
@@ -148,8 +126,8 @@ public class HardStrategy implements AIStrategy{
                 testBoard.iterateBoard();
             }
 
-            tilesAfter = countOwnTiles(testBoard, playerNr);
-            currentGain = tilesAfter - tilesBefore;
+            ratioAfter = testBoard.computePlayerRatio(playerNr);
+            currentGain = ratioAfter - ratioBefore;
             totalGain += currentGain;
         }
         averageGain = totalGain/TREE_WIDTH_PER_MOVE;
