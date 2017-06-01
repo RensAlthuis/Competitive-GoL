@@ -37,10 +37,10 @@ public class BoardController {
 
     /*******************CONSTRUCTORS*******************/
 
-    public BoardController(final Activity activity, final Context context, final Board level, final int numberPlayers, int movesPerPlayer){
+    public BoardController(final Activity activity, final Context context, final Board level, int movesPerPlayer){
         board = level;
         boardView = (BoardView)activity.findViewById(R.id.board);
-        boardView.init(width(), height());
+        boardView.init(getWidth(), getHeight());
         this.movesPerPlayer = movesPerPlayer;
         allPlayers = new ArrayList<>();
         curPlayerIndex = 0;
@@ -90,7 +90,7 @@ public class BoardController {
                 final int a = (int) Math.floor(boardView.relativeX(boardView.offX(e.getX())));
                 final int b = (int) Math.floor(boardView.relativeY(boardView.offY(e.getY())));
 
-                if(0<=a&&a<width() && 0<=b&&b<height()) doMove(a, b);
+                if(0<=a&&a<getWidth() && 0<=b&&b<getHeight()) doMove(a, b);
 
                 return false;
             }
@@ -111,27 +111,16 @@ public class BoardController {
         allPlayers.add(player);
     }
 
-    // maakt een gesoteerde lijst van alle spelers afhankelijk van al opgestelde kleuren
-    private ArrayList<Player> setPlayers(int  numberPlayers){
-        ArrayList<Player> sortedPlayers = new ArrayList<>();
-        final int[] colours = {Color.BLUE,Color.RED,Color.GREEN,Color.MAGENTA,Color.YELLOW,Color.CYAN};
-
-        for(int i=0; i<numberPlayers; i++)
-            sortedPlayers.add(new Player(i,colours[i%colours.length]));
-
-        return sortedPlayers;
-    }
-
     /***********************************FUNCTIONS*************************************/
 
-    public int width(){ return board.width; }
-    public int height(){ return board.height; }
+    public int getWidth(){ return board.width; }
+    public int getHeight(){ return board.height; }
 
     public int curTeam() { return allPlayers.get(curPlayerIndex).getTeam(); }
     public int curColor() { return allPlayers.get(curPlayerIndex).getColor(); }
 
-    public void randomBoard(int n){
-        board.setRandomBoard(n,allPlayers); //vult het bord met 20 willekeurige levende blokken per speler
+    public void setRandomBoard(int n){
+        board.setRandomBoard(n,allPlayers); //vult het bord met n willekeurige levende blokken per speler
         setBoardView();
     }
 

@@ -22,8 +22,7 @@ public class MainActivity extends Activity {
 
     /*******************VARIABLES*******************/
 
-    static BoardController game; //Het actieve spel atm
-
+    private static BoardController game; //Het actieve spel atm
     private ImageView character;
     private int gameMode;
     private Player player1;
@@ -37,13 +36,9 @@ public class MainActivity extends Activity {
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-        gameMode = getIntent().getIntExtra("gameMode", 0);
-
         // Het spel:
-        makeGame();
-        addPlayers();
-
-        game.randomBoard(20);
+        final int gameMode = getIntent().getIntExtra("gameMode", 0);
+        makeGame(gameMode);
 
         character = (ImageView)findViewById(R.id.character);
         updateCharacterIcon();
@@ -57,6 +52,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
 
                 nextTurn();
+
                 if(gameMode != 0){
                     ((AIPlayer)game.getPlayer(1)).makeNextMove();
                     nextTurn();
@@ -79,6 +75,7 @@ public class MainActivity extends Activity {
     private void updateCharacterIcon(){
         character.setBackgroundColor(game.curColor());
     }
+
     private void nextTurn(){
         game.update();
         int win = game.winCheck();
@@ -88,25 +85,29 @@ public class MainActivity extends Activity {
         game.nextPlayer(); // updaten -> gewonnen? -> volgende speler
         updateCharacterIcon();
     }
-    private void addPlayers(){
-        int col1 = getIntent().getIntExtra("Player1", 0);
-        player1 = new Player(0, col1);
-        game.addPlayer(player1);
 
-        int col2 = getIntent().getIntExtra("Player2", 0);
+    /********************MAKING THE GAME********************/
+
+    private void makeGame(int gameMode){
+        /********************BOARDSETTINGS********************/
+        final int steps = getIntent().getIntExtra("steps", 1);
+        final int size  = getIntent().getIntExtra("boardSize", 10);
+
+        game = new BoardController(this, this, new Board(size,size,new TileSettings()), steps);
+
+        /********************PLAYERS********************/
+        final int col1 = getIntent().getIntExtra("Player1", 0);
+        final int col2 = getIntent().getIntExtra("Player2", 0);
+        game.addPlayer(new Player(0, col1));
+
         if(gameMode == 0) {
             game.addPlayer(new Player(1, col2));
         }else{
-            game.addPlayer(new AIPlayer(1, col2, game, (gameMode == 1)? new EasyStrategy()
-                                                                        : new HardStrategy()));
+            game.addPlayer(new AIPlayer(1, col2, game, (gameMode == 1)? new EasyStrategy() : new HardStrategy()));
         }
-    }
 
-    private void makeGame(){
-        int steps = getIntent().getIntExtra("steps", 1);
-        int size = getIntent().getIntExtra("boardSize", 10);
-        Board b = new Board(size,size,new TileSettings());
-        game = new BoardController(this, this, b, 2, steps);
+        /********************BOARD********************/
+        game.setRandomBoard(size*size/5);
     }
 
     private void toWinLoss(int winner){

@@ -20,7 +20,7 @@ public class BoardView extends View {
     private int nTilesX; // aantal tiles horizontaal (wordt gelijk gezet)
     private int nTilesY; // aantal tiles verticaal (wordt gelijk gezet)
 
-    private float tileWidth; // lengte van een tile
+    private float tileWidth;  // lengte van een tile
     private float tileHeight; // breedte van een tile
 
     private float scaling = 1;
@@ -31,27 +31,22 @@ public class BoardView extends View {
     private int colorsNext[]; // the color for every block next turn
     private int health[]; // the health for every block.
 
-    private final static int DEAD = Color.GRAY; // color for dead tiles
+    private final static int TILEBORDERCOLOR    = Color.DKGRAY; // the inner-border color
+    private final static int BORDERCOLOR        = Color.DKGRAY; // the border color
+    private final static int DEAD               = Color.GRAY;   // color for dead tiles
+
     private final static float MAXSCALING = 2;
 
     private final static float SIZETILE = 0.95f; // relative size of the block
-    private final static float SIZENEXT = 0.3f; // relative size of the smaller block that indicates what happens next turn
+    private final static float SIZENEXT = 0.3f;  // relative size of the smaller block that indicates what happens next turn
     private final static float BORDERSIZE = 40f; // the size of the surrounding border
 
     /*******************CONSTRUCTORS*******************/
 
     /*****  necessary for Android Views ********/
-    public BoardView(Context context) {
-        super(context);
-    }
-
-    public BoardView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public BoardView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
+    public BoardView(Context context) { super(context); }
+    public BoardView(Context context, AttributeSet attrs) { super(context, attrs); }
+    public BoardView(Context context, AttributeSet attrs, int defStyle) { super(context, attrs, defStyle); }
 
     /*****************************************/
 
@@ -63,11 +58,6 @@ public class BoardView extends View {
         colors     = new int[nTilesX * nTilesY];
         colorsNext = new int[nTilesX * nTilesY];
         health     = new int[nTilesX * nTilesY];
-
-        for (int i = 0; i < nTilesX * nTilesY; i++) {
-            colors[i] = Color.GRAY; // Wit zien is foute boel!
-            colorsNext[i] = Color.GRAY;
-        }
     }
 
     /*******************FUNCTIONS*******************/
@@ -144,7 +134,7 @@ public class BoardView extends View {
 
         canvas.translate(-offsetX, -offsetY);
         canvas.scale(scaling, scaling);
-        canvas.drawColor(Color.DKGRAY); // the inner-border color
+        canvas.drawColor(TILEBORDERCOLOR);
         drawBorder(canvas);
 
         for (int a = 0; a < nTilesX; a++) {
@@ -161,7 +151,7 @@ public class BoardView extends View {
 
     private void drawBorder(Canvas canvas){
         Paint p = new Paint();
-        p.setColor(Color.DKGRAY); // the border color
+        p.setColor(BORDERCOLOR);
         p.setStyle(Paint.Style.STROKE);
         p.setStrokeWidth(2*BORDERSIZE);
         canvas.drawRect(0,0,canvas.getWidth(),canvas.getHeight(),p);
@@ -179,7 +169,7 @@ public class BoardView extends View {
         Paint p = new Paint();
         p.setColor(colors[y * nTilesX + x]);
         p.setStyle(Paint.Style.FILL_AND_STROKE);
-        drawBlock(canvas, p, x, y, SIZETILE);//TODO: interne pijn lijden omdat hier magic nummers staan (en nee, gewoon wat stic float maken zonder reden is niet de soort van oplosssing die dat verhelpt)
+        drawBlock(canvas, p, x, y, SIZETILE);//TODO: er is geen manier nu om te zien hoeveel health een tile heeft. Ideeen?
     }
 
     //Draw the indicator for what the tile will be next turn

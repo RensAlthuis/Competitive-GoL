@@ -31,6 +31,7 @@ public class Board {
 
         this.tiles     = copyTiles(tiles);
         this.tilesNext = emptyTiles();
+        setNext();
     }
 
     // van Tile[][] naar Arraylist
@@ -65,11 +66,12 @@ public class Board {
         setNext();
     }
 
+    // copy this board
     public Board(Board aBoard){
         this(aBoard.width, aBoard.height, aBoard.getSettings(), aBoard.getTiles());
     }
 
-    //create all the tiles for the board
+    //create all empty tiles for the board
     private ArrayList<Tile> emptyTiles(){
         ArrayList<Tile> t = new ArrayList<>();
         for(int i=0; i<size; i++) t.add(new Tile());
@@ -119,6 +121,12 @@ public class Board {
     public void setTileDead(int x, int y) { tiles.set(y*width + x, new Tile()); }
 
 
+    public TileSettings getSettings(){
+        return settings;
+    }
+
+    /*******************FOR UNDOING MOVES*******************/
+
     public void setTiles(ArrayList<Tile> tiles){
         this.tiles.clear();
         for(Tile tile : tiles) this.tiles.add(tile);
@@ -130,9 +138,9 @@ public class Board {
         return copy;
     }
 
-
     /*******************DIFFERENT BOARDS*******************/
 
+    //empty the whole board
     public void setEmptyBoard(){
         for(Tile tile : tiles)
             tile.kill();
@@ -173,7 +181,7 @@ public class Board {
     // TODO: misschien een util class maken met al dit soort functies?
     // overschrijft de arraylist 'toOverwritte' met alle waardes van 'copy'
     // returnt false als ze niet even lang zijn.
-    // TODO: een algemene check of ze wel dezelfde objecten gebruiken
+    // (er moet nog een algemene check zijn of ze wel dezelfde objecten gebruiken)
     private boolean overwriteArrayList(ArrayList toOverwrite, ArrayList copy){
         if(toOverwrite.size() != copy.size()) return false;
 
@@ -201,47 +209,37 @@ public class Board {
     }
 
     /*******************WIN CONDITIONS*******************/
+    //TODO: goede win condities schrijven/meer bedenken?. Alleen winExtinction bestaat!
 
-    //private final static int
-
-    public int winExtinction(){
+    public int winExtinction() {
         boolean team0exists = false;
-        boolean team1exists= false;
+        boolean team1exists = false;
 
-        for(Tile t : tiles){
-            if(!t.isDead() && !(team0exists && team1exists)) {
+        for (Tile t : tiles) {
+            if (!t.isDead() && !(team0exists && team1exists)) {
                 if (t.team == 0) {
                     team0exists = true;
-                }
-                else if(t.team == 1) {
+                } else if (t.team == 1) {
                     team1exists = true;
                 }
             }
         }
-        if (team0exists && (!team1exists)){
+        if (team0exists && (!team1exists)) {
             Log.d("WINNER", "team " + 0);
-           return 0;
-        }else if (team1exists && (!team0exists)){
+            return 0;
+        } else if (team1exists && (!team0exists)) {
             Log.d("WINNER", "team " + 1);
             return 1;
-        }else{
+        } else {
             Log.d("WINNER", "not yet");
             return -1;
         }
     }
-
-    public boolean winDominant(int team){ // TODO
+    public boolean winDominant(int team){ // TODO win als jij relatief tot de andere spelers de meeste tiles hebt
         return false;
     }
 
-
-    public boolean winSize(int team){ // TODO
+    public boolean winSize(int team){ // TODO win als jij relatief tot het bord de meeste tiles hebt
         return false;
     }
-
-
-    public TileSettings getSettings(){
-        return settings;
-    }
-
 }

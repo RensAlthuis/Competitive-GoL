@@ -25,6 +25,8 @@
         <activity android:screenOrientation="portrait" android:name=".Controller.Activities.AboutActivity"></activity>
         <activity android:screenOrientation="portrait" android:name=".Controller.Activities.WinLossActivity"></activity>
 
+        <!-- TODO: hier een mooie ronde icon van maken -->
+
     </application>
 
 </manifest>
