@@ -9,6 +9,7 @@ import com.example.rens.competitive_gol.Model.Player;
 import com.example.rens.competitive_gol.Model.TileSettings;
 import com.example.rens.competitive_gol.R;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -30,6 +31,7 @@ public class MainActivity extends Activity {
 
     private ImageView character;
     private int gameMode;
+    private Player player1;
 
     /***********************************************/
 
@@ -58,6 +60,13 @@ public class MainActivity extends Activity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
+                MAAK DIT GOED RENS AUUUUUBBBBBB :( Q____Q
+
+
+                if(game.getBoard().winExtinction(player1.getTeam())){
+                    startActivity(new Intent(MainActivity.this, DeadActivity.class));
+                }*/
                 nextTurn();
                 if(gameMode != 0){
                     ((AIPlayer)game.getPlayer(1)).makeNextMove();
@@ -89,7 +98,8 @@ public class MainActivity extends Activity {
     }
     private void addPlayers(){
         int col1 = getIntent().getIntExtra("Player1", 0);
-        game.addPlayer(new Player(0, col1));
+        player1 = new Player(0, col1);
+        game.addPlayer(player1);
 
         int col2 = getIntent().getIntExtra("Player2", 0);
         if(gameMode == 0) {

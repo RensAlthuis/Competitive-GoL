@@ -2,9 +2,10 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="vertical">
 
     <Button
         android:id="@+id/buttonLeftChar1"
@@ -66,43 +67,43 @@
 
     <Button
         android:id="@+id/buttonLeftChar"
-        android:theme="@style/buttonLeftChar"
         android:layout_width="88dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="7dp"
         android:layout_marginEnd="16dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_weight="1"
         android:text="@string/leftChar"
+        android:theme="@style/buttonLeftChar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.026"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        android:layout_marginStart="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/buttonRightChar"
-        android:theme="@style/buttonRightChar"
         android:layout_width="88dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="7dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_weight="1"
         android:text="@string/rightChar"
+        android:theme="@style/buttonRightChar"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        android:layout_marginStart="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/colourChoice"
@@ -118,17 +119,19 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@color/colorAccent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:srcCompat="@color/colorAccent" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -136,9 +139,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp">
+        app:layout_constraintVertical_bias="0.0">
 
         <EditText
             android:id="@+id/gameMode"
@@ -152,6 +153,7 @@
             android:focusableInTouchMode="false"
             android:inputType="textPersonName"
             android:text="Game Mode"
+            android:textColor="#FFFFFF"
             tools:layout_conversion_absoluteHeight="42dp"
             tools:layout_conversion_absoluteWidth="107dp"
             tools:layout_conversion_absoluteX="276dp"
@@ -185,6 +187,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Player VS. Player"
+                android:textColor="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -196,11 +199,11 @@
 
             <Button
                 android:id="@+id/buttonModeRight"
-                android:theme="@style/buttonModeRight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/modeRight"
+                android:theme="@style/buttonModeRight"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_constraintRight_creator="1"
@@ -213,12 +216,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:ems="10"
-            android:inputType="textPersonName"
             android:clickable="false"
             android:cursorVisible="false"
+            android:ems="10"
             android:focusable="false"
             android:focusableInTouchMode="false"
+            android:inputType="textPersonName"
+            android:textColor="#FFFFFF"
             android:text="Amount of Steps" />
 
         <LinearLayout
@@ -247,6 +251,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="1"
+                android:textColor="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -281,6 +286,7 @@
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:inputType="textPersonName"
+            android:textColor="#FFFFFF"
             android:text="Board Size" />
 
         <LinearLayout
@@ -309,6 +315,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:textColor="#FFFFFF"
                 android:text="10" />
 
             <TextView
@@ -317,6 +324,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:textColor="#FFFFFF"
                 android:text="X" />
 
             <TextView
@@ -325,6 +333,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:textColor="#FFFFFF"
                 android:text="10" />
 
             <Button
@@ -354,6 +363,7 @@
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:inputType="textPersonName"
+            android:textColor="#FFFFFF"
             android:text="Time Limit" />
 
         <Spinner
@@ -373,18 +383,21 @@
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:inputType="textPersonName"
+            android:textColor="#FFFFFF"
             android:text="Color Choice" />
 
     </LinearLayout>
 
     <Button
         android:id="@+id/buttonCreateRoom"
-        android:theme="@style/buttonCreateRoom"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_weight="1"
         android:text="Create"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -392,9 +405,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="1.0"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </android.support.constraint.ConstraintLayout>

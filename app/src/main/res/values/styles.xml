@@ -30,63 +30,57 @@
 
     <style name="buttonAbout" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textColor">#FFFFFF</item>
-        <item name="colorButtonNormal">#00897b</item>
+        <item name="colorButtonNormal">#f9a825</item>
     </style>
 
     <style name="buttonModeLeft" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textColor">#FFFFFF</item>
-        <item name="colorButtonNormal">#ffb300</item>
+        <item name="colorButtonNormal">#f48fb1</item>
     </style>
 
     <style name="buttonModeRight" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textColor">#FFFFFF</item>
-        <item name="colorButtonNormal">#ffb300</item>
+        <item name="colorButtonNormal">#f48fb1</item>
     </style>
 
     <style name="buttonStepsLeft" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textColor">#FFFFFF</item>
-        <item name="colorButtonNormal">#ff8f00</item>
+        <item name="colorButtonNormal">#ec407a</item>
     </style>
 
     <style name="buttonStepsRight" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textColor">#FFFFFF</item>
-        <item name="colorButtonNormal">#ff8f00</item>
+        <item name="colorButtonNormal">#ec407a</item>
     </style>
 
     <style name="buttonLeftBoard" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textColor">#FFFFFF</item>
-        <item name="colorButtonNormal">#ff6f00</item>
+        <item name="colorButtonNormal">#d81b60</item>
     </style>
 
     <style name="buttonRightBoard" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textColor">#FFFFFF</item>
-        <item name="colorButtonNormal">#ff6f00</item>
+        <item name="colorButtonNormal">#d81b60</item>
     </style>
 
     <style name="buttonLeftChar" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textColor">#FFFFFF</item>
-        <item name="colorButtonNormal">#f4511e</item>
+        <item name="colorButtonNormal">#ad1457</item>
     </style>
 
     <style name="buttonRightChar" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textColor">#FFFFFF</item>
-        <item name="colorButtonNormal">#f4511e</item>
+        <item name="colorButtonNormal">#ad1457</item>
     </style>
 
     <style name="buttonLeftChar1" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textColor">#FFFFFF</item>
-        <item name="colorButtonNormal">#d84315</item>
+        <item name="colorButtonNormal">#880e4f</item>
     </style>
 
     <style name="buttonRightChar1" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textColor">#FFFFFF</item>
-        <item name="colorButtonNormal">#d84315</item>
-    </style>
-
-
-    <style name="buttonCreateRoom" parent="Widget.AppCompat.Button.Colored">
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="colorButtonNormal">#3949ab</item>
+        <item name="colorButtonNormal">#880e4f</item>
     </style>
 
     <style name="buttonLeftTut" parent="Widget.AppCompat.Button.Colored">
@@ -97,5 +91,10 @@
     <style name="buttonRightTut" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textColor">#FFFFFF</item>
         <item name="colorButtonNormal">#039be5</item>
+    </style>
+
+    <style name="buttonDead" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="colorButtonNormal">#616161</item>
     </style>
 </resources>

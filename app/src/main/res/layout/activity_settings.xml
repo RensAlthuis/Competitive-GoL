@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -27,6 +27,7 @@
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:inputType="textPersonName"
+            android:textColor="#FFFFFF"
             android:text="Volume" />
 
         <LinearLayout
@@ -38,8 +39,8 @@
                 android:id="@+id/volumeImage"
                 android:layout_width="44dp"
                 android:layout_height="match_parent"
-                android:background="@mipmap/volumeplaatje"
-                android:layout_weight="0.14" />
+                android:layout_weight="0.14"
+                android:background="@mipmap/volumeplaatje" />
 
             <SeekBar
                 android:id="@+id/volumeBar"
@@ -59,6 +60,7 @@
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:inputType="textPersonName"
+            android:textColor="#FFFFFF"
             android:text="Feedback" />
 
         <Button

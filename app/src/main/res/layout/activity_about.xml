@@ -4,27 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     tools:context="com.example.rens.competitive_gol.Controller.Acivities.AboutActivity">
 
     <EditText
         android:id="@+id/aboutUs"
-        android:layout_width="331dp"
-        android:layout_height="300dp"
+        android:layout_width="326dp"
+        android:layout_height="547dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="textMultiLine"
+        android:background="@android:color/transparent"
         android:clickable="false"
         android:cursorVisible="false"
+        android:ems="10"
         android:focusable="false"
         android:focusableInTouchMode="false"
+        android:inputType="textMultiLine"
         android:text="Competitive Game of Life app is made by 5 students of Radboud University Nijmegen. This app was created for one of the assignment. It quickly became a passion project. We put alot of effort into this and we will keep continue to improve it. We love to get feedback and please rate our app in the rating tab. All copyright of the concept of the game are preserved to Conway and the brilliant creation of Game of Life."
-        android:background="@android:color/transparent"
+        android:textSize="22sp"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.509"
+        tools:layout_editor_absoluteY="180dp" />
 </android.support.constraint.ConstraintLayout>
