@@ -17,11 +17,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-
-import java.util.ArrayList;
-
-import static com.example.rens.competitive_gol.R.id.gameMode;
 
 public class MainActivity extends Activity {
 
@@ -115,17 +110,19 @@ public class MainActivity extends Activity {
     }
 
     private void toWinLoss(int winner){
-        //TODO: We gaan altijd naar you lose..
         finish();
+        Intent intent = new Intent(MainActivity.this, WinLossActivity.class);
         if(gameMode == 0){
-            startActivity(new Intent(MainActivity.this, DeadActivity.class));
+            if(winner == 0)
+                intent.putExtra("winner", 1);
+            if(winner == 1)
+                intent.putExtra("winner", 2);
+        }else{
+            if (winner == 0)
+                intent.putExtra("winner", 3);
+            if (winner == 1)
+                intent.putExtra("winner", 0);
         }
-        else if(gameMode == 1){
-            if(winner == 1) {
-                startActivity(new Intent(MainActivity.this, DeadActivity.class));
-            }else{
-                startActivity(new Intent(MainActivity.this, DeadActivity.class));
-            }
-        }
+        startActivity(intent);
     }
 }

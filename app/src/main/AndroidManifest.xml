@@ -23,7 +23,7 @@
         <activity android:screenOrientation="portrait" android:name=".Controller.Acivities.RatingActivity" />
         <activity android:screenOrientation="portrait" android:name=".Controller.Acivities.FeedBackActivity" />
         <activity android:screenOrientation="portrait" android:name=".Controller.Acivities.AboutActivity"></activity>
-        <activity android:screenOrientation="portrait" android:name=".Controller.Acivities.DeadActivity"></activity>
+        <activity android:screenOrientation="portrait" android:name=".Controller.Acivities.WinLossActivity"></activity>
 
     </application>
 
