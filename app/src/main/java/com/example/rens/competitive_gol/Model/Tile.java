@@ -8,10 +8,9 @@ public class Tile {
 
     static final int DEAD = -1;
 
-    // -1 = dood
-    // 0,1,2,3,4.. = van speler 0,1,2,3,4..
+    // -1 = dood, 0,1,2,3,4.. = van speler 0,1,2,3,4..
     int team;
-    private int health; // :( als levens 0 zijn kan het team nogsteeds iets anders zijn. i am not amused.
+    private int health; // :( als levens 0 zijn kan het team nogsteeds iets anders zijn. i am not amused. // TODO: willen we nog levens behouden?
 
     /*******************CONSTRUCTORS*******************/
 
@@ -26,29 +25,25 @@ public class Tile {
 
     /*******************FUNCTIONS*******************/
 
-    public boolean isDead(){
-        return team == DEAD;
-    }
+    public boolean isDead() { return team == DEAD; }
+    public int getHealth() {  return health; }
 
-    public int getHealth(){
-        return health;
-    }
-
-    public void kill(){
+    public void kill() {
         team = DEAD;
         health = 0;
     }
 
-    /*******************UPDATE*******************/
+    /*******************NEXT*******************/
+    // TODO DE FUNDAMENTELE TILE SPELREGELS
 
     //Roept de correcte update functie aan
-    public Tile next(ArrayList<Tile> neighbours, TileSettings settings){
+    public Tile next(ArrayList<Tile> neighbours, TileSettings settings) {
         if(team!=DEAD)  return nextDie(neighbours, settings);
         else            return nextLive(neighbours, settings);
     }
 
     //De tile leeft.. Moet hij dood gaat?
-    private Tile nextDie(ArrayList<Tile> neighbours, TileSettings settings){
+    private Tile nextDie(ArrayList<Tile> neighbours, TileSettings settings) {
         int nLiving = 0;
 
         for(Tile tile : neighbours)

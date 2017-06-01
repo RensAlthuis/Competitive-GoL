@@ -27,13 +27,13 @@ public class BoardView extends View {
     private float offsetX = 0; //Hoeveel er naar links/rechts is bewogen
     private float offsetY = 0; //Hoeveel er naar boven/beneden is bewogen
 
-    private int colors[]; // the color for every block.
+    private int colors[];     // the color for every block.
     private int colorsNext[]; // the color for every block next turn
-    private int health[]; // the health for every block.
+    private int health[];     // the health for every block.
 
-    private final static int TILEBORDERCOLOR    = Color.DKGRAY; // the inner-border color
-    private final static int BORDERCOLOR        = Color.DKGRAY; // the border color
-    private final static int DEAD               = Color.GRAY;   // color for dead tiles
+    private final static int TILEBORDERCOLOR = Color.DKGRAY; // the inner-border color
+    private final static int BORDERCOLOR     = Color.DKGRAY; // the border color
+    private final static int DEAD            = Color.GRAY;   // color for dead tiles
 
     private final static float MAXSCALING = 2;
 
@@ -63,43 +63,23 @@ public class BoardView extends View {
     /*******************FUNCTIONS*******************/
 
     //functions for changing tile colors
-    public void setTilePlayer(int x, int y, int col) {
-        colors[y * nTilesX + x] = col;
-    }
+    public void setTilePlayer(int x, int y, int col) { colors[y * nTilesX + x] = col; }
+    public void setTileDead(int x, int y) { colors[y * nTilesX + x] = DEAD; }
 
-    public void setTileDead(int x, int y) {
-        colors[y * nTilesX + x] = DEAD;
-    }
+    public void setTilePlayerNext(int x, int y, int col) {  colorsNext[y * nTilesX + x] = col; }
+    public void setTileDeadNext(int x, int y) { colorsNext[y * nTilesX + x] = DEAD; }
 
-    public void setTilePlayerNext(int x, int y, int col) {
-        colorsNext[y * nTilesX + x] = col;
-    }
+    public void setTileHealth(int x, int y, int health) { this.health[y * nTilesX + x] = health; }
 
-    public void setTileDeadNext(int x, int y) {
-        colorsNext[y * nTilesX + x] = DEAD;
-    }
-
-    public void setTileHealth(int x, int y, int health) {
-        this.health[y * nTilesX + x] = health;
-    }
-
-    public float relativeX(float pixelX){
-        return (pixelX - BORDERSIZE)/tileWidth; // een x-coordinaat proportioneel tot de tiles in de x richting (bijvoorbeeld, 0.5 betekent halverwegen tile 1)
-    }
-
-    public float relativeY(float pixelY){
-        return (pixelY - BORDERSIZE)/tileHeight; // een y-coordinaat proportioneel tot de tiles in de y richting (of 2.5 betekent halverwegen tile 3)
-    }
+    public float relativeX(float pixelX){ return (pixelX - BORDERSIZE)/tileWidth;  } // een x-coordinaat proportioneel tot de tiles in de x richting (bijvoorbeeld, 0.5 betekent halverwegen tile 1)
+    public float relativeY(float pixelY){ return (pixelY - BORDERSIZE)/tileHeight; } // een y-coordinaat proportioneel tot de tiles in de y richting (of 2.5 betekent halverwegen tile 3)
 
     /*******************SCALING&DRAGGING*******************/
 
     //this updates the scaling when zooming in (pinching)
     public void updateScaling(float dScaling, float focusX, float focusY) {
         scaling += dScaling;
-
-        //clamp to [1;MAXSCALING]
-        scaling = max(1, min(MAXSCALING, scaling));
-
+        scaling = max(1, min(MAXSCALING, scaling)); //clamp to [1;MAXSCALING]
         updateOffset(focusX * (dScaling), focusY * (dScaling));
     }
 
@@ -108,20 +88,14 @@ public class BoardView extends View {
         offsetX += dOffX;
         offsetY += dOffY;
 
-        //clamp to [0;offset]
-        offsetX = max(0, min(getWidth()*(scaling - 1), offsetX));
+        offsetX = max(0, min(getWidth()*(scaling - 1), offsetX)); //clamp to [0;offset]
         offsetY = max(0, min(getHeight()*(scaling - 1), offsetY));
     }
 
     //get the scaled location of n in screen coordinates
     //or: shows where n is on the canvas in pixels.. as if the canvas was fully zoomed out
-    public float offX(float n) {
-        return (n + offsetX)/scaling;
-    }
-
-    public float offY(float n) {
-        return (n + offsetY)/scaling;
-    }
+    public float offX(float n) { return (n + offsetX)/scaling; }
+    public float offY(float n) { return (n + offsetY)/scaling; }
 
     /********************DRAW********************/
 
@@ -142,14 +116,14 @@ public class BoardView extends View {
                 drawEmpty(canvas, a, b); // tekent de lege blokken eronder. DIT IS PUUR COSMETISCH!
                 drawTile(canvas, a, b); // tekent de huidige blokken
                 drawTileNext(canvas, a, b); // tekent de volgende blokken
-                //drawTileHealth(canvas, a, b); // tekent de levens van de huidige blokken. OOK DIT IS HOPELIJK TIJDELIJK!
+                //drawTileHealth(canvas, a, b); // tekent de levens van de huidige blokken. OOK DIT IS TIJDELIJK!
             }
         }
 
         invalidate();
     }
 
-    private void drawBorder(Canvas canvas){
+    private void drawBorder(Canvas canvas) {
         Paint p = new Paint();
         p.setColor(BORDERCOLOR);
         p.setStyle(Paint.Style.STROKE);
@@ -157,7 +131,7 @@ public class BoardView extends View {
         canvas.drawRect(0,0,canvas.getWidth(),canvas.getHeight(),p);
     }
 
-    private void drawEmpty(Canvas canvas, int x, int y){
+    private void drawEmpty(Canvas canvas, int x, int y) {
         Paint p = new Paint();
         p.setColor(DEAD);
         p.setStyle(Paint.Style.FILL_AND_STROKE);

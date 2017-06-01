@@ -83,47 +83,44 @@ public class Board {
 
     //return the tile x,y
     public Tile getTile(Coordinate c) { return getTile(c.x,c.y); }
-    public Tile getTile(int x, int y){ return tiles.get(y*width + x); }
+    public Tile getTile(int x, int y) { return tiles.get(y*width + x); }
 
     //return the tile x,y next turn
     private Tile getTileNext(Coordinate c) { return getTile(c.x,c.y); }
-    private Tile getTileNext(int x, int y){ return tilesNext.get(y*width + x); }
+    private Tile getTileNext(int x, int y) { return tilesNext.get(y*width + x); }
 
     //set tile x,y to a certain tile
-    private void setTile(Coordinate c, Tile tile){ setTile(c.x,c.y, tile); }
-    private void setTile(int x, int y, Tile tile){  tiles.set(y*width + x, tile); }
+    private void setTile(Coordinate c, Tile tile) { setTile(c.x,c.y, tile); }
+    private void setTile(int x, int y, Tile tile) {  tiles.set(y*width + x, tile); }
 
 
     //is the tile dead right now?
-    public boolean isDead(Coordinate c){ return isDead(c.x,c.y); }
-    public boolean isDead(int x, int y){ return getTile(x,y).isDead(); }
+    public boolean isDead(Coordinate c) { return isDead(c.x,c.y); }
+    public boolean isDead(int x, int y) { return getTile(x,y).isDead(); }
 
     //will the tile be dead next turn?
-    public boolean isDeadNext(Coordinate c){ return isDeadNext(c.x,c.y); }
+    public boolean isDeadNext(Coordinate c) { return isDeadNext(c.x,c.y); }
     public boolean isDeadNext(int x, int y) { return getTileNext(x,y).isDead(); }
 
 
     //return the team for tile x,y
-    public int getTileTeam(Coordinate c){ return getTileTeam(c.x,c.y); }
-    public int getTileTeam(int x, int y){ return tiles.get(y*width + x).team; }
+    public int getTileTeam(Coordinate c) { return getTileTeam(c.x,c.y); }
+    public int getTileTeam(int x, int y) { return tiles.get(y*width + x).team; }
 
     //return the team for tile x,y next turn
-    public int getTileNextTeam(Coordinate c){ return getTileNextTeam(c.x,c.y); }
-    public int getTileNextTeam(int x, int y){ return tilesNext.get(y*width + x).team; }
+    public int getTileNextTeam(Coordinate c) { return getTileNextTeam(c.x,c.y); }
+    public int getTileNextTeam(int x, int y) { return tilesNext.get(y*width + x).team; }
 
 
     //set tile x,y to a certain team
-    public void setTileTeam(Coordinate c, int team){ setTileTeam(c.x,c.y, team); }
-    public void setTileTeam(int x, int y, int team){  tiles.set(y*width + x, new Tile(team,settings.defaultHealth)); }
+    public void setTileTeam(Coordinate c, int team) { setTileTeam(c.x,c.y, team); }
+    public void setTileTeam(int x, int y, int team) {  tiles.set(y*width + x, new Tile(team,settings.defaultHealth)); }
 
     //set tile x,y to dead
-    public void setTileDead(Coordinate c){ setTileDead(c.x,c.y); }
+    public void setTileDead(Coordinate c) { setTileDead(c.x,c.y); }
     public void setTileDead(int x, int y) { tiles.set(y*width + x, new Tile()); }
 
-
-    public TileSettings getSettings(){
-        return settings;
-    }
+    public TileSettings getSettings(){ return settings; }
 
     /*******************FOR UNDOING MOVES*******************/
 
@@ -142,9 +139,7 @@ public class Board {
 
     //empty the whole board
     public void setEmptyBoard(){
-        for(Tile tile : tiles)
-            tile.kill();
-
+        for(Tile tile : tiles) tile.kill();
         setNext();
     }
 

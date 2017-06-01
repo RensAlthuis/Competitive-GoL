@@ -23,6 +23,7 @@ public class MainActivity extends Activity {
     /*******************VARIABLES*******************/
 
     private static BoardController game; //Het actieve spel atm
+    private static int FRACTIONRANDOM = 5; // is de fractie van het bord (als 1/..) dat wordt gevuld door random tiles
     private ImageView character;
     private int gameMode;
     private Player player1;
@@ -89,6 +90,7 @@ public class MainActivity extends Activity {
     /********************MAKING THE GAME********************/
 
     private void makeGame(int gameMode){
+
         /********************BOARDSETTINGS********************/
         final int steps = getIntent().getIntExtra("steps", 1);
         final int size  = getIntent().getIntExtra("boardSize", 10);
@@ -98,16 +100,14 @@ public class MainActivity extends Activity {
         /********************PLAYERS********************/
         final int col1 = getIntent().getIntExtra("Player1", 0);
         final int col2 = getIntent().getIntExtra("Player2", 0);
+
         game.addPlayer(new Player(0, col1));
 
-        if(gameMode == 0) {
-            game.addPlayer(new Player(1, col2));
-        }else{
-            game.addPlayer(new AIPlayer(1, col2, game, (gameMode == 1)? new EasyStrategy() : new HardStrategy()));
-        }
+        if(gameMode == 0) game.addPlayer(new Player(1, col2));
+        else              game.addPlayer(new AIPlayer(1, col2, game, (gameMode == 1)? new EasyStrategy() : new HardStrategy()));
 
         /********************BOARD********************/
-        game.setRandomBoard(size*size/5);
+        game.setRandomBoard(size*size/FRACTIONRANDOM);
     }
 
     private void toWinLoss(int winner){

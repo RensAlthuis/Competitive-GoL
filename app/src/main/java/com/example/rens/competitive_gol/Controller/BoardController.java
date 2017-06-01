@@ -24,14 +24,13 @@ public class BoardController {
     private final Board board;
     private final BoardView boardView;
 
-    private final ArrayList<Player> allPlayers;
-    private int curPlayerIndex = 0;
-
     private final ScaleGestureDetector mScaleDetector;
     private final GestureDetector mGestureDetector;
 
-    private final ArrayList<ArrayList<Tile>> last = new ArrayList<>();
+    private final ArrayList<Player> players;
+    private int curPlayerIndex = 0;
 
+    private final ArrayList<ArrayList<Tile>> last = new ArrayList<>();
     private int movesPerPlayer;
     private int movesDone = 0;
 
@@ -39,11 +38,13 @@ public class BoardController {
 
     public BoardController(final Activity activity, final Context context, final Board level, int movesPerPlayer){
         board = level;
+
         boardView = (BoardView)activity.findViewById(R.id.board);
         boardView.init(getWidth(), getHeight());
+
+        players = new ArrayList<>();
         this.movesPerPlayer = movesPerPlayer;
-        allPlayers = new ArrayList<>();
-        curPlayerIndex = 0;
+
 
         /*****USER CONTROLS*****/
 
@@ -56,7 +57,8 @@ public class BoardController {
             }
         });
 
-        // SCALING: dit detecteerd bewegingen waarbij je twee aanraakpunten naar elkaar toe trekt/van elkaar weg haalt
+        // SCALING
+        // dit detecteerd bewegingen waarbij je twee aanraakpunten naar elkaar toe trekt/van elkaar weg haalt
         mScaleDetector = new ScaleGestureDetector(context, new ScaleGestureDetector.OnScaleGestureListener() {
             private float oldScaleFactor;
 
@@ -79,14 +81,14 @@ public class BoardController {
 
         });
 
-        // CLICKING/SWIPING: dit detecteerd kleine simpele bewegingen die je met een aanraakpunt maakt
+        // CLICKING/SWIPING
+        // dit detecteerd kleine simpele bewegingen die je met een aanraakpunt maakt
         mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
 
-            @Override //Voor: loslaten na een keer klikken
+            @Override // LOSLATEN NA EEN KEER KLIKKEN
             public boolean onSingleTapUp(MotionEvent e) {
                 //Deze functie wordt gebruikt wanneer je klikt op een tile :)
-                // wat hier onder staat is mogelijk niet echt meer leesbaar.
-                // lang verhaal kort: coordinaten muis -> coordinaten gehele canvas -> coordinaten relatief tot de blokken -> naar beneden afgerond
+                // coordinaten muis -> coordinaten gehele canvas -> coordinaten relatief tot de blokken -> naar integers
                 final int a = (int) Math.floor(boardView.relativeX(boardView.offX(e.getX())));
                 final int b = (int) Math.floor(boardView.relativeY(boardView.offY(e.getY())));
 
@@ -95,32 +97,30 @@ public class BoardController {
                 return false;
             }
 
-            @Override //Voor: schuiven
+            @Override // SCHUIVEN
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
                 //Deze functie wordt gebruikt wanneer je via een swipe beweging je verplaatst over het bord
                 boardView.updateOffset(distanceX, distanceY);
                 return false;
             }
         });
-
     }
 
     /***********************************FUNCTIONS*************************************/
 
-    public void addPlayer(Player player){
-        allPlayers.add(player);
-    }
+    public void addPlayer(Player player) { players.add(player); }
+    public Player getPlayer(int index)   { return players.get(index); }
 
-    /***********************************FUNCTIONS*************************************/
+    public int getWidth()  { return board.width; }
+    public int getHeight() { return board.height; }
 
-    public int getWidth(){ return board.width; }
-    public int getHeight(){ return board.height; }
+    public int curTeam()  { return players.get(curPlayerIndex).getTeam(); }
+    public int curColor() { return players.get(curPlayerIndex).getColor(); }
 
-    public int curTeam() { return allPlayers.get(curPlayerIndex).getTeam(); }
-    public int curColor() { return allPlayers.get(curPlayerIndex).getColor(); }
+    /***********************************SET BOARD*************************************/
 
-    public void setRandomBoard(int n){
-        board.setRandomBoard(n,allPlayers); //vult het bord met n willekeurige levende blokken per speler
+    public void setEmptyBoard(){
+        board.setEmptyBoard();
         setBoardView();
     }
 
@@ -128,38 +128,30 @@ public class BoardController {
     // shit die je als spel buitenaf doet zonder de context te hoeven weten
     // dit zijn ijzerstekere functies waarvoor alleen nog maar een knop voor hoeft worden gemaakt
 
-    // TODO DE FUNDAMENTELE WIN REGELS
-    public int winCheck(){
-        return board.winExtinction();
+
+    public void setRandomBoard(int n){
+        board.setRandomBoard(n,players); //vult het bord met n willekeurige levende blokken per speler
+        setBoardView();
     }
 
-    // zet de volgende speler
-    public void nextPlayer() {
-        curPlayerIndex++;
-        curPlayerIndex %= allPlayers.size();
+    public Board getBoard(){ return new Board(board); }
 
-        movesDone = 0; //volgende speler, dus geen er is geen moveDone
-        last.clear();
-    }
+    /***********************************GAME CONTROLS*****************************/
 
     // een 'zet' doen als speler
     // TODO DE FUNDAMENTELE SPELER REGELS
     public void doMove(Coordinate c){ doMove(c.x,c.y);}
     public void doMove(int x, int y){
-        if(movesDone < movesPerPlayer){ // TODO: hier zit nu singleMoveModeOn in verwerkt. verrander voor debugging!
-            last.add(board.getTiles());
+        if(movesDone < movesPerPlayer){ // zet deze simpelweg uit door '|| true' in de if-statement ervoor te doen, en je kan meerdere dingen aanpassen
 
-            if(move(x,y)) { // als het succesvol was
-                movesDone++; // zet deze simpelweg uit door '|| true' in de if-statement ervoor te doen, en je kan meerdere dingen aanpassen
+            last.add(board.getTiles()); // TODO: last slaat nu alle tiles op. misschien andere oplossing?
+
+            if(move(x,y)) {
+                movesDone++;
                 setNext();
             }
-            else
-                last.remove(last.size()-1);
+            else last.remove(last.size()-1);
         }
-    }
-
-    public Player getPlayer(int index){
-        return allPlayers.get(index);
     }
 
     public void undoMove(){
@@ -170,12 +162,22 @@ public class BoardController {
         }
     }
 
+    // zet de volgende speler
+    public void nextPlayer() {
+        curPlayerIndex = (curPlayerIndex+1)%players.size();
+        movesDone = 0; //volgende speler, dus geen er is geen moveDone
+        last.clear();
+    }
+
+    // TODO DE FUNDAMENTELE WIN REGELS
+    public int winCheck() {
+        return board.winExtinction();
+    }
+
     /***********************************MOVE*****************************/
     // wat gebeurt er als de huidige speler iets doet op x,y
-    // returnt true als iets is verranderd,
+    // returned true als iets is verranderd,
 
-    //hieronder staan de fundamentele spelregels voor wanneer je op iets mag klikken, en wat dat betekent
-    //(als dit in bold kan dan zou ik het hebben gedaan)
     //TODO DE FUNDAMENTELE SPELREGELS
     private boolean move(int x, int y){
 
@@ -183,14 +185,12 @@ public class BoardController {
             board.setTileDead(x, y);
         } else if (board.isDead(x, y)) {
             board.setTileTeam(x, y, curTeam());
-        } else {
-            return false;
-        }
+        } else return false;
 
         return true;
     }
 
-    /*******************NEXT*******************/
+    /***********************************NEXT*****************************/
 
     // om de volgende itteratie uit te rekenen. deze functie kan zovaak anngeroepen worden als maar wilt~!
     private void setNext(){
@@ -198,7 +198,7 @@ public class BoardController {
         setBoardView();
     }
 
-    /*******************UPDATE*******************/
+    /***********************************UPDATE*****************************/
 
     // deze functie maakt de beweging van deze beurt naar de volgende beurt
     public void update(){
@@ -206,23 +206,21 @@ public class BoardController {
         setBoardView();
     }
 
+    /***********************************************************************/
+
     // maakt de boardView up-to-board met de latest tiles fashion
     private void setBoardView(){
         for(int y=0; y<board.height ; y++)
             for(int x=0; x<board.width ; x++){
+
                 boardView.setTileHealth(x,y,board.getTile(x,y).getHealth());
 
                 if(board.isDead(x,y))       boardView.setTileDead(x,y);
-                else                        boardView.setTilePlayer(x,y,allPlayers.get(board.getTileTeam(x,y)).getColor());
+                else                        boardView.setTilePlayer(x,y,players.get(board.getTileTeam(x,y)).getColor());
 
                 if(board.isDeadNext(x,y))   boardView.setTileDeadNext(x,y);
-                else                        boardView.setTilePlayerNext(x,y,allPlayers.get(board.getTileNextTeam(x,y)).getColor());
+                else                        boardView.setTilePlayerNext(x,y,players.get(board.getTileNextTeam(x,y)).getColor());
             }
-
-    }
-
-    public Board getBoard(){
-        return new Board(board);
     }
 }
 
