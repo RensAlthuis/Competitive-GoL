@@ -30,12 +30,10 @@ public class DeadActivity extends Activity {
         Button btn = (Button)findViewById(R.id.buttonDead);
         Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
         btn.setTypeface(type);
-        final Activity activity = this;
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
-                startActivity(new Intent(DeadActivity.this, MenuActivity.class));
             }
         });
     }

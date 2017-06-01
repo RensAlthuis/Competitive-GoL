@@ -107,6 +107,7 @@ public class RoomActivity extends Activity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
                 Intent intent = new Intent(RoomActivity.this, MainActivity.class);
                 intent.putExtra("Player1", colours[currentColour]);
                 intent.putExtra("Player2", colours[currentColour1]);
