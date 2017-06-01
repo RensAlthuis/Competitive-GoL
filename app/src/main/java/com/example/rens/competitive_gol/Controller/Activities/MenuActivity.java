@@ -1,4 +1,4 @@
-package com.example.rens.competitive_gol.Controller.Acivities;
+package com.example.rens.competitive_gol.Controller.Activities;
 
 import android.app.Activity;
 import android.content.Intent;

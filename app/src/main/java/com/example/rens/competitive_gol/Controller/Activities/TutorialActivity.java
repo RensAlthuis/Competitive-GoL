@@ -1,4 +1,4 @@
-package com.example.rens.competitive_gol.Controller.Acivities;
+package com.example.rens.competitive_gol.Controller.Activities;
 
 import android.app.Activity;
 import android.graphics.Typeface;
@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ViewSwitcher;
 
 import com.example.rens.competitive_gol.Controller.TypeWriter;

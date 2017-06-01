@@ -1,12 +1,9 @@
-package com.example.rens.competitive_gol.Controller.Acivities;
+package com.example.rens.competitive_gol.Controller.Activities;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.content.res.AppCompatResources;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context="com.example.rens.competitive_gol.Controller.Acivities.AboutActivity">
+    tools:context="com.example.rens.competitive_gol.Controller.Activities.AboutActivity">
 
     <EditText
         android:id="@+id/aboutUs"

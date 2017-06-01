@@ -1,4 +1,4 @@
-package com.example.rens.competitive_gol.Controller.Acivities;
+package com.example.rens.competitive_gol.Controller.Activities;
 
 import com.example.rens.competitive_gol.Controller.BoardController;
 import com.example.rens.competitive_gol.Model.AIPlayer;
