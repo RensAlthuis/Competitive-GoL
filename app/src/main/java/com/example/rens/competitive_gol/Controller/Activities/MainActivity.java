@@ -30,6 +30,7 @@ public class MainActivity extends Activity {
     private int gameMode;
     private CountDownTimer timer;
     private TextView[] time;
+    int maxTime;
 
     /***********************************************/
 
@@ -91,8 +92,10 @@ public class MainActivity extends Activity {
         }
         game.nextPlayer(); // updaten -> gewonnen? -> volgende speler
         updateCharacterIcon();
-        stopTimer();
-        startTimer(game.getPlayer(game.curTeam()).currentTime, time[game.curTeam()]);
+        if(maxTime != -1) {
+            stopTimer();
+            startTimer(game.getPlayer(game.curTeam()).currentTime, time[game.curTeam()]);
+        }
     }
 
     /********************MAKING THE GAME********************/
@@ -118,7 +121,6 @@ public class MainActivity extends Activity {
 
         /********************TIMERS********************/
         final String maxTimeStr = getIntent().getStringExtra("Time");
-        int maxTime;
         if(maxTimeStr.equals("2 min")) {
             maxTime = 2*60;
         }else if(maxTimeStr.equals("5 min")){
@@ -137,13 +139,25 @@ public class MainActivity extends Activity {
         time[1].setTypeface(Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf"));
         time[0].setTextSize(40);
         time[1].setTextSize(40);
-        game.getPlayer(0).currentTime = maxTime;
-        game.getPlayer(1).currentTime = maxTime;
-        time[0].setText("" + game.getPlayer(0).currentTime);
-        time[1].setText("" + game.getPlayer(1).currentTime);
+        game.getPlayer(0).currentTime = maxTime*1000;
+        game.getPlayer(1).currentTime = maxTime*1000;
+        if(maxTime != -1) {
+            time[0].setText("" + game.getPlayer(0).currentTime/1000);
+            time[1].setText("" + game.getPlayer(1).currentTime/1000);
+        }else{
+            time[0].setText("0");
+            time[1].setText("0");
+        }
 
         /********************BOARD********************/
         game.setRandomBoard(size*size/FRACTIONRANDOM);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(maxTime != -1)
+            stopTimer();
+        super.onDestroy();
     }
 
     private void toWinLoss(int winner) {
@@ -166,15 +180,16 @@ public class MainActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        startTimer(game.getPlayer(0).currentTime, time[0]);
+        if(maxTime != -1)
+            startTimer(game.getPlayer(0).currentTime, time[0]);
     }
 
     public void startTimer(long n, final TextView text){
 
-        timer = new CountDownTimer(n*1000, 1000) {
+        timer = new CountDownTimer(n, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                game.getPlayer(game.curTeam()).currentTime = millisUntilFinished /1000;
+                game.getPlayer(game.curTeam()).currentTime = millisUntilFinished ;
                 text.setText("" + millisUntilFinished /1000);
             }
 
