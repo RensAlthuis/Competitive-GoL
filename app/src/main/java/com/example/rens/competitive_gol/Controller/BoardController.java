@@ -17,6 +17,10 @@ import com.example.rens.competitive_gol.Model.Tile;
 import com.example.rens.competitive_gol.R;
 import com.example.rens.competitive_gol.View.BoardView;
 
+/**
+ * This class controls the current Board to be played on and is also responsible for drawing it
+ * on screen.
+ */
 public class BoardController {
 
     /*******************VARIABLES*******************/
@@ -108,7 +112,15 @@ public class BoardController {
 
     /***********************************FUNCTIONS*************************************/
 
+    /**
+     * This function adds an instance of Player to the current game.
+     * @param player the Player to be added.
+     */
     public void addPlayer(Player player) { players.add(player); }
+
+    /**
+     * getters and setters
+     */
     public Player getPlayer(int index)   { return players.get(index); }
 
     public int getWidth()  { return board.width; }
@@ -128,7 +140,10 @@ public class BoardController {
     // shit die je als spel buitenaf doet zonder de context te hoeven weten
     // dit zijn ijzerstekere functies waarvoor alleen nog maar een knop voor hoeft worden gemaakt
 
-
+    /**
+     * This function sets the board to a random starting position.
+     * @param n The number of blocks each player should have after randomizing.
+     */
     public void setRandomBoard(int n){
         board.setRandomBoard(n,players); //vult het bord met n willekeurige levende blokken per speler
         setBoardView();
@@ -141,6 +156,13 @@ public class BoardController {
     // een 'zet' doen als speler
     // TODO DE FUNDAMENTELE SPELER REGELS
     public void doMove(Coordinate c){ doMove(c.x,c.y);}
+
+    /**
+     * The current player makes a move using this function, turning a living block into a dead one
+     * or turning a dead one block into a living one. It also updates the next board to show the effects of the move.
+     * @param x the x-coordinate of the block that is to be changed.
+     * @param y the y-coordinate of the block that is to be changed.
+     */
     public void doMove(int x, int y){
         if(movesDone < movesPerPlayer){ // zet deze simpelweg uit door '|| true' in de if-statement ervoor te doen, en je kan meerdere dingen aanpassen
 
@@ -154,6 +176,9 @@ public class BoardController {
         }
     }
 
+    /**
+     * This function can undo the last move.
+     */
     public void undoMove(){
         if(!last.isEmpty()){
             board.setTiles(last.remove(last.size()-1));
@@ -163,6 +188,10 @@ public class BoardController {
     }
 
     // zet de volgende speler
+
+    /**
+     * This function passes the turn to the next player.
+     */
     public void nextPlayer() {
         curPlayerIndex = (curPlayerIndex+1)%players.size();
         movesDone = 0; //volgende speler, dus geen er is geen moveDone
@@ -170,6 +199,11 @@ public class BoardController {
     }
 
     // TODO DE FUNDAMENTELE WIN REGELS
+
+    /**
+     * This function checks whether one of the players has gone extinct.
+     * @return
+     */
     public int winCheck() {
         return board.winExtinction();
     }
@@ -179,6 +213,14 @@ public class BoardController {
     // returned true als iets is verranderd,
 
     //TODO DE FUNDAMENTELE SPELREGELS
+
+    /**
+     * This function defines what happens when a block is clicked. Making a dead tile alive and in
+     * the color of the current player or killing off one of the current player's blocks.
+     * @param x the x-coordinate of the clicked block.
+     * @param y the y-coordinate of the clicked block.
+     * @return true when the move was made succesfully, or false if this is not the case.
+     */
     private boolean move(int x, int y){
 
         if (board.getTileTeam(x, y) == curTeam()) {
@@ -193,6 +235,10 @@ public class BoardController {
     /***********************************NEXT*****************************/
 
     // om de volgende itteratie uit te rekenen. deze functie kan zovaak anngeroepen worden als maar wilt~!
+
+    /**
+     * This function computes the state of the board if it were iterated in its current state.
+     */
     private void setNext(){
         board.setNext();
         setBoardView();
@@ -201,6 +247,10 @@ public class BoardController {
     /***********************************UPDATE*****************************/
 
     // deze functie maakt de beweging van deze beurt naar de volgende beurt
+
+    /**
+     * This function updates the board by iterating a single step.
+     */
     public void update(){
         board.update();
         setBoardView();
@@ -209,6 +259,10 @@ public class BoardController {
     /***********************************************************************/
 
     // maakt de boardView up-to-board met de latest tiles fashion
+
+    /**
+     * This function displays any changes to the board after updating the board.
+     */
     private void setBoardView(){
         for(int y=0; y<board.height ; y++)
             for(int x=0; x<board.width ; x++){

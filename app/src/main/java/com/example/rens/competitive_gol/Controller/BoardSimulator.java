@@ -56,6 +56,12 @@ public class BoardSimulator {
         return ownTiles;
     }
 
+    /**
+     * This function computes the ratio of the number of blocks claimed by each player.
+     * @param playerNr This defines which player's block count acts as numerator,
+     * @return It returns the number of blocks claimed by the player with playerNr divided by the
+     * number of blocks claimed by the opponent.
+     */
     public double computePlayerRatio(int playerNr){
         int otherPlayer = -1;
         if(playerNr==0){

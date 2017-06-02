@@ -2,6 +2,9 @@ package com.example.rens.competitive_gol.Model;
 
 import java.util.ArrayList;
 
+/**
+ * This class models a single Tile on the Board.
+ */
 public class Tile {
 
     /*******************VARIABLES*******************/
@@ -42,7 +45,12 @@ public class Tile {
         else            return nextLive(neighbours, settings);
     }
 
-    //De tile leeft.. Moet hij dood gaat?
+    /**
+     * This function checks whether live tiles need to die when iterated.
+     * @param neighbours A list of all tiles on the board.
+     * @param settings the Settings for the tiles.
+     * @return the new state of the Tile.
+     */
     private Tile nextDie(ArrayList<Tile> neighbours, TileSettings settings) {
         int nLiving = 0;
 
@@ -57,7 +65,12 @@ public class Tile {
         return this;
     }
 
-    //De tile is dood.. Moet hij gaan leven?
+    /**
+     * This function checks whether dead tiles need to come alive and if so, for which team.
+     * @param neighbours A list of all tiles on the board.
+     * @param settings the Settings for the tiles
+     * @return The new state of the Tile.
+     */
     private Tile nextLive(ArrayList<Tile> neighbours, TileSettings settings) {
         int nLiving = 0;
         final ArrayList<Integer[]> teamCount = new ArrayList<>();

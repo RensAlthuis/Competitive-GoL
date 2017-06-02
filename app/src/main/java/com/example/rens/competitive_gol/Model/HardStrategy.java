@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 /**
+ * This class implements an AI strategy that is supposed to be hard to beat.
  * Created by Glenn on 22/05/2017.
  */
 
@@ -89,6 +90,14 @@ public class HardStrategy implements AIStrategy{
         return move;
     }
 
+    /**
+     * This function simulates a number of games equal to TREE_WIDTH_PER_MOVE for a number of turns
+     * equal to TREE_DEPTH.
+     * @param boardSim The instance of BoardSimulator containing the board to be played on.
+     * @param playerNr The playerNr of the AI Player
+     * @param move The first move to be made in the simulation.
+     * @return The average gain in ratio of possible outcomes tied to a certain move.
+     */
     private double averageGainOnMove(BoardSimulator boardSim, int playerNr, Coordinate move){
         Random rand = new Random();
         ArrayList<Coordinate> tempMoves;

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * This class implements an AI strategy that is easily beaten.
+ * This class implements an AI strategy that is supposed to be easily beaten.
  * Created by Glenn on 15/05/2017.
  */
 

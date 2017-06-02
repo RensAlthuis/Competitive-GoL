@@ -3,6 +3,9 @@ package com.example.rens.competitive_gol.Model;
 import android.os.CountDownTimer;
 import android.widget.TextView;
 
+/**
+ * This class contains the essential information about a Player.
+ */
 public class Player {
 
     /*******************VARIABLES*******************/

@@ -5,6 +5,9 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * This class models a playing board for Game of Life.
+ */
 public class Board {
 
     /*******************VARIABLES*******************/
@@ -71,7 +74,10 @@ public class Board {
         this(aBoard.width, aBoard.height, aBoard.getSettings(), aBoard.getTiles());
     }
 
-    //create all empty tiles for the board
+    /**
+     * This function creates an empty list of tiles, with a number of elements equal to size.
+     * @return
+     */
     private ArrayList<Tile> emptyTiles(){
         ArrayList<Tile> t = new ArrayList<>();
         for(int i=0; i<size; i++) t.add(new Tile());
@@ -206,6 +212,10 @@ public class Board {
     /*******************WIN CONDITIONS*******************/
     //TODO: goede win condities schrijven/meer bedenken?. Alleen winExtinction bestaat!
 
+    /**
+     * This function checks whether a player has no blocks left, and thus whether the other has won.
+     * @return
+     */
     public int winExtinction() {
         boolean team0exists = false;
         boolean team1exists = false;
