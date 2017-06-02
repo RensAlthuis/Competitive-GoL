@@ -35,6 +35,47 @@ public class BoardSimulator {
     }
 
     /**
+     * This function counts the number tiles currently claimed by the player.
+     * @param playerNr the AI's player number.
+     * @return the number of tiles currently claimed by the AI.
+     */
+    public int countPlayerTiles(int playerNr){
+        int width = this.getBoardWidth();
+        int height = this.getBoardHeight();
+        int ownTiles = 0;
+
+        for(int x = 0; x < width; x++){
+            for(int y = 0; y < height; y++){
+                if(this.getTeam(x, y) == playerNr){
+                    ownTiles++;
+                }
+            }
+        }
+
+        return ownTiles;
+    }
+
+    public int computePlayerRatio(int playerNr){
+        int otherPlayer = -1;
+        if(playerNr==0){
+            otherPlayer = 1;
+        }
+        else if(playerNr==1){
+            otherPlayer = 0;
+        }
+        int ownTiles = countPlayerTiles(playerNr);
+        int otherTiles = countPlayerTiles(otherPlayer);
+        int gain;
+        if (otherTiles == 0){
+            gain = 99;
+        }
+        else{
+            gain = ownTiles/otherTiles;
+        }
+        return gain;
+    }
+
+    /**
      * getters and setters
      */
     public int getBoardWidth(){ return board.width; }
