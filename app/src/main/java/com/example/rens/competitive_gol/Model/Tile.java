@@ -6,7 +6,7 @@ public class Tile {
 
     /*******************VARIABLES*******************/
 
-    static final int DEAD = -1;
+    public static final int DEAD = -1;
 
     // -1 = dood, 0,1,2,3,4.. = van speler 0,1,2,3,4..
     int team;

@@ -1,6 +1,7 @@
 package com.example.rens.competitive_gol.Controller;
 
 import com.example.rens.competitive_gol.Model.Board;
+import com.example.rens.competitive_gol.Model.Tile;
 
 /**
  * This class is used to give the AI a board and a controller to test out moves internally.
@@ -55,7 +56,7 @@ public class BoardSimulator {
         return ownTiles;
     }
 
-    public int computePlayerRatio(int playerNr){
+    public double computePlayerRatio(int playerNr){
         int otherPlayer = -1;
         if(playerNr==0){
             otherPlayer = 1;
@@ -65,7 +66,7 @@ public class BoardSimulator {
         }
         int ownTiles = countPlayerTiles(playerNr);
         int otherTiles = countPlayerTiles(otherPlayer);
-        int gain;
+        double gain;
         if (otherTiles == 0){
             gain = 99;
         }
@@ -82,7 +83,7 @@ public class BoardSimulator {
     public int getBoardHeight(){ return board.height; }
 
     public void setTeam(int x, int y, int player){
-        if(board.getTileTeam(x,y)==0)
+        if(board.getTileTeam(x,y)== Tile.DEAD)
             board.setTileTeam(x,y,player);
         else
             board.setTileDead(x,y);
