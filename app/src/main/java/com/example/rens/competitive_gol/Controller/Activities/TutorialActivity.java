@@ -19,6 +19,7 @@ public class TutorialActivity extends Activity {
     private Typeface type;
     private TypeWriter textAnimated;
     private ArrayList<String> texts;
+    private ArrayList<String> texts1;
     private int textIndex = 0;
     private TypeWriter textAnimated1;
     private ViewSwitcher switcher;
@@ -57,6 +58,7 @@ public class TutorialActivity extends Activity {
                     " which are the cells that are horizontally, vertically, or diagonally adjacent.");
 
         texts = new ArrayList<>();
+        texts1 = new ArrayList<>();
         texts.add("Welcome to the tutorial section of this game. In this section the core mechanics of the game will be explained." +
                 "The universe of the Game of Life is an infinite two-dimensional orthogonal grid" +
                 "of square cells, each of which is in one of two possible states, alive or dead, or " +
@@ -73,6 +75,18 @@ public class TutorialActivity extends Activity {
                 "and deaths occur simultaneously, and the discrete moment at which this happens is " +
                 "sometimes called a tick (in other words, each generation is a pure function of the preceding one). " +
                 "The rules continue to be applied repeatedly to create further generations.");
+
+        texts1.add("After you touch the start game button you have to create a room. In here you can choose which game mode you want to play." +
+                "You can choose between local player vs player mode or player vs ai mode. And between Ai you can choose the hard Ai or easy Ai.");
+        texts1.add("You can also choose how many tiles you can choose every turn. The board size and time is also settable." +
+                "At the end you can choose your own color and your opponents color. If you are done choosing you can start the game.");
+        texts1.add("In the game you can choose a tile that you want to set each turn. " +
+                "If you want to change the tile, you can undo your tile set." +
+                "Then you can click next and wait till your opponent set a tile as well.");
+        texts1.add("The Hard Ai and Easy Ai take a bit of time to set their tiles on the right coordinates" +
+                "The numbers that are represented on the left is the amount of time left that you have set" +
+                "And on the right is the amount of steps were made this time.");
+        texts1.add("Have fun playing and Git Gud!");
     }
 
     private void eventToLeftTut(){
@@ -118,26 +132,25 @@ public class TutorialActivity extends Activity {
                     switcher.showPrevious();
                     textIndex = texts.size();
                 }
-                textAnimated1.animateText(texts.get(textIndex));
+                textAnimated1.animateText(texts1.get(textIndex));
             }
         });
 
     }
+
     private void eventToRightTut1(){
         Button btnRight = (Button) findViewById(R.id.buttonRightTut1);
         btnRight.setTypeface(type);
         btnRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(textIndex > texts.size() - 1) {
+                if(textIndex > texts1.size() - 1) {
                     switcher.showPrevious();
                     textIndex = 0;
                 }
-                else textAnimated1.animateText(texts.get(textIndex));
+                else textAnimated1.animateText(texts1.get(textIndex));
                 textIndex++;
             }
         });
     }
-
-
 }
