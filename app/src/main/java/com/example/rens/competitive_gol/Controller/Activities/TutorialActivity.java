@@ -96,9 +96,15 @@ public class TutorialActivity extends Activity {
             @Override
             public void onClick(View v) {
                 textAnimated.animateText("");
+                textAnimated1.animateText("");
                 textIndex--;
-                if (textIndex < 0) textIndex = texts.size()-1;
-                textAnimated.animateText(texts.get(textIndex));
+                if (textIndex < 0){
+                    switcher.showNext();
+                    textIndex = texts1.size()-1;
+                    textAnimated1.animateText(texts1.get(textIndex));
+                }
+                else textAnimated.animateText(texts.get(textIndex));
+                fixPictures(textIndex);
             }
         });
 
@@ -110,12 +116,15 @@ public class TutorialActivity extends Activity {
             @Override
             public void onClick(View v) {
                 textAnimated.animateText("");
+                textAnimated1.animateText("");
                 textIndex++;
-                if(textIndex > texts.size() - 1) {
+                if(textIndex == texts.size()) {
                     switcher.showNext();
                     textIndex = 0;
+                    textAnimated1.animateText(texts1.get(textIndex));
                 }
                 else textAnimated.animateText(texts.get(textIndex));
+                fixPictures(textIndex);
             }
         });
     }
@@ -127,12 +136,15 @@ public class TutorialActivity extends Activity {
             @Override
             public void onClick(View v) {
                 textAnimated.animateText("");
+                textAnimated1.animateText("");
                 textIndex--;
                 if (textIndex < 0){
                     switcher.showPrevious();
-                    textIndex = texts.size();
+                    textIndex = texts.size()-1;
+                    textAnimated.animateText(texts.get(textIndex));
                 }
                 textAnimated1.animateText(texts1.get(textIndex));
+                fixPictures(textIndex);
             }
         });
 
@@ -144,13 +156,33 @@ public class TutorialActivity extends Activity {
         btnRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(textIndex > texts1.size() - 1) {
+                textAnimated.animateText("");
+                textAnimated1.animateText("");
+                textIndex++;
+                fixPictures(textIndex);
+                if(textIndex == texts1.size()) {
                     switcher.showPrevious();
                     textIndex = 0;
+                    textAnimated.animateText(texts.get(textIndex));
                 }
                 else textAnimated1.animateText(texts1.get(textIndex));
-                textIndex++;
+                fixPictures(textIndex);
+
             }
         });
+    }
+
+    private void fixPictures(int textIndex){
+        findViewById(R.id.plaatje0).setVisibility(View.GONE);
+        findViewById(R.id.plaatje1).setVisibility(View.GONE);
+        findViewById(R.id.plaatje2).setVisibility(View.GONE);
+        if(textIndex == 0) {
+            findViewById(R.id.plaatje0).setVisibility(View.VISIBLE);
+        }
+        if(textIndex == 1){
+            findViewById(R.id.plaatje1).setVisibility(View.VISIBLE);
+        }else if(textIndex == 2 || textIndex == 3 || textIndex == 4){
+            findViewById(R.id.plaatje2).setVisibility(View.VISIBLE);
+        }
     }
 }
