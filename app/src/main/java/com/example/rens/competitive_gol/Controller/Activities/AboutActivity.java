@@ -3,8 +3,10 @@ package com.example.rens.competitive_gol.Controller.Activities;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.rens.competitive_gol.R;
@@ -24,5 +26,19 @@ public class AboutActivity extends Activity {
         type =  Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
         aboutUs = (TextView) findViewById(R.id.aboutUs);
         aboutUs.setTypeface(type);
+        eventBack();
     }
+
+    private void eventBack(){
+        Button btn = (Button)findViewById(R.id.aboutBack);
+        Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
+        btn.setTypeface(type);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
 }

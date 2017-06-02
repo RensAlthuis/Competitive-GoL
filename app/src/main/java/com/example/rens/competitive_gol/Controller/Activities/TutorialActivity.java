@@ -37,6 +37,8 @@ public class TutorialActivity extends Activity {
         eventToLeftTut1();
         eventToRightTut1();
         animationOfText();
+        eventBack1();
+        eventBack2();
     }
 
     private void animationOfText(){
@@ -184,5 +186,29 @@ public class TutorialActivity extends Activity {
         }else if(textIndex == 2 || textIndex == 3 || textIndex == 4){
             findViewById(R.id.plaatje2).setVisibility(View.VISIBLE);
         }
+    }
+
+    private void eventBack1(){
+        Button btn = (Button)findViewById(R.id.tutBack1);
+        Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
+        btn.setTypeface(type);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    private void eventBack2(){
+        Button btn = (Button)findViewById(R.id.tutBack2);
+        Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
+        btn.setTypeface(type);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 }

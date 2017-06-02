@@ -77,6 +77,7 @@ public class RoomActivity extends Activity {
         eventToLeftBoard();
         eventToRightBoard();
         eventToSpinner();
+        eventBack();
    }
 
    private void changeFonts(){
@@ -251,6 +252,18 @@ public class RoomActivity extends Activity {
                 currentColour1 = (currentColour1 + 1) % colours.length;
                 if(currentColour1 == currentColour) currentColour1 = (currentColour1 + 1) % colours.length;
                 colourChoice1.setBackgroundColor(colours[currentColour1]);
+            }
+        });
+    }
+
+    private void eventBack(){
+        Button btn = (Button)findViewById(R.id.roomBack);
+        Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
+        btn.setTypeface(type);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

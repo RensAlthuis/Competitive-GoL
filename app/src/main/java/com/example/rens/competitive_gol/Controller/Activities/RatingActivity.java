@@ -24,6 +24,7 @@ public class RatingActivity extends Activity {
         setContentView(R.layout.activity_rating);
         eventToSettings();
         eventOnListeningButton();
+        eventBack();
     }
 
     private void eventOnListeningButton(){
@@ -36,8 +37,20 @@ public class RatingActivity extends Activity {
             }
         });
     }
-    private void eventToSettings(){
-        Button btn = (Button)findViewById(R.id.buttonRateSend);
+    private void eventToSettings() {
+        Button btn = (Button) findViewById(R.id.buttonRateSend);
+        Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
+        btn.setTypeface(type);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    private void eventBack(){
+        Button btn = (Button)findViewById(R.id.ratingBack);
         Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
         btn.setTypeface(type);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -48,3 +61,4 @@ public class RatingActivity extends Activity {
         });
     }
 }
+

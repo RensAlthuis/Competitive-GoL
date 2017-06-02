@@ -20,10 +20,24 @@ public class FeedBackActivity extends Activity {
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_feedback);
         eventToSettings();
+        eventBack();
+
     }
 
     private void eventToSettings(){
         Button btn = (Button)findViewById(R.id.buttonSendFeedBack);
+        Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
+        btn.setTypeface(type);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    private void eventBack(){
+        Button btn = (Button)findViewById(R.id.feedbackBack);
         Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
         btn.setTypeface(type);
         btn.setOnClickListener(new View.OnClickListener() {

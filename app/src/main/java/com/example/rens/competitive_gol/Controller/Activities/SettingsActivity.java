@@ -38,6 +38,7 @@ public class SettingsActivity extends Activity {
         eventToRating();
         eventToFeedBack();
         eventToAbout();
+        eventBack();
 
     }
 
@@ -91,6 +92,18 @@ public class SettingsActivity extends Activity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SettingsActivity.this, AboutActivity.class));
+            }
+        });
+    }
+
+    private void eventBack(){
+        Button btn = (Button)findViewById(R.id.settingsBack);
+        Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
+        btn.setTypeface(type);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
