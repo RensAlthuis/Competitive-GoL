@@ -35,6 +35,7 @@ public class MainActivity extends Activity {
     private CountDownTimer timer;
     private TextView[] timerText;
     private int maxTime;
+    boolean alreadyWon;
 
     /***********************************************/
 
@@ -47,6 +48,7 @@ public class MainActivity extends Activity {
 
         final TextView aiText = (TextView)findViewById(R.id.AIText);
         aiText.setVisibility(View.INVISIBLE);
+        alreadyWon = false;
 
         /**** NEXT-TURN BUTTON ****/
         final Button btnNext = (Button)findViewById(R.id.buttonNext);
@@ -57,10 +59,11 @@ public class MainActivity extends Activity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnNext.setEnabled(false);
 
                 nextTurn();
 
-                if(gameMode != 0){
+                if(gameMode != 0 && !alreadyWon){
                     aiText.setVisibility(View.VISIBLE);
                     aiText.invalidate();
                     Handler handler = new Handler();
@@ -73,6 +76,7 @@ public class MainActivity extends Activity {
                         }
                     });
                 }
+                btnNext.setEnabled(true);
             }
         });
 
@@ -184,6 +188,10 @@ public class MainActivity extends Activity {
      * @param winner the team number of the winner.
      */
     private void toWinLoss(int winner) {
+        if(alreadyWon){
+            return;
+        }
+        alreadyWon = true;
         finish();
         Intent intent = new Intent(MainActivity.this, WinLossActivity.class);
 
