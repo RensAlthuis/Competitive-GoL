@@ -26,12 +26,14 @@ public class MainActivity extends Activity {
     /*******************VARIABLES*******************/
 
     private static BoardController game; //Het actieve spel atm
-    private static int FRACTIONRANDOM = 5; // is de fractie van het bord (als 1/..) dat wordt gevuld door random tiles
     private ImageView character;
+
+    private final static int FRACTIONRANDOM = 5; // is de fractie van het bord (als 1/..) dat wordt gevuld door random tiles
     private int gameMode;
+
     private CountDownTimer timer;
-    private TextView[] time;
-    int maxTime;
+    private TextView[] timerText;
+    private int maxTime;
 
     /***********************************************/
 
@@ -41,11 +43,8 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-        time = new TextView[2];
-        time[0] = (TextView)findViewById(R.id.timerText);
-        time[1] = (TextView)findViewById(R.id.timerText2);
 
-        // Het spel:
+        /**** THE GAME ****/
         gameMode = getIntent().getIntExtra("gameMode", 0);
         makeGame(gameMode);
 
@@ -55,7 +54,7 @@ public class MainActivity extends Activity {
         final TextView aiText = (TextView)findViewById(R.id.AIText);
         aiText.setVisibility(View.INVISIBLE);
 
-        // De next turn knop:
+        /**** NEXT-TURN BUTTON ****/
         Button btnNext = (Button)findViewById(R.id.buttonNext);
         Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
         btnNext.setTypeface(type);
@@ -81,6 +80,7 @@ public class MainActivity extends Activity {
             }
         });
 
+        /**** UNDO BUTTON ****/
         Button btnUndo = (Button)findViewById(R.id.buttonUndo);
         Typeface typeUndo = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
         btnUndo.setTypeface(typeUndo);
@@ -90,7 +90,6 @@ public class MainActivity extends Activity {
                 game.undoMove();
             }
         });
-
     }
 
     private void updateCharacterIcon(){
@@ -98,16 +97,19 @@ public class MainActivity extends Activity {
     }
 
     private void nextTurn(){
+        // updaten -> gewonnen? -> volgende speler -> zet timer
+
         game.update();
+
         int win = game.winCheck();
-        if(win != -1){
-            toWinLoss(win);
-        }
-        game.nextPlayer(); // updaten -> gewonnen? -> volgende speler
+        if(win != -1) toWinLoss(win);
+
+        game.nextPlayer();
         updateCharacterIcon();
+
         if(maxTime != -1) {
-            stopTimer();
-            startTimer(game.getPlayer(game.curTeam()).currentTime, time[game.curTeam()]);
+            timer.cancel();
+            startTimer(game.getPlayer(game.curTeam()).currentTime, timerText[game.curTeam()]);
         }
     }
 
@@ -125,95 +127,94 @@ public class MainActivity extends Activity {
         final int col1 = getIntent().getIntExtra("Player1", 0);
         final int col2 = getIntent().getIntExtra("Player2", 0);
 
-
         game.addPlayer(new Player(0, col1));
 
         if(gameMode == 0) game.addPlayer(new Player(1, col2));
         else              game.addPlayer(new AIPlayer(1, col2, game, (gameMode == 1)? new EasyStrategy() : new HardStrategy()));
 
+        /********************BOARD********************/
+
+        game.setRandomBoard(size*size/FRACTIONRANDOM);
 
         /********************TIMERS********************/
         final String maxTimeStr = getIntent().getStringExtra("Time");
-        if(maxTimeStr.equals("2 min")) {
-            maxTime = 2*60;
-        }else if(maxTimeStr.equals("5 min")){
-            maxTime = 5*60;
-        }else if(maxTimeStr.equals("10 min")){
-            maxTime = 10*60;
-        }else if(maxTimeStr.equals("20 min")){
-            maxTime = 20*60;
-        }
+
+        if(maxTimeStr.equals("2 min"))       maxTime = 2*60;
+        else if(maxTimeStr.equals("5 min"))  maxTime = 5*60;
+        else if(maxTimeStr.equals("10 min")) maxTime = 10*60;
+        else if(maxTimeStr.equals("20 min")) maxTime = 20*60;
         else{
             maxTime = -1;
+            return;
         }
 
+        timerText = new TextView[]{(TextView)findViewById(R.id.timerPlayer1),(TextView)findViewById(R.id.timerPlayer2)};
 
-        time[0].setTypeface(Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf"));
-        time[1].setTypeface(Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf"));
-        time[0].setTextSize(40);
-        time[1].setTextSize(40);
+        timerText[0].setTypeface(Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf"));
+        timerText[1].setTypeface(Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf"));
+
+        timerText[0].setTextSize(40);
+        timerText[1].setTextSize(40);
+
+        timerText[0].setTextColor(game.getPlayer(0).getColor());
+        timerText[1].setTextColor(game.getPlayer(1).getColor());
+
         game.getPlayer(0).currentTime = maxTime*1000;
         game.getPlayer(1).currentTime = maxTime*1000;
-        if(maxTime != -1) {
-            time[0].setText("" + game.getPlayer(0).currentTime/1000);
-            time[1].setText("" + game.getPlayer(1).currentTime/1000);
-        }else{
-            time[0].setText("0");
-            time[1].setText("0");
-        }
 
-        /********************BOARD********************/
-        game.setRandomBoard(size*size/FRACTIONRANDOM);
+        setTimerText(timerText[0],(int)game.getPlayer(0).currentTime/1000);
+        setTimerText(timerText[1],(int)game.getPlayer(1).currentTime/1000);
     }
 
-    @Override
-    protected void onDestroy() {
-        if(maxTime != -1)
-            stopTimer();
-        super.onDestroy();
-    }
+    /********************************WIN/LOSE********************************/
 
     private void toWinLoss(int winner) {
         finish();
         Intent intent = new Intent(MainActivity.this, WinLossActivity.class);
+
         if (gameMode == 0) {
-            if (winner == 0)
-                intent.putExtra("winner", 1);
-            if (winner == 1)
-                intent.putExtra("winner", 2);
+            if (winner == 0) intent.putExtra("winner", 1);
+            if (winner == 1) intent.putExtra("winner", 2);
         } else {
-            if (winner == 0)
-                intent.putExtra("winner", 3);
-            if (winner == 1)
-                intent.putExtra("winner", 0);
+            if (winner == 0) intent.putExtra("winner", 3);
+            if (winner == 1) intent.putExtra("winner", 0);
         }
+
         startActivity(intent);
+    }
+
+    /********************************TIMER********************************/
+
+    private void setTimerText(TextView text, int timeSec){
+        final int seconds = timeSec%60;
+        final int minutes = (timeSec - seconds)/60;
+
+        if(seconds<10) text.setText(minutes + ":0" + seconds);
+        else           text.setText(minutes + ":"  + seconds);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if(maxTime != -1)
-            startTimer(game.getPlayer(0).currentTime, time[0]);
+        if(maxTime != -1) startTimer(game.getPlayer(0).currentTime, timerText[0]);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(maxTime != -1) timer.cancel();
+        super.onDestroy();
     }
 
     public void startTimer(long n, final TextView text){
-
         timer = new CountDownTimer(n, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 game.getPlayer(game.curTeam()).currentTime = millisUntilFinished ;
-                text.setText("" + millisUntilFinished /1000);
+                setTimerText(text,(int)(millisUntilFinished /1000));
             }
 
             @Override
-            public void onFinish() {
-            }
-        };
-        timer.start();
-    }
-
-    public void stopTimer(){
-        timer.cancel();
+            public void onFinish() {}
+        }.start();
     }
 }
