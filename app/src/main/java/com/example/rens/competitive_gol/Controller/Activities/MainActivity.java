@@ -10,6 +10,7 @@ import com.example.rens.competitive_gol.Model.TileSettings;
 import com.example.rens.competitive_gol.R;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -44,20 +45,15 @@ public class MainActivity extends Activity {
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-        /**** THE GAME ****/
-        gameMode = getIntent().getIntExtra("gameMode", 0);
-        makeGame(gameMode);
-
-        character = (ImageView)findViewById(R.id.character);
-        updateCharacterIcon();
-
         final TextView aiText = (TextView)findViewById(R.id.AIText);
         aiText.setVisibility(View.INVISIBLE);
 
         /**** NEXT-TURN BUTTON ****/
-        Button btnNext = (Button)findViewById(R.id.buttonNext);
-        Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
-        btnNext.setTypeface(type);
+        final Button btnNext = (Button)findViewById(R.id.buttonNext);
+        btnNext.setBackgroundColor(Color.DKGRAY);
+        btnNext.setTextColor(Color.WHITE);
+        btnNext.setTextSize(20);
+        btnNext.setTypeface(Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf"));
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,15 +77,24 @@ public class MainActivity extends Activity {
         });
 
         /**** UNDO BUTTON ****/
-        Button btnUndo = (Button)findViewById(R.id.buttonUndo);
-        Typeface typeUndo = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
-        btnUndo.setTypeface(typeUndo);
+        final Button btnUndo = (Button)findViewById(R.id.buttonUndo);
+        btnUndo.setBackgroundColor(Color.DKGRAY);
+        btnUndo.setTextColor(Color.WHITE);
+        btnUndo.setTextSize(20);
+        btnUndo.setTypeface(Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf"));
         btnUndo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 game.undoMove();
             }
         });
+
+        /**** THE GAME ****/
+        gameMode = getIntent().getIntExtra("gameMode", 0);
+        makeGame(gameMode);
+
+        character = (ImageView)findViewById(R.id.character);
+        updateCharacterIcon();
     }
 
     private void updateCharacterIcon(){
@@ -124,7 +129,6 @@ public class MainActivity extends Activity {
      *                 a player and an AI opponent and the difficulty of that AI.
      */
     private void makeGame(int gameMode){
-
         /********************BOARDSETTINGS********************/
         final int steps = getIntent().getIntExtra("steps", 1);
         final int size  = getIntent().getIntExtra("boardSize", 10);
