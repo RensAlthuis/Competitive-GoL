@@ -23,8 +23,12 @@ public class Board {
 
     /*******************CONSTRUCTORS*******************/
 
-    //een constructor die alleen maar tiles hoeft te weten.
-    //zo misschien makkelijker om snel een andere tiles te kunnen maken?
+    /**
+     * een constructor die alleen maar tiles hoeft te weten.
+     * zo misschien makkelijker om snel een andere tiles te kunnen maken?
+     * @param tiles
+     * @param settings
+     */
     public Board(Tile[][] tiles, TileSettings settings){
         this.width  = tiles[0].length;
         this.height = tiles.length;
@@ -37,7 +41,11 @@ public class Board {
         setNext();
     }
 
-    // van Tile[][] naar Arraylist
+    /**
+     * van Tile[][] naar Arraylist
+     * @param tiles
+     * @return
+     */
     private ArrayList<Tile> copyTiles(Tile[][] tiles){
         ArrayList<Tile> t = new ArrayList<>();
         for(int i=0; i<width; i++)
@@ -69,9 +77,12 @@ public class Board {
         setNext();
     }
 
-    // copy this board
-    public Board(Board aBoard){
-        this(aBoard.width, aBoard.height, aBoard.getSettings(), aBoard.getTiles());
+    /**
+     * copy this board
+     * @param copy
+     */
+    public Board(Board copy){
+        this(copy.width, copy.height, copy.getSettings(), copy.getTiles());
     }
 
     /**
@@ -143,13 +154,19 @@ public class Board {
 
     /*******************DIFFERENT BOARDS*******************/
 
-    //empty the whole board
+    /**
+     * empty the whole board
+     */
     public void setEmptyBoard(){
         for(Tile tile : tiles) tile.kill();
         setNext();
     }
 
-    //fill the board in randomly
+    /**
+     * fill the board in randomly
+     * @param tilesPerPlayer
+     * @param allPlayers
+     */
     public void setRandomBoard(int tilesPerPlayer, ArrayList<Player> allPlayers){
         Random rand = new Random();
 
@@ -172,17 +189,23 @@ public class Board {
 
     /*******************UPDATE*******************/
 
-    //This updates the board for the next turn
+     /**
+     * This updates the board for the next turn
+     */
     public void update(){
         setNext();
         overwriteArrayList(tiles,tilesNext);
         setNext();
     }
 
-    // TODO: misschien een util class maken met al dit soort functies?
-    // overschrijft de arraylist 'toOverwritte' met alle waardes van 'copy'
-    // returnt false als ze niet even lang zijn.
-    // (er moet nog een algemene check zijn of ze wel dezelfde objecten gebruiken)
+    /**
+     * overschrijft de arraylist 'toOverwritte' met alle waardes van 'copy'
+     * returnt false als ze niet even lang zijn.
+     * (er moet nog een algemene check zijn of ze wel dezelfde objecten gebruiken)
+     * @param toOverwrite
+     * @param copy
+     * @return
+     */
     private boolean overwriteArrayList(ArrayList toOverwrite, ArrayList copy){
         if(toOverwrite.size() != copy.size()) return false;
 
@@ -190,10 +213,12 @@ public class Board {
             toOverwrite.set(i,copy.get(i));
 
         return true;
-    }
+    } // TODO: misschien een util class maken met al dit soort functies?
 
-    //calculate the next board and store it in tileNext
-    //ROEP DEZE ZO VAAK AAN ALS JE WILT! :)
+    /**
+     * calculate the next board and store it in tileNext
+     * ROEP DEZE ZO VAAK AAN ALS JE WILT! :)
+     */
     public void setNext(){
         for(int i=0; i<size; i++) tilesNext.set(i, tiles.get(i).next(getNeighbours(i%width, i/height),settings));
     }
@@ -240,6 +265,7 @@ public class Board {
             return -1;
         }
     }
+
     public boolean winDominant(int team){ // TODO win als jij relatief tot de andere spelers de meeste tiles hebt
         return false;
     }

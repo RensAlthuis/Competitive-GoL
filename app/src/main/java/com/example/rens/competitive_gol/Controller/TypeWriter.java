@@ -5,10 +5,6 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-/**
- * Created by Lenovo on 1-6-2017.
- */
-
 public class TypeWriter extends android.support.v7.widget.AppCompatTextView{
 
     private CharSequence mText;

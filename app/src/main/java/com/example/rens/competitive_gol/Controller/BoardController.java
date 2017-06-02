@@ -131,14 +131,13 @@ public class BoardController {
 
     /***********************************SET BOARD*************************************/
 
+    /**
+     * This function sets the board empty
+     */
     public void setEmptyBoard(){
         board.setEmptyBoard();
         setBoardView();
     }
-
-    /***********************************PLAYER CONTROLLES*****************************/
-    // shit die je als spel buitenaf doet zonder de context te hoeven weten
-    // dit zijn ijzerstekere functies waarvoor alleen nog maar een knop voor hoeft worden gemaakt
 
     /**
      * This function sets the board to a random starting position.
@@ -153,10 +152,9 @@ public class BoardController {
 
     /***********************************GAME CONTROLS*****************************/
 
-    // een 'zet' doen als speler
     // TODO DE FUNDAMENTELE SPELER REGELS
-    public void doMove(Coordinate c){ doMove(c.x,c.y);}
 
+    public void doMove(Coordinate c){ doMove(c.x,c.y);}
     /**
      * The current player makes a move using this function, turning a living block into a dead one
      * or turning a dead one block into a living one. It also updates the next board to show the effects of the move.
@@ -187,8 +185,6 @@ public class BoardController {
         }
     }
 
-    // zet de volgende speler
-
     /**
      * This function passes the turn to the next player.
      */
@@ -209,8 +205,6 @@ public class BoardController {
     }
 
     /***********************************MOVE*****************************/
-    // wat gebeurt er als de huidige speler iets doet op x,y
-    // returned true als iets is verranderd,
 
     //TODO DE FUNDAMENTELE SPELREGELS
 
@@ -234,10 +228,9 @@ public class BoardController {
 
     /***********************************NEXT*****************************/
 
-    // om de volgende itteratie uit te rekenen. deze functie kan zovaak anngeroepen worden als maar wilt~!
-
     /**
      * This function computes the state of the board if it were iterated in its current state.
+     * (Can be called as often as needed)
      */
     private void setNext(){
         board.setNext();
@@ -245,8 +238,6 @@ public class BoardController {
     }
 
     /***********************************UPDATE*****************************/
-
-    // deze functie maakt de beweging van deze beurt naar de volgende beurt
 
     /**
      * This function updates the board by iterating a single step.
@@ -258,8 +249,6 @@ public class BoardController {
 
     /***********************************************************************/
 
-    // maakt de boardView up-to-board met de latest tiles fashion
-
     /**
      * This function displays any changes to the board after updating the board.
      */
@@ -267,7 +256,7 @@ public class BoardController {
         for(int y=0; y<board.height ; y++)
             for(int x=0; x<board.width ; x++){
 
-                boardView.setTileHealth(x,y,board.getTile(x,y).getHealth());
+                boardView.setTileHealth(x,y,board.getTile(x,y).getHealth()); //TODO: dit houden?
 
                 if(board.isDead(x,y))       boardView.setTileDead(x,y);
                 else                        boardView.setTilePlayer(x,y,players.get(board.getTileTeam(x,y)).getColor());

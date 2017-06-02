@@ -50,7 +50,11 @@ public class BoardView extends View {
 
     /*****************************************/
 
-    //Actual constructor
+    /**
+     * Actual constructor
+     * @param width
+     * @param height
+     */
     public void init(int width, int height) {
         nTilesX = width;
         nTilesY = height;
@@ -62,7 +66,6 @@ public class BoardView extends View {
 
     /*******************FUNCTIONS*******************/
 
-    //functions for changing tile colors
     public void setTilePlayer(int x, int y, int col) { colors[y * nTilesX + x] = col; }
     public void setTileDead(int x, int y) { colors[y * nTilesX + x] = DEAD; }
 
@@ -76,14 +79,23 @@ public class BoardView extends View {
 
     /*******************SCALING&DRAGGING*******************/
 
-    //this updates the scaling when zooming in (pinching)
+    /**
+     * this updates the scaling when zooming in (pinching)
+     * @param dScaling
+     * @param focusX
+     * @param focusY
+     */
     public void updateScaling(float dScaling, float focusX, float focusY) {
         scaling += dScaling;
         scaling = max(1, min(MAXSCALING, scaling)); //clamp to [1;MAXSCALING]
         updateOffset(focusX * (dScaling), focusY * (dScaling));
     }
 
-    //this updates the offset used for scrolling across the screen
+    /**
+     * this updates the offset used for scrolling across the screen
+     * @param dOffX
+     * @param dOffY
+     */
     public void updateOffset(float dOffX, float dOffY) {
         offsetX += dOffX;
         offsetY += dOffY;
@@ -113,7 +125,7 @@ public class BoardView extends View {
 
         for (int a = 0; a < nTilesX; a++) {
             for (int b = 0; b < nTilesY; b++) {
-                drawEmpty(canvas, a, b); // tekent de lege blokken eronder. DIT IS PUUR COSMETISCH!
+                //drawEmpty(canvas, a, b); // tekent de lege blokken eronder. DIT IS PUUR COSMETISCH!
                 drawTile(canvas, a, b); // tekent de huidige blokken
                 drawTileNext(canvas, a, b); // tekent de volgende blokken
                 //drawTileHealth(canvas, a, b); // tekent de levens van de huidige blokken. OOK DIT IS TIJDELIJK!
@@ -123,6 +135,9 @@ public class BoardView extends View {
         invalidate();
     }
 
+    /**
+     * Draw the big border surrounding all the tiles
+     */
     private void drawBorder(Canvas canvas) {
         Paint p = new Paint();
         p.setColor(BORDERCOLOR);
@@ -138,7 +153,9 @@ public class BoardView extends View {
         drawBlock(canvas, p, x, y, SIZETILE);
     }
 
-    //Draw the tile at x,y
+    /**
+     * Draw the tile at x,y
+     */
     private void drawTile(Canvas canvas, int x, int y) {
         Paint p = new Paint();
         p.setColor(colors[y * nTilesX + x]);
@@ -146,7 +163,10 @@ public class BoardView extends View {
         drawBlock(canvas, p, x, y, SIZETILE);//TODO: er is geen manier nu om te zien hoeveel health een tile heeft. Ideeen?
     }
 
-    //Draw the indicator for what the tile will be next turn
+
+    /**
+     * Draw the indicator for what the tile will be next turn
+     */
     private void drawTileNext(Canvas canvas, int x, int y) {
         Paint p = new Paint();
         p.setColor(colorsNext[y * nTilesX + x]);
@@ -154,7 +174,12 @@ public class BoardView extends View {
         drawBlock(canvas, p, x, y, SIZENEXT);
     }
 
-    //Draw the indicator for the tiles health
+    /**
+     * Draw the indicator for the tiles health
+     * @param canvas
+     * @param x
+     * @param y
+     */
     private void drawTileHealth(Canvas canvas, int x, int y) {
         Paint p = new Paint();
         p.setColor(Color.WHITE);
@@ -165,8 +190,15 @@ public class BoardView extends View {
         canvas.drawText("" + health[y * nTilesX + x], (x + 0.5f) * tileWidth + BORDERSIZE, (y + 0.5f) * tileHeight + BORDERSIZE, p);
     }
 
-    // even een algemene functie geschreven die goed blokjes tekent afhankelijk van een grootte en paint
-    // zo wordt het iets makkelijker om dit goed te krijgen
+    /**
+     * even een algemene functie geschreven die goed blokjes tekent afhankelijk van een grootte en paint
+     * zo wordt het iets makkelijker om dit goed te krijgen
+     * @param canvas
+     * @param p
+     * @param x
+     * @param y
+     * @param size
+     */
     private void drawBlock(Canvas canvas, Paint p, int x, int y, float size) {
         canvas.drawRect((x + 0.5f * (1 - size)) * tileWidth + BORDERSIZE, (y + 0.5f * (1 - size)) * tileHeight + BORDERSIZE, (x + 0.5f * (1 + size)) * tileWidth + BORDERSIZE, (y + 0.5f * (1 + size)) * tileHeight + BORDERSIZE, p);
     }
