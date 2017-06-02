@@ -22,7 +22,7 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:inputType="textMultiLine"
-        android:text="Competitive Game of Life app is made by 5 students of Radboud University Nijmegen. This app was created for one of the assignment. It quickly became a passion project. We put alot of effort into this and we will keep continue to improve it. We love to get feedback and please rate our app in the rating tab. All copyright of the concept of the game are preserved to Conway and the brilliant creation of Game of Life."
+        android:text="The Competitive Game of Life app is made by 5 students of the Radboud University Nijmegen. This app was created for one of the assignments. It quickly became a passion project. We put a lot of effort into this and we will keep trying to improve it. We would love to get feedback and please rate our app in the rating tab. Any credits for the brilliant game of Life go to John Conway."
         android:textSize="22sp"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"

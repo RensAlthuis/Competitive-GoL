@@ -5,6 +5,9 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+/**
+ * This class allow for text to be drawn on the screen a letter at a time.
+ */
 public class TypeWriter extends android.support.v7.widget.AppCompatTextView{
 
     private CharSequence mText;
@@ -20,6 +23,7 @@ public class TypeWriter extends android.support.v7.widget.AppCompatTextView{
     }
 
     private Handler mHandler = new Handler();
+
     private Runnable characterAdder = new Runnable(){
         @Override
         public void run() {
@@ -30,6 +34,10 @@ public class TypeWriter extends android.support.v7.widget.AppCompatTextView{
         }
     };
 
+    /**
+     * This function animates the actual text.
+     * @param text The text to appear on screen.
+     */
     public void animateText(CharSequence text){
         mText = text;
         mIndex = 0;
@@ -39,6 +47,10 @@ public class TypeWriter extends android.support.v7.widget.AppCompatTextView{
         mHandler.postDelayed(characterAdder, mDelay);
     }
 
+    /**
+     * This function sets the delay between letters appearing.
+     * @param millis the number of milliseconds between the appearance of each letter.
+     */
     public void setCharacterDelay(long millis){
         mDelay = millis;
     }

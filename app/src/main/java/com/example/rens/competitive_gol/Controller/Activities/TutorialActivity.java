@@ -77,15 +77,15 @@ public class TutorialActivity extends Activity {
                 "The rules continue to be applied repeatedly to create further generations.");
 
         texts1.add("After you touch the start game button you have to create a room. In here you can choose which game mode you want to play." +
-                "You can choose between local player vs player mode or player vs ai mode. And between Ai you can choose the hard Ai or easy Ai.");
-        texts1.add("You can also choose how many tiles you can choose every turn. The board size and time is also settable." +
-                "At the end you can choose your own color and your opponents color. If you are done choosing you can start the game.");
+                "You can choose between local player vs player mode or player vs AI mode. And between AI you can choose the hard AI or easy AI.");
+        texts1.add("You can also choose how many moves to make every turn. The board size and time can also be set." +
+                "At the bottom you can choose your own color and your opponents color. When satisfied you can start the game");
         texts1.add("In the game you can choose a tile that you want to set each turn. " +
-                "If you want to change the tile, you can undo your tile set." +
+                "If you want to change the tile, you can undo your last move." +
                 "Then you can click next and wait till your opponent set a tile as well.");
-        texts1.add("The Hard Ai and Easy Ai take a bit of time to set their tiles on the right coordinates" +
-                "The numbers that are represented on the left is the amount of time left that you have set" +
-                "And on the right is the amount of steps were made this time.");
+        texts1.add("The Hard Ai and Easy Ai may take a while to make their move. " +
+                "The numbers on the left represents the amount of time you have left." +
+                "And on the right is the amount of steps you can mke per round.");
         texts1.add("Have fun playing and Git Gud!");
     }
 
