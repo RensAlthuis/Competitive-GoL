@@ -96,6 +96,10 @@ public class MainActivity extends Activity {
         character.setBackgroundColor(game.curColor());
     }
 
+    /**
+     * This function checks whether one of the players has won. If not, the turn is passed to the
+     * next player.
+     */
     private void nextTurn(){
         // updaten -> gewonnen? -> volgende speler -> zet timer
 
@@ -114,7 +118,11 @@ public class MainActivity extends Activity {
     }
 
     /********************MAKING THE GAME********************/
-
+    /**
+     * This function creates the initial board and sets the players
+     * @param gameMode This integer signifies whether the game is between two players, or between
+     *                 a player and an AI opponent and the difficulty of that AI.
+     */
     private void makeGame(int gameMode){
 
         /********************BOARDSETTINGS********************/
@@ -167,7 +175,10 @@ public class MainActivity extends Activity {
     }
 
     /********************************WIN/LOSE********************************/
-
+    /**
+     * This function is to be called when someone wins to transition to the win/loss screen.
+     * @param winner the team number of the winner.
+     */
     private void toWinLoss(int winner) {
         finish();
         Intent intent = new Intent(MainActivity.this, WinLossActivity.class);
@@ -205,6 +216,11 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
 
+    /**
+     * This function starts a timer if one is set.
+     * @param n The number of seconds the timer should represent.
+     * @param text The textview in which the timer is displayed.
+     */
     public void startTimer(long n, final TextView text){
         timer = new CountDownTimer(n, 1000) {
             @Override

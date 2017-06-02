@@ -52,8 +52,8 @@ public class BoardView extends View {
 
     /**
      * Actual constructor
-     * @param width
-     * @param height
+     * @param width the width of the board.
+     * @param height the height of the board.
      */
     public void init(int width, int height) {
         nTilesX = width;

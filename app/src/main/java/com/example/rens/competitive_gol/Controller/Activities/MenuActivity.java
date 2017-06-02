@@ -42,6 +42,9 @@ public class MenuActivity extends Activity {
         finish();
     }
 
+    /**
+     * This function transitions to the game creation activity.
+     */
     private void eventToRoom() {
         Button btn = (Button)findViewById(R.id.buttonAi);
         Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
@@ -54,6 +57,9 @@ public class MenuActivity extends Activity {
         });
     }
 
+    /**
+     * This function transitions to the tutorial activity.
+     */
     private void eventToTutorial() {
         Button btn = (Button)findViewById(R.id.buttonTut);
         Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
@@ -66,6 +72,9 @@ public class MenuActivity extends Activity {
         });
     }
 
+    /**
+     * This function transitions to the options menu.
+     */
     private void eventToSettings() {
         Button btn = (Button)findViewById(R.id.buttonSet);
         Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
