@@ -86,7 +86,7 @@ public class TutorialActivity extends Activity {
                 "If you want to change the tile, you can undo your last move." +
                 "Then you can click next and wait till your opponent set a tile as well.");
         texts1.add("The Hard Ai and Easy Ai may take a while to make their move. " +
-                "The numbers on the left represents the amount of time you have left." +
+                "The number on the left represents the amount of time you have left." +
                 "And on the right is the amount of steps you can mke per round.");
         texts1.add("Have fun playing and Git Gud!");
     }
