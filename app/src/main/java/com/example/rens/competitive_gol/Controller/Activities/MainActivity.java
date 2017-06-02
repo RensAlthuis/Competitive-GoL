@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -51,6 +52,9 @@ public class MainActivity extends Activity {
         character = (ImageView)findViewById(R.id.character);
         updateCharacterIcon();
 
+        final TextView aiText = (TextView)findViewById(R.id.AIText);
+        aiText.setVisibility(View.INVISIBLE);
+
         // De next turn knop:
         Button btnNext = (Button)findViewById(R.id.buttonNext);
         Typeface type = Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
@@ -62,8 +66,17 @@ public class MainActivity extends Activity {
                 nextTurn();
 
                 if(gameMode != 0){
-                    ((AIPlayer)game.getPlayer(1)).makeNextMove();
-                    nextTurn();
+                    aiText.setVisibility(View.VISIBLE);
+                    aiText.invalidate();
+                    Handler handler = new Handler();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((AIPlayer)game.getPlayer(1)).makeNextMove();
+                            nextTurn();
+                            aiText.setVisibility(View.INVISIBLE);
+                        }
+                    });
                 }
             }
         });
