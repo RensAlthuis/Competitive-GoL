@@ -51,11 +51,12 @@ public class RoomActivity extends Activity {
         setContentView(R.layout.activity_room);
 
 
-        this.arraySpinner = new String[]{
+        arraySpinner = new String[]{
                 "None", "2 min", "5 min", "10 min", "20 min"
         };
         Spinner s = (Spinner) findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arraySpinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, arraySpinner);
+        adapter.setDropDownViewResource(R.layout.spinner_item_dropdown);
         s.setAdapter(adapter);
 
         type =  Typeface.createFromAsset(getAssets(), "LCD_Solid.ttf");
